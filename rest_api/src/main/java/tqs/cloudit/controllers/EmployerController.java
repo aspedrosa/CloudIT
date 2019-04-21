@@ -1,8 +1,6 @@
 package tqs.cloudit.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,26 +8,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tqs.cloudit.domain.Freelancer;
+import tqs.cloudit.domain.Employer;
 
 /**
- * All request paths associated with freelancers
+ * All request paths associated with employers
  *
  * @author aspedrosa
  */
 @RestController
-@RequestMapping("/freelancer")
-public class FreelancerController {
+@RequestMapping("/employer")
+public class EmployerController {
 
     /**
-     * Registers a new IT Freelancer
+     * Registers a new employer
      * 
-     * @param freelancer Information relative to the IT Freelancer
+     * @param employer Information relative to the IT Freelancer
      * @return HTTP response with a descriptive message of what went wrong or
      *  a successful massage if all went good
      */
     @PostMapping
-    public ResponseEntity register(@RequestBody Freelancer freelancer) {
+    public ResponseEntity register(@RequestBody Employer employer) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -38,7 +36,7 @@ public class FreelancerController {
      * 
      * @return HTTP response with a descriptive message of what went wrong OR
      *  a successful massage if all went good and a list with the information
-     *  of the existing freelancers
+     *  of the existing employers
      */
     @GetMapping
     public ResponseEntity getAll() {
@@ -46,28 +44,15 @@ public class FreelancerController {
     }
 
     /**
-     * Return the freelancer associated with the received id
+     * Return the employer associated with the received id
      * 
-     * @param id ID of the Freelancer that the user wants to know more
+     * @param id ID of the employer that the user wants to know more
      * @return HTTP response with a descriptive message of what went wrong OR
      *  a successful massage if all went good and the information of the
-     *  freelancer
+     *  employer
      */
     @GetMapping("/id/{id}")
     public ResponseEntity getById(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    /**
-     * Return all freelancers of a specific area  
-     *
-     * @param area name of the area that should filter the results
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with the information
-     *  of the freelancers of the specific area
-     */
-    @GetMapping("/area/{area}")
-    public ResponseEntity getByArea(@PathVariable String area) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 }
