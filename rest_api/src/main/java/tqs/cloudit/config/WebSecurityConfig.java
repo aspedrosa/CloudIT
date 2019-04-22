@@ -23,11 +23,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * JDBC data source used to get usernames and passwords
+     * Configurations on src/main/resources/application.settings
+     */
     @Autowired
     DataSource dataSource;
 
+    /**
+     * Passoword encoder to be used on user authentication on the api
+     */
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Configure security of api
+     *  <ul>
+     *      <li>which paths need to be authenticated</li>
+     *      <li>type of authentication</li>
+     *      <li>logout behaviour</li>
+     *  </ul>
+     *
+     * @param http where the configurations will be stored
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,6 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
+    /**
+     * Configure from where the authentication credentials will be retrived
+     *
+     * @param auth builder of a authentication manager (depency injection)
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
@@ -53,6 +75,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .authoritiesByUsernameQuery("select ?, \"USER\"");
     }
 
+    /**
+     * Provides a unique class for a password encoder (Singleton)
+     *
+     * @return the unique instance of a BCryptPasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         if (passwordEncoder == null) {
