@@ -1,5 +1,7 @@
 package tqs.cloudit.domain.rest;
 
+import java.util.Set;
+
 /**
  *
  * @author aspedrosa
@@ -15,6 +17,8 @@ public class User {
     private String email;
 
     private String type;
+
+    private Set<String> interestedAreas;
 
     public String getUsername() {
         return username;
@@ -55,4 +59,13 @@ public class User {
     public void setType(String type) {
         this.type = type;
     }
+
+    public Set<String> getInterestedAreas() {
+        return interestedAreas;
+    }
+
+    public void setInterestedAreas(Set<String> interestedAreas) {
+        this.interestedAreas = interestedAreas;
+    }
+
 }

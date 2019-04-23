@@ -1,9 +1,14 @@
 package tqs.cloudit.domain.persistance;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -25,11 +30,20 @@ public class User {
     
     private String type;
 
+    @ManyToMany
+    @JoinTable(
+        name = "UserArea", 
+        joinColumns = @JoinColumn(name = "userId"), 
+        inverseJoinColumns = @JoinColumn(name = "are"))
+    private Set<String> interestedAreas;
+
     public User(tqs.cloudit.domain.rest.User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.type = user.getType();
+        this.interestedAreas = user.getInterestedAreas();
     }
 
     public User() {}
@@ -81,5 +95,13 @@ public class User {
     public void setType(String type) {
         this.type = type;
     }
-    
+
+    public Set<String> getInterestedAreas() {
+        return interestedAreas;
+    }
+
+    public void setInterestedAreas(Set<String> interestedAreas) {
+        this.interestedAreas = interestedAreas;
+    }
+
 }
