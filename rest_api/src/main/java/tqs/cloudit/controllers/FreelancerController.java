@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tqs.cloudit.domain.Freelancer;
-
 /**
  * All request paths associated with freelancers
  *
@@ -20,18 +18,6 @@ import tqs.cloudit.domain.Freelancer;
 @RestController
 @RequestMapping("/freelancer")
 public class FreelancerController {
-
-    /**
-     * Registers a new IT Freelancer
-     * 
-     * @param freelancer Information relative to the IT Freelancer
-     * @return HTTP response with a descriptive message of what went wrong or
-     *  a successful massage if all went good
-     */
-    @PostMapping
-    public ResponseEntity register(@RequestBody Freelancer freelancer) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
 
     /**
      * Returns all freelancers registered

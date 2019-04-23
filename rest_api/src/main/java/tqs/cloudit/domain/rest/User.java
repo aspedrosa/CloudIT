@@ -1,6 +1,7 @@
 package tqs.cloudit.domain.rest;
 
 import java.util.Set;
+import tqs.cloudit.domain.persistance.Area;
 
 /**
  *

@@ -1,5 +1,6 @@
 package tqs.cloudit.domain.persistance;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -34,8 +35,8 @@ public class User {
     @JoinTable(
         name = "UserArea", 
         joinColumns = @JoinColumn(name = "userId"), 
-        inverseJoinColumns = @JoinColumn(name = "are"))
-    private Set<String> interestedAreas;
+        inverseJoinColumns = @JoinColumn(name = "areaId"))
+    private Set<Area> interestedAreas;
 
     public User(tqs.cloudit.domain.rest.User user) {
         this.username = user.getUsername();
@@ -43,7 +44,11 @@ public class User {
         this.name = user.getName();
         this.email = user.getEmail();
         this.type = user.getType();
-        this.interestedAreas = user.getInterestedAreas();
+        this.interestedAreas = new HashSet<Area>();
+        for(String area : user.getInterestedAreas()){
+            this.interestedAreas.add(new Area(area));
+        }
+        
     }
 
     public User() {}
@@ -96,11 +101,11 @@ public class User {
         this.type = type;
     }
 
-    public Set<String> getInterestedAreas() {
+    public Set<Area> getInterestedAreas() {
         return interestedAreas;
     }
 
-    public void setInterestedAreas(Set<String> interestedAreas) {
+    public void setInterestedAreas(Set<Area> interestedAreas) {
         this.interestedAreas = interestedAreas;
     }
 
