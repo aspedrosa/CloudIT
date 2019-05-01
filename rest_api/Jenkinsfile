@@ -1,0 +1,38 @@
+@Library('github.com/sorah/jenkinsfile-slack@master') _
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.6.1-jdk-8'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                dir('rest_api') {
+                    sh "mvn -U clean test cobertura:cobertura -Dcobertura.report.format=xml"
+                }
+            }
+            post {
+                always {
+                    junit '**/target/*-reports/TEST-*.xml'
+                    step([$class: 'CoberturaPublisher', coberturaReportFile: '**/target/site/cobertura/coverage.xml'])
+                }
+            }
+        }
+        stage('SonarQube analysis') {
+             steps {
+                withSonarQubeEnv('sonar') {
+                    dir('rest_api') {
+                        sh 'mvn clean package sonar:sonar'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            postNotifySlack currentBuild.result
+        }
+    }
+}
