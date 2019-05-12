@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import tqs.cloudit.domain.persistance.Area;
 import tqs.cloudit.domain.rest.Credentials;
 import tqs.cloudit.domain.rest.User;
@@ -30,7 +29,7 @@ public class AuthenticationService {
     @Autowired
     private AreaRepository areaRepository;
     
-    private BCryptPasswordEncoder bcpe=new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
     private Logger l = LoggerFactory.getLogger(AuthenticationService.class);
     
     public ResponseEntity register(User user) {
@@ -46,8 +45,8 @@ public class AuthenticationService {
     
     public ResponseEntity login(Credentials cred) {
         if(this.bcpe.matches(cred.getPassword(),this.userRepository.getPass(cred.getUsername()))){
-            return ResponseEntity.ok("firmeza");
+            return ResponseEntity.ok().build();
         }
-        return ResponseEntity.ok("não firmeza");
+        return ResponseEntity.notFound().build();
     }
 }
