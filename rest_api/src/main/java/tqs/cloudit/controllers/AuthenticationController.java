@@ -1,16 +1,14 @@
 package tqs.cloudit.controllers;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import tqs.cloudit.domain.persistance.Area;
-import tqs.cloudit.domain.rest.Credentials;
 import tqs.cloudit.domain.rest.User;
-import tqs.cloudit.repositories.AreaRepository;
-import tqs.cloudit.repositories.UserRepository;
 import tqs.cloudit.services.AuthenticationService;
 
 /**
@@ -36,9 +34,12 @@ public class AuthenticationController {
      * @param cred
      * @return 
      */
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody Credentials cred) {
-        return this.authServ.login(cred);
+    @GetMapping("/login")
+    public ResponseEntity login() {
+        JSONObject response = new JSONObject();
+        response.put("status", 0);
+        response.put("message", "Logged in with success");
+        return ResponseEntity.ok(response);
     }
 
     /**

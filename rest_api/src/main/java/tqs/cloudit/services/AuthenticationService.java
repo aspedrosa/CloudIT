@@ -5,15 +5,14 @@
  */
 package tqs.cloudit.services;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import tqs.cloudit.domain.persistance.Area;
-import tqs.cloudit.domain.rest.Credentials;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
 import tqs.cloudit.repositories.UserRepository;
@@ -41,13 +40,10 @@ public class AuthenticationService {
         }
         pUser.setPassword(this.bcpe.encode(pUser.getPassword()));
         this.userRepository.save(pUser);
-        return ResponseEntity.ok("firmeza");
-    }
-    
-    public ResponseEntity login(Credentials cred) {
-        if(this.bcpe.matches(cred.getPassword(),this.userRepository.getPass(cred.getUsername()))){
-            return ResponseEntity.ok("firmeza");
-        }
-        return ResponseEntity.ok("não firmeza");
+        
+        JSONObject response = new JSONObject();
+        response.put("status", 0);
+        response.put("message", "Registered with success");
+        return ResponseEntity.ok(response);
     }
 }
