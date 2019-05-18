@@ -1,5 +1,7 @@
 package tqs.cloudit.controllers;
 
+import java.security.Principal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tqs.cloudit.services.UserService;
 
 /**
  * All request paths associated with freelancers
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/freelancer")
 public class FreelancerController {
+    
+    @Autowired
+    public UserService userService;
 
     /**
      * Returns all freelancers registered
@@ -55,5 +61,11 @@ public class FreelancerController {
     @GetMapping("/area/{area}")
     public ResponseEntity getByArea(@PathVariable String area) {
         throw new UnsupportedOperationException("Not implemented yet!");
+    }
+    
+    @GetMapping("/info")
+    public ResponseEntity getInfo(Principal p) {
+        return ResponseEntity.ok(userService.getUserInfoFromUsername(p.getName(), false));
+        //throw new UnsupportedOperationException("Not implemented yet!");
     }
 }

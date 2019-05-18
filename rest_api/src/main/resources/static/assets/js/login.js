@@ -15,24 +15,25 @@ function sign_in_tab() {
 }
 
 function sign_in() {
+    $("#invalid_credentials_message").remove();
     var username = document.getElementById("username").value;
     var password = document.getElementById("pwd").value;
     $.ajax({
         url: base_api_url+"/login",
         type: "GET",
-        username: "a",
-        password: "a",
-        //xhrFields: {
-        //    withCredentials: true
-        //},
-        //headers: {"Authorization":"Basic YTph", 
-        //        "Accept":"*/*"},
+        headers: {
+            "Authorization": "Basic " + btoa(username + ":" + password),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
         crossDomain:true,
-        //data: {"username": "\""+username+"\"", "password": "\""+password+"\""},
         success: function(data, status, xhr) {
-            console.log("success: "+data+":"+status+":"+xhr);
+            window.location.href= base_api_url+"/welcome";
+            console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
         },
         error: function(data, status, xhr) {
+            $("#submit_button").before('<div id="invalid_credentials_message" class="alert alert-danger">\
+                <strong>Error!</strong> Invalid Credentials.\
+            </div>');
             console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
         }
     });

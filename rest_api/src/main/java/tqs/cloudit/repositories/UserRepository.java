@@ -14,4 +14,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value= "select password from user where username=?1", nativeQuery=true)
     public String getPass(String username);
     
+    @Query(value= "select * from user where username=?1", nativeQuery=true)
+    public User getInfo(String username);
 }

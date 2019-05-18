@@ -9,11 +9,13 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
 import tqs.cloudit.domain.persistance.Area;
 
 /**
@@ -21,6 +23,7 @@ import tqs.cloudit.domain.persistance.Area;
  * @author joaoalegria
  */
 @DataJpaTest
+@RunWith(SpringRunner.class)
 public class AreaRepositoryTest {
     
     @Autowired
