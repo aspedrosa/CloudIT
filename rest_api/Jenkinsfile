@@ -10,21 +10,15 @@ pipeline {
         stage('Test') {
             steps {
                 dir('rest_api') {
-                    sh "mvn -U clean test cobertura:cobertura -Dcobertura.report.format=xml"
-                }
-            }
-            post {
-                always {
-                    junit '**/target/*-reports/TEST-*.xml'
-                    step([$class: 'CoberturaPublisher', coberturaReportFile: '**/target/site/cobertura/coverage.xml'])
+                    sh "mvn -U test"
                 }
             }
         }
         stage('SonarQube analysis') {
-             steps {
+            steps {
                 withSonarQubeEnv('sonar') {
                     dir('rest_api') {
-                        sh 'mvn clean package sonar:sonar'
+                        sh 'mvn sonar:sonar'
                     }
                 }
             }
