@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  jenkins:
+    image: jenkinsci/blueocean
+    user: root
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /home/tqs/repo/rest_api:/home
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8081:8080"
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9001:9000"
+    environment:
+      - sonar.jdbc.username=sonar
+      - sonar.jdbc.passowrd=sonar
+      - sonar.jdbc.url=jdbc:postgresql://db/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  jenkins-data:
+
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+
+  postgresql:
+  postgresql_data:
