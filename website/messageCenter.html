@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="A.Brandao, A.Pedrosa, F.Pires, J.Alegria">
+    <title>CloudIT-MessageCenter</title>
+    
+    <!--Template based on URL below-->
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/messageCenter.css" rel="stylesheet" type="text/css">
+</head>
+
+<body >
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #3793f7" >
+        <a class="navbar-brand" href="login.html">CloudIT</a>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="">About</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="messageCenter.html" selected>Messages</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Body -->
+    <main role="main" class="main" style="min-height: 90vh; margin-top:55px;">
+        <!-- start:chat room -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="chat-room">
+                <div class="row">
+                    <!-- start:aside kiri chat room -->
+                    <aside class="kiri-side col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <div class="user-head">
+                            <i class="fa fa-comments-o"></i>
+                            <h3>Message Center</h3> <!-- style="height:30px !important" -->
+                        </div>
+                        <ul class="chat-list chat-room-body minh-80 maxh-60">
+                            <li class="">
+                                <a class="lobby" href="">
+                                    <h4>
+                                        <i class="fa fa-list"></i>
+                                        <span>Lobby</span>
+                                    </h4>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#chat_room.html">
+                                    <i class="fa fa-user"></i>
+                                    <span>Jonathan Smith</span>
+                                    <i class="fa fa-times pull-right"></i>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="#chat_room.html">
+                                    <i class="fa fa-user"></i>
+                                    <span>Jhon Doe</span>
+                                    <i class="fa fa-times pull-right"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#chat_room.html">
+                                    <i class="fa fa-user"></i>
+                                    <span>Cendy Andrianto</span>
+                                    <i class="fa fa-times pull-right"></i>
+                                </a>
+                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                        </ul>
+                    </aside>
+        
+                    <!-- start:aside tengah chat room -->
+                    <aside class="tengah-side col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="chat-room-head">
+                            <h3>Jhon Doe</h3>
+                            <form action="#" class="pull-right position">
+                                <input type="text" placeholder="Search" class="form-control search-btn ">
+                            </form>
+                        </div>
+                        <div class="chat-room-body minh-80 maxh-80">
+                            <div class="group-rom">
+                                <div class="second-part odd">Hello Cendy are you there?</div>
+                                <div class="third-part">12:30</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part">Yoman Smith. Please proceed</div>
+                                <div class="third-part">12:31</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part odd">I want to share a file using chatroom</div>
+                                <div class="third-part">12:32</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part">oh sure. please send</div>
+                                <div class="third-part">12:32</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part odd"><a href="##">search_scb_dialog.jpg</a> <span class="text-muted">46.8KB</span> <p>
+                                    <img src="http://bootemplates.com/themes/kentut/assets/img/avatar/avatar-2.jpg" alt="" class="img-responsive"></p></div>
+                                <div class="third-part">12:32</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part">Fantastic job, love it :)</div>
+                                <div class="third-part">12:32</div>
+                            </div>
+                            <div class="group-rom">
+                                <div class="second-part odd">Thanks</div>
+                                <div class="third-part">12:33</div>
+                            </div>
+                        </div>
+                        <div class="chat-room-footer ">
+                            <div class="row">
+                                <div class="chat-txt col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="btn-group col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    <!-- <button type="button" class="btn btn-white" data-original-title="" title=""><i class="fa fa-meh-o"></i></button> -->
+                                    <button type="button" class="btn btn-white" data-original-title="attach" title="attach"><i class=" fa fa-paperclip"></i></button>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    <button class="btn btn-primary" data-original-title="send" title="send">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-distributed">
+        <div class="footer-left">
+            <h3>Cloud<span>IT</span></h3>
+            <p class="footer-links">
+                <a href="#">Home</a> ·
+                <a href="#">About</a> ·
+                <a href="#">Messages</a>
+            </p>
+            <p class="footer-company-name">CloudIT &copy; 2019</p>
+        </div>
+        <div class="footer-center">
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Campus Universitário de Santiago, </span>3810-193 Aveiro</p>
+            </div>
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+351 234 567 890</p>
+            </div>
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:support@company.com">cloudit_support@cloudit.com</a></p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <p class="footer-company-about">
+                <span>About Us</span>
+                Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
+            </p>
+            <div class="footer-icons">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="assets/js/messageCenter.js"></script>
+</body>
+</html>
