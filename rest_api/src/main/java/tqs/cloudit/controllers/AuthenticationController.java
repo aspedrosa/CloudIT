@@ -18,6 +18,7 @@ import tqs.cloudit.services.AuthenticationService;
  */
 @RestController
 public class AuthenticationController {
+    
     @Autowired
     private AuthenticationService authServ;
 
@@ -45,22 +46,22 @@ public class AuthenticationController {
     /**
      * Deauthenticates a user by removing session cookies
      */
-    @PostMapping("/logout")
+    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
     public ResponseEntity logout() {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    @PostMapping("/register")
+    @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity register(@RequestBody User user) {
         return this.authServ.register(user);
     }
     
-    @PostMapping("/company")
+    @PostMapping(path = "/company", consumes = "application/json", produces = "application/json")
     public ResponseEntity associateCompany() {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
     
-    @PostMapping("/hire/id/{id}")
+    @PostMapping(path = "/hire/id/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity hire(@PathVariable long id) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }

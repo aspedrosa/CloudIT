@@ -23,6 +23,7 @@ import tqs.cloudit.repositories.UserRepository;
  */
 @Service
 public class AuthenticationService {
+    
     @Autowired
     private UserRepository userRepository;
     
@@ -33,10 +34,31 @@ public class AuthenticationService {
     private Logger l = LoggerFactory.getLogger(AuthenticationService.class);
     
     public ResponseEntity register(User user) {
+        if(!user.allDefined()){
+            JSONObject response = new JSONObject();
+            response.put("status", 1);
+            response.put("message", "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        if(userRepository.getUsernames().contains(user.getUsername())){
+            JSONObject response = new JSONObject();
+            response.put("status", 1);
+            response.put("message", "Registration invalid. Username must be unique. This username already exists.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        if(userRepository.getMails().contains(user.getEmail())){
+            JSONObject response = new JSONObject();
+            response.put("status", 1);
+            response.put("message", "Registration invalid. Your email must be unique. This email is already registered in the platform.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        
         tqs.cloudit.domain.persistance.User pUser=new tqs.cloudit.domain.persistance.User(user);
-        for(Area a : pUser.getInterestedAreas()){
-            if(this.areaRepository.existsByArea(a.getArea())==0)
-                this.areaRepository.save(a);
+        if(pUser.getInterestedAreas()!=null){
+            for(Area a : pUser.getInterestedAreas()){
+                if(this.areaRepository.existsByArea(a.getArea())==0)
+                    this.areaRepository.save(a);
+            }
         }
         pUser.setPassword(this.bcpe.encode(pUser.getPassword()));
         this.userRepository.save(pUser);
