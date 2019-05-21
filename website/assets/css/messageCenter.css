@@ -97,7 +97,6 @@
     -o-transition: all .3s ease;
     transition: all .3s ease;
     box-shadow: none;
-    background: #fff url("../img/chat-search.png") no-repeat 12px 9px;
     padding:0 5px 0 35px;
     margin-top: 2px;
     border: none;
@@ -336,6 +335,7 @@ ul.chat-available-user li i {
 
 .group-rom .third-part{
     width: 10%;
+    min-width: 50px;
     color: #d4d3d3;
 }
 
@@ -357,7 +357,6 @@ a.guest-on i {
 
 .chat-txt {
     float: left;
-    width: 86%;
     margin-right: 5px;
 }
 
