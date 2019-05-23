@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        /*http
                 .authorizeRequests().antMatchers("/login",
                                                  "/register").permitAll()
                 .anyRequest().authenticated()
@@ -60,7 +60,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .deleteCookies("JSESSIONID")
             .and()
-                .csrf().disable();
+                .csrf().disable();*/
+        http.authorizeRequests().anyRequest().permitAll()
+            .antMatchers("/company","/hire/id/**", "/joboffer", "/messages", "/messages/id/**").authenticated()
+            .and().httpBasic()
+            .and().rememberMe()
+            .and().logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
+            .and().csrf().disable();
     }
 
     /**
