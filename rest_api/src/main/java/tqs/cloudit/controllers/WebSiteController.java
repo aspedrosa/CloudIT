@@ -15,4 +15,14 @@ public class WebSiteController {
     public String welcome() {
         return "welcome.html";
     }
+    
+    @GetMapping(path = "/about")
+    public String about() {
+        return "about.html";
+    }
+    
+    @GetMapping(path = "/messages")
+    public String messages() {
+        return "messageCenter.html";
+    }
 }

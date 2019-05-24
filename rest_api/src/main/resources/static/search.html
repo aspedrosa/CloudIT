@@ -8,13 +8,13 @@
     <meta name="author" content="A.Brandao, A.Pedrosa, F.Pires, J.Alegria">
     <title>Search</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <link href="assets/css/header.css" rel="stylesheet" type="text/css">
+
+    <!-- Core CSS -->
     <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/messageCenter.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/header.css" rel="stylesheet" type="text/css">
     <link href="assets/css/search.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -25,35 +25,16 @@
     <nav class="navbar navbar-inverse navbar-fixed-top header-distributed" >
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand header-logo" href="login.html">Cloud<span>IT</span></a>
+                <a class="navbar-brand header-logo" id="home" href="/home">Cloud<span>IT</span></a>
             </div>
             <ul class="nav navbar-nav">
-                <!-- <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="">Search <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">IT Specialists</a></li>
-                        <li><a href="#">Opportunities</a></li>
-                        <li><a href="#">Services</a></li>
-                    </ul>
-                </li> -->
-                <li class="active"><a href="search.html">Search</a></li>
-                <li><a href="messageCenter.html">Messages</a></li>
-                <li><a href="about.html">About</a></li>
+                <li class="active"><a id="search" id="search" href="/search">Search</a></li>
+                <li><a id="messages" href="/messages">Messages</a></li>
+                <li><a id="profile" href="/profile">Profile</a></li>
+                <li><a id="about" id="about" href="/about">About Us</a></li>
             </ul>
-            <!-- <form class="navbar-form navbar-left" action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form> -->
-            <!-- <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="fa fa-user"></span> Sign Up</a></li>
-            </ul> -->
         </div>
-      </nav>
+    </nav>
 
     <!-- Search Bar -->
     <div class="container" style="min-height: 15vh; margin-top: 100px;">
@@ -88,107 +69,117 @@
         <div class="container">
             <div class="row">
                 <div class="content col-md-8">
+                    <!-- Post -->
                     <div class="blog-box clearfix row">
+                        <!-- Box -->
                         <div class="media-box col-md-4">
-                            <a href="blog-single.html" title=""><img src="assets/upload/blog_01.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
-                        <div class="blog-desc col-md-8">
-                            <div class="blog-meta">
-                                <ul class="list-inline">
-                                    <li><a href="#"><i class="fa fa-folder-open-o"></i> SEO Tips</a></li>
-                                    <li><a href="#"><i class="fa fa-comments-o"></i> 21 Comments</a></li>
-                                </ul>
-                            </div><!-- end meta -->
-                            <h3><a href="blog-single.html" title="">WordPress » How to Make Professional SEO Links</a></h3>
-                            <p>The plugin will automatically include the most commonly used words in the text as a label. This way you gain backlinks within the site. In addition, one of the best features is that the words in the article are automatically linked to the label page. In this case, the article..</p>
-                            <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
-
-                    <div class="blog-box clearfix row">
-                        <div class="media-box col-md-4">
-                            <a href="blog-single.html" title=""><img src="assets/upload/blog_02.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
+                            <a href="blog-single.html" title="" data-toggle="modal" data-target="#m1"><img src="assets/upload/blog_02.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                        </div>
                         <div class="blog-desc col-md-8">
                             <div class="blog-meta">
                                 <ul class="list-inline">
                                     <li><a href="#"><i class="fa fa-folder-open-o"></i> SEO Tricks</a></li>
                                     <li><a href="#"><i class="fa fa-comments-o"></i> 12 Comments</a></li>
                                 </ul>
-                            </div><!-- end meta -->
-                            <h3><a href="blog-single.html" title="">What is rel= Tag and How to Use it for search engines</a></h3>
-                            <p>The Rel Canonical tag allows Google bots to determine which link to base when the same content is accessible by search engines with two different link structures. In the case of e-commerce sites, products usually have IDs, so in this case there is no product..</p>
+                            </div>
+                            <h3><a href="" title="" data-toggle="modal" data-target="#m1">What is rel= Tag and How to Use it for search engines</a></h3>
+                            <p>The Rel Canonical tag allows Google bots to determine which link to base when the same content is accessible by search engines with two different link structures. In the case of ...</p>
                             <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
+                        </div>
+                        <!-- Modal -->
+                        <div id="m1" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                            
+                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h3 class="modal-title">What is rel= Tag and How to Use it for search engines</h3>
+                                    </div>
+                                    <div class="row modal-body">
+                                        <div class="media-box col-md-4">
+                                            <img src="assets/upload/blog_02.jpg" alt="" class="img-responsive img-thumbnail">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>The Rel Canonical tag allows Google bots to determine which link to base when the same content is accessible by search engines with two different link structures. In the case of e-commerce sites, products usually have IDs, so in this case there is no product.</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="blog-box clearfix row">
                         <div class="media-box col-md-4">
                             <a href="blog-single.html" title=""><img src="assets/upload/blog_03.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
+                        </div>
                         <div class="blog-desc col-md-8">
                             <div class="blog-meta">
                                 <ul class="list-inline">
                                     <li><a href="#"><i class="fa fa-folder-open-o"></i> eCommerce</a></li>
                                     <li><a href="#"><i class="fa fa-comments-o"></i> 11 Comments</a></li>
                                 </ul>
-                            </div><!-- end meta -->
+                            </div>
                             <h3><a href="blog-single.html" title="">How to make search engine friendly e-commerce website</a></h3>
                             <p>In today's article, we will discuss the question of how the e-commerce site should have a product paging system that is too much to compare. Most of the companies that provide e-commerce services use ready e-commerce packages. However, they also make mistakes..</p>
                             <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
+                        </div>
+                    </div>
 
                     <div class="blog-box clearfix row">
                         <div class="media-box col-md-4">
                             <a href="blog-single.html" title=""><img src="assets/upload/blog_04.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
+                        </div>
                         <div class="blog-desc col-md-8">
                             <div class="blog-meta">
                                 <ul class="list-inline">
                                     <li><a href="#"><i class="fa fa-folder-open-o"></i> eCommerce</a></li>
                                     <li><a href="#"><i class="fa fa-comments-o"></i> 16 Comments</a></li>
                                 </ul>
-                            </div><!-- end meta -->
+                            </div>
                             <h3><a href="blog-single.html" title="">A New Feature in SEO with Voice Search on Google and Yahoo</a></h3>
                             <p>It's a topic that I have encountered very often in recent times. I wanted to share with you my research on the subject. For those away from voice dialing, you can make a voice call by pressing and holding the microphone...</p>
                             <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
+                        </div>
+                    </div>
 
                     <div class="blog-box clearfix row">
                         <div class="media-box col-md-4">
                             <a href="blog-single.html" title=""><img src="assets/upload/blog_05.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
+                        </div>
                         <div class="blog-desc col-md-8">
                             <div class="blog-meta">
                                 <ul class="list-inline">
                                     <li><a href="#"><i class="fa fa-folder-open-o"></i> SEO Tips</a></li>
                                     <li><a href="#"><i class="fa fa-comments-o"></i> 33 Comments</a></li>
                                 </ul>
-                            </div><!-- end meta -->
+                            </div>
                             <h3><a href="blog-single.html" title="">Meet Google SEO If you are Beginner</a></h3>
                             <p>SEO has become one of the most important sectors of our time for the last few years. It's very important to leave Google in the first place without advertising. When we think that only 10 sites are included in the first page...</p>
                             <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
+                        </div>
+                    </div>
 
                     <div class="blog-box clearfix row">
                         <div class="media-box col-md-4">
                             <a href="blog-single.html" title=""><img src="assets/upload/blog_06.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                        </div><!-- end media-box -->
+                        </div>
                         <div class="blog-desc col-md-8">
                             <div class="blog-meta">
                                 <ul class="list-inline">
                                     <li><a href="#"><i class="fa fa-folder-open-o"></i> SEO Tools</a></li>
                                     <li><a href="#"><i class="fa fa-comments-o"></i> 18 Comments</a></li>
                                 </ul>
-                            </div><!-- end meta -->
+                            </div>
                             <h3><a href="blog-single.html" title="">How / When Google Boots Visit Your Website: Check here..</a></h3>
                             <p>In line with the new Google algorithms; Lowering exit rates and increasing page residence times have a major impact on SEO. User Experience (UX) efforts also aim to increase on-site sales / conversion rates.</p>
                             <a class="readmore" href="#">Read more</a>
-                        </div><!-- end blog-desc -->
-                    </div><!-- end blogbox -->
+                        </div>
+                    </div>
 
                     <div class="pagination-wrapper row">
                         <ul class="pagination col-md-12">
@@ -198,8 +189,8 @@
                             <li><a href="#">4</a></li>
                             <li><a href="#">5</a></li>
                         </ul>
-                    </div><!-- ne dpagi -->
-                </div><!-- end content -->
+                    </div>
+                </div>
 
                 <div class="sidebar col-md-4 col-sm-4">
                     <div class="widget clearfix">
@@ -212,15 +203,15 @@
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i></button>
                                 </div>
                             </form>
-                        </div><!-- end newsletter -->
-                    </div><!-- end widget -->
+                        </div>
+                    </div>
 
                     <div class="widget clearfix">
                         <h4 class="widget-title">ADVERTISING</h4>
                         <div class="category-widget">
                             <img src="assets/img/ad.gif" alt="" class="img-responsive img-thumbnail">
-                        </div><!-- end category -->
-                    </div><!-- end widget -->
+                        </div>
+                    </div>
 
                     <div class="widget clearfix">
                         <h4 class="widget-title">Blog Categories</h4>
@@ -232,21 +223,23 @@
                                 <li><a href="#">Google Updates for Algoritms</a></li>
                                 <li><a href="#">SEO for CMS Systems</a></li>
                             </ul>
-                        </div><!-- end category -->
-                    </div><!-- end widget -->
-                </div><!-- end col -->
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </section><!-- end section -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer-distributed">
         <div class="footer-left">
             <h3>Cloud<span>IT</span></h3>
             <p class="footer-links">
-                <a href="#">Home</a> ·
-                <a href="search.html">Search</a> ·
-                <a href="messageCenter.html">Messages</a>
+                <a href="/welcome">Home</a> ·
+                <a href="/search">IT Search</a> ·
+                <a href="/messages">Messages</a> ·
+                <a href="/profile">Profile</a> ·
+                <a href="/about">About</a>
             </p>
             <p class="footer-company-name">CloudIT &copy; 2019</p>
         </div>
@@ -275,9 +268,9 @@
                 <a href="#"><i class="fa fa-github"></i></a>
             </div>
         </div>
-    </footer>   
+    </footer> 
 
-    <!-- core JavaScript -->   
+    <!-- Core JavaScript -->   
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
