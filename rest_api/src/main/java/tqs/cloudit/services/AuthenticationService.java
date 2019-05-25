@@ -30,7 +30,7 @@ public class AuthenticationService {
     @Autowired
     private AreaRepository areaRepository;
     
-    private BCryptPasswordEncoder bcpe=new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
     private Logger l = LoggerFactory.getLogger(AuthenticationService.class);
     
     public ResponseEntity register(User user) {

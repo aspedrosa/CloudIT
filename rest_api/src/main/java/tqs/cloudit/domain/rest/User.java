@@ -20,6 +20,18 @@ public class User {
 
     private Set<String> interestedAreas;
 
+    public User(String username, String password, String name, String email, String type, Set<String> interestedAreas) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+        this.interestedAreas = interestedAreas;
+    }
+    
+    public User(){
+    }
+
     public String getUsername() {
         return username;
     }
@@ -69,7 +81,7 @@ public class User {
     }
     
     public boolean allDefined(){
-        Object[] tmp = new Object[]{username, password,name, email,type};
+        Object[] tmp = new Object[]{this.username, this.password, this.name, this.email, this.type};
         for(Object aux : tmp){
             if(aux==null){
                 return false;

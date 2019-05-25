@@ -3,11 +3,13 @@ package tqs.cloudit.repositories;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.util.Lists;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
 import tqs.cloudit.domain.persistance.User;
 
 /**
@@ -15,6 +17,7 @@ import tqs.cloudit.domain.persistance.User;
  * @author joaoalegria
  */
 @DataJpaTest
+@RunWith(SpringRunner.class)
 public class UserRepositoryTest {
 
     @Autowired

@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import org.assertj.core.util.Lists;
 import org.json.simple.JSONObject;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import tqs.cloudit.repositories.UserRepository;
  *
  * @author joaoalegria
  */
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
     @TestConfiguration
     static class WeatherServiceTestContextConfiguration {
@@ -97,6 +97,9 @@ public class AuthenticationServiceTest {
         Mockito.when(areaRepository.existsByArea("Security")).thenReturn(0l);
         ResponseEntity result = service.register(user3);
         assertEquals(goodResponse, result);
+        Mockito.verify(userRepository).getUsernames();
+        Mockito.verify(userRepository).getMails();
+        Mockito.verify(areaRepository).existsByArea("Security");
     }
     
     /**
@@ -109,6 +112,8 @@ public class AuthenticationServiceTest {
         Mockito.when(userRepository.getMails()).thenReturn(Collections.EMPTY_LIST);
         ResponseEntity result = service.register(user1);
         assertEquals(goodResponse, result);
+        Mockito.verify(userRepository).getUsernames();
+        Mockito.verify(userRepository).getMails();
     }
     
     /**
@@ -142,6 +147,8 @@ public class AuthenticationServiceTest {
         Mockito.when(userRepository.getMails()).thenReturn(Lists.list("emaidojoao@mail.com"));
         ResponseEntity result = service.register(user1);
         assertEquals(badResponse3, result);
+        Mockito.verify(userRepository).getUsernames();
+        Mockito.verify(userRepository).getMails();
     }
     
 }
