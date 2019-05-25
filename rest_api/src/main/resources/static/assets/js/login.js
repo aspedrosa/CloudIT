@@ -1,4 +1,5 @@
-var base_api_url = "http://localhost:8080";
+var base_api_url = "http://192.168.160.63:8080";
+//var base_api_url = "http://localhost:8080";
 
 function sign_up_tab() {
     var form = document.getElementById("signin_signup_form");
@@ -50,19 +51,19 @@ function sign_up() {
     var type = document.getElementById("type").value;
     var password = document.getElementById("pwd").value;
     let data={};
-    if(name!=""){
+    if(name!==""){
         data["name"]=name;
     }
-    if(username!=""){
+    if(username!==""){
         data["username"]=username;
     }
-    if(email!=""){
+    if(email!==""){
         data["email"]=email;
     }
-    if(type!=""){
+    if(type!==""){
         data["type"]=type;
     }
-    if(password!=""){
+    if(password!==""){
         data["password"]=password;
     }
     $.ajax({
@@ -73,9 +74,8 @@ function sign_up() {
         contentType: "application/json",
         crossDomain:true,
         success: function(data, status, xhr) {
-            console.log(data)
-            if(data.status!==0){
-                alert(JSON.stringify(data.responseJSON));
+            if(status!=="success"){
+                alert(JSON.stringify(data));
             }else{
                 console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
                 localStorage.setItem("username", username);
@@ -84,7 +84,7 @@ function sign_up() {
             }
         },
         error: function(data, status, xhr) {
-            alert(JSON.stringify(data.responseJSON));
+            alert(JSON.stringify(data));
         } 
     });
 }

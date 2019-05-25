@@ -2,6 +2,7 @@ package tqs.cloudit.controllers;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +39,8 @@ public class AuthenticationController {
     @GetMapping("/login")
     public ResponseEntity login() {
         JSONObject response = new JSONObject();
-        response.put("status", 0);
         response.put("message", "Logged in with success");
-        return ResponseEntity.ok(response);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     /**

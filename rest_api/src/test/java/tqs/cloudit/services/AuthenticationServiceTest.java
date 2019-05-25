@@ -1,8 +1,6 @@
 package tqs.cloudit.services;
 
-import java.util.Collections;
 import java.util.HashSet;
-import org.assertj.core.util.Lists;
 import org.json.simple.JSONObject;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -13,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
@@ -38,24 +37,20 @@ public class AuthenticationServiceTest {
     private static ResponseEntity goodResponse, badResponse1, badResponse2, badResponse3;
     static{
         JSONObject response1 = new JSONObject();
-        response1.put("status", 0);
         response1.put("message", "Registered with success");
-        goodResponse = ResponseEntity.ok(response1);
+        goodResponse = new ResponseEntity(response1, HttpStatus.OK);
         
         JSONObject response2 = new JSONObject();
-        response2.put("status", 1);
         response2.put("message", "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
-        badResponse1 = ResponseEntity.badRequest().body(response2);
+        badResponse1 = new ResponseEntity(response2, HttpStatus.NOT_ACCEPTABLE);
         
         JSONObject response3 = new JSONObject();
-        response3.put("status", 1);
         response3.put("message", "Registration invalid. Username must be unique. This username already exists.");
-        badResponse2 = ResponseEntity.badRequest().body(response3);
+        badResponse2 = new ResponseEntity(response3, HttpStatus.NOT_ACCEPTABLE);
         
         JSONObject response4 = new JSONObject();
-        response4.put("status", 1);
         response4.put("message", "Registration invalid. Your email must be unique. This email is already registered in the platform.");
-        badResponse3 = ResponseEntity.badRequest().body(response4);
+        badResponse3 = new ResponseEntity(response4, HttpStatus.NOT_ACCEPTABLE);
         
         user1 = new User();
         user1.setUsername("joao");
@@ -92,13 +87,13 @@ public class AuthenticationServiceTest {
     @Test
     public void testRegisterAll() {
         System.out.println("RegisterAll");
-        Mockito.when(userRepository.getUsernames()).thenReturn(Collections.EMPTY_LIST);
-        Mockito.when(userRepository.getMails()).thenReturn(Collections.EMPTY_LIST);
+        Mockito.when(userRepository.usernameExists("joaquim")).thenReturn(0);
+        Mockito.when(userRepository.emailExists("emaidojoaquim@mail.com")).thenReturn(0);
         Mockito.when(areaRepository.existsByArea("Security")).thenReturn(0l);
         ResponseEntity result = service.register(user3);
         assertEquals(goodResponse, result);
-        Mockito.verify(userRepository).getUsernames();
-        Mockito.verify(userRepository).getMails();
+        Mockito.verify(userRepository).usernameExists("joaquim");
+        Mockito.verify(userRepository).emailExists("emaidojoaquim@mail.com");
         Mockito.verify(areaRepository).existsByArea("Security");
     }
     
@@ -108,12 +103,12 @@ public class AuthenticationServiceTest {
     @Test
     public void testRegisterAllMinusAreas() {
         System.out.println("RegisterAllMinusAreas");
-        Mockito.when(userRepository.getUsernames()).thenReturn(Collections.EMPTY_LIST);
-        Mockito.when(userRepository.getMails()).thenReturn(Collections.EMPTY_LIST);
+        Mockito.when(userRepository.usernameExists("joao")).thenReturn(0);
+        Mockito.when(userRepository.emailExists("emaidojoao@mail.com")).thenReturn(0);
         ResponseEntity result = service.register(user1);
         assertEquals(goodResponse, result);
-        Mockito.verify(userRepository).getUsernames();
-        Mockito.verify(userRepository).getMails();
+        Mockito.verify(userRepository).usernameExists("joao");
+        Mockito.verify(userRepository).emailExists("emaidojoao@mail.com");
     }
     
     /**
@@ -132,9 +127,10 @@ public class AuthenticationServiceTest {
     @Test
     public void testRegisterNameAlreadyExisting() {
         System.out.println("RegisterNameAlreadyExisting");
-        Mockito.when(userRepository.getUsernames()).thenReturn(Lists.list("joao"));
+        Mockito.when(userRepository.usernameExists("joao")).thenReturn(1);
         ResponseEntity result = service.register(user1);
         assertEquals(badResponse2, result);
+        Mockito.verify(userRepository).usernameExists("joao");
     }
     
     /**
@@ -143,12 +139,12 @@ public class AuthenticationServiceTest {
     @Test
     public void testRegisterEmailAlreadyExisting() {
         System.out.println("RegisterEmailAlreadyExisting");
-        Mockito.when(userRepository.getUsernames()).thenReturn(Collections.EMPTY_LIST);
-        Mockito.when(userRepository.getMails()).thenReturn(Lists.list("emaidojoao@mail.com"));
+        Mockito.when(userRepository.usernameExists("joao")).thenReturn(0);
+        Mockito.when(userRepository.emailExists("emaidojoao@mail.com")).thenReturn(1);
         ResponseEntity result = service.register(user1);
         assertEquals(badResponse3, result);
-        Mockito.verify(userRepository).getUsernames();
-        Mockito.verify(userRepository).getMails();
+        Mockito.verify(userRepository).usernameExists("joao");
+        Mockito.verify(userRepository).emailExists("emaidojoao@mail.com");
     }
     
 }

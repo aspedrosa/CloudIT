@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -37,24 +38,20 @@ public class AuthenticationControllerTest {
     private static ResponseEntity goodResponse, badResponse1, badResponse2, badResponse3;
     static{
         JSONObject response1 = new JSONObject();
-        response1.put("status", 0);
         response1.put("message", "Registered with success.");
-        goodResponse = ResponseEntity.ok(response1);
+        goodResponse = new ResponseEntity(response1, HttpStatus.OK);
         
         JSONObject response2 = new JSONObject();
-        response2.put("status", 1);
         response2.put("message", "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
-        badResponse1 = ResponseEntity.badRequest().body(response2);
+        badResponse1 = new ResponseEntity(response2, HttpStatus.NOT_ACCEPTABLE);
         
         JSONObject response3 = new JSONObject();
-        response3.put("status", 1);
         response3.put("message", "Registration invalid. Username must be unique. This username already exists.");
-        badResponse2 = ResponseEntity.badRequest().body(response3);
+        badResponse2 = new ResponseEntity(response3, HttpStatus.NOT_ACCEPTABLE);
         
         JSONObject response4 = new JSONObject();
-        response4.put("status", 1);
         response4.put("message", "Registration invalid. Your email must be unique. This email is already registered in the platform.");
-        badResponse3 = ResponseEntity.badRequest().body(response4);
+        badResponse3 = new ResponseEntity(response4, HttpStatus.NOT_ACCEPTABLE);
         
         user1 = new User();
         user1.setUsername("joao");
@@ -99,7 +96,6 @@ public class AuthenticationControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             //.andExpect(cookie().exists("JSESSIONID"))
-            .andExpect(jsonPath("$.status", is(0)))
             .andExpect(jsonPath("$.message", is("Logged in with success")));
             
     }
@@ -137,7 +133,6 @@ public class AuthenticationControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status", is(0)))
             .andExpect(jsonPath("$.message", is("Registered with success.")));
     }
     
@@ -152,7 +147,6 @@ public class AuthenticationControllerTest {
             .content(toJson(user2))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.status", is(1)))
             .andExpect(jsonPath("$.message", containsString("Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.")));
     }
 
@@ -167,7 +161,6 @@ public class AuthenticationControllerTest {
             .content(toJson(user3))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.status", is(1)))
             .andExpect(jsonPath("$.message", containsString("Registration invalid. Username must be unique.")));
         
         Mockito.when(service.register(Mockito.any())).thenReturn(badResponse3);
@@ -175,7 +168,6 @@ public class AuthenticationControllerTest {
             .content(toJson(user4))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.status", is(1)))
             .andExpect(jsonPath("$.message", containsString("Registration invalid. Your email must be unique.")));
     }
 
