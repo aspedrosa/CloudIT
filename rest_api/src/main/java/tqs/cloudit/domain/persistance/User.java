@@ -2,7 +2,6 @@ package tqs.cloudit.domain.persistance;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,8 +44,10 @@ public class User {
         this.email = user.getEmail();
         this.type = user.getType();
         this.interestedAreas = new HashSet<Area>();
-        for(String area : user.getInterestedAreas()){
-            this.interestedAreas.add(new Area(area));
+        if(user.getInterestedAreas()!=null){
+            for(String area : user.getInterestedAreas()){
+                this.interestedAreas.add(new Area(area));
+            }
         }
         
     }

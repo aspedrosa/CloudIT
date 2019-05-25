@@ -1,7 +1,6 @@
 package tqs.cloudit.domain.rest;
 
 import java.util.Set;
-import tqs.cloudit.domain.persistance.Area;
 
 /**
  *
@@ -20,6 +19,18 @@ public class User {
     private String type;
 
     private Set<String> interestedAreas;
+
+    public User(String username, String password, String name, String email, String type, Set<String> interestedAreas) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+        this.interestedAreas = interestedAreas;
+    }
+    
+    public User(){
+    }
 
     public String getUsername() {
         return username;
@@ -67,6 +78,16 @@ public class User {
 
     public void setInterestedAreas(Set<String> interestedAreas) {
         this.interestedAreas = interestedAreas;
+    }
+    
+    public boolean allDefined(){
+        Object[] tmp = new Object[]{this.username, this.password, this.name, this.email, this.type};
+        for(Object aux : tmp){
+            if(aux==null){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
