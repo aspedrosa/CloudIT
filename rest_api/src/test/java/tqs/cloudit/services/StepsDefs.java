@@ -46,16 +46,13 @@ public class StepsDefs extends TestApplication{
         pwd.sendKeys("teste");
         driver.findElement(By.id("submit_button")).click();
     }
-    
-    /*
+
+    /* see line 99
     @Then("I should see the welcome page.")
     public void checkWelcomePage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().equals("welcome teste!"));
-        driver.quit();
     }
     */
-    
+
     @When("I login without filling the form correctly")
     public void BadLogin() {
         WebElement username = driver.findElement(By.id("username"));
@@ -67,7 +64,7 @@ public class StepsDefs extends TestApplication{
     
     @Then("I should be notified about the errors or missing fields.")
     public void checkErroMessage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,10L).until(
                 (WebDriver d) -> d.findElements(By.id("invalid_credentials_message")).size() > 0);
         assertTrue(driver.findElements( By.id("invalid_credentials_message") ).size() > 0);
         assertEquals(driver.findElement( By.id("invalid_credentials_message") ).getText(), "Error! Invalid Credentials.");
@@ -86,11 +83,11 @@ public class StepsDefs extends TestApplication{
         WebElement email = driver.findElement(By.id("email"));
         WebElement type = driver.findElement(By.id("type"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        name.sendKeys("u1");
-        username.sendKeys("u1");
-        email.sendKeys("u1@mail.pt");
+        name.sendKeys("test");
+        username.sendKeys("test");
+        email.sendKeys("test@mail.pt");
         type.sendKeys("freelancer");
-        pwd.sendKeys("123");
+        pwd.sendKeys("test");
     }
     
     @And("I click the submit button")
@@ -101,8 +98,8 @@ public class StepsDefs extends TestApplication{
     
     @Then("I should see the welcome page.")
     public void checkWelcomePage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().contains("welcome"));
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().equals("welcome test!"));
         driver.quit();
     }
     
