@@ -15,4 +15,9 @@ public class WebSiteController {
     public String welcome() {
         return "welcome.html";
     }
+    
+    @GetMapping(path = "/about")
+    public String about() {
+        return "about.html";
+    }
 }

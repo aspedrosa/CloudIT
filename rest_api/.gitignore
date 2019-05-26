@@ -20,6 +20,7 @@ dist/
 nbdist/
 .nb-gradle/
 nbactions.xml
+nb-configuration.xml
 
 # eclipse
 .metadata
@@ -37,3 +38,5 @@ local.properties
 # vim youcompleteme
 .classpath
 .project
+
+*.log
