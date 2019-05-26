@@ -4,30 +4,28 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 import java.util.TreeSet;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Ignore;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import tqs.cloudit.domain.rest.User;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 @Ignore
 public class AuthenticationStepsDefs extends TestApplication {
     
-    private final WebDriver driver = new FirefoxDriver();
+    private final WebDriver driver = new PhantomJSDriver();
     
     @Autowired
     private AuthenticationService authenticationService;
+   
     
     @Given("that I have access to the platform's website,")
     public void openWebsite() {
-        //String response = restTemplate.getForObject("http://localhost:8080/home", String.class);
-        //System.out.println(response);
         authenticationService.register(new User("teste", "teste", "", "", "", new TreeSet<>()));
         driver.get("http://localhost:8080/home");
     }
@@ -43,7 +41,7 @@ public class AuthenticationStepsDefs extends TestApplication {
     
     @Then("I should see the welcome page.")
     public void checkWelcomePage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,10L).until(
                 (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().equals("welcome teste!"));
         driver.quit();
     }
@@ -59,7 +57,7 @@ public class AuthenticationStepsDefs extends TestApplication {
     
     @Then("I should be notified about the errors or missing fields.")
     public void checkErroMessage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,10L).until(
                 (WebDriver d) -> d.findElements(By.id("invalid_credentials_message")).size() > 0);
         assertTrue(driver.findElements( By.id("invalid_credentials_message") ).size() > 0);
         assertEquals(driver.findElement( By.id("invalid_credentials_message") ).getText(), "Error! Invalid Credentials.");
