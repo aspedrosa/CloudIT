@@ -1,0 +1,42 @@
+.mt-100 {
+    margin-top: 100px;
+}
+.mt-30 {
+    margin-top: 30px;
+}
+.mt-20 {
+    margin-top: 20px;
+}
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.center-content {
+    text-align: center !important;
+    float: none;
+    margin: 0 auto;
+}
+
+.update-btn {
+    width: 100%; 
+    background-color: #3793f7; 
+    border: 0px; 
+    color: white; 
+    font-size: 20px;
+}
+
+.clear-btn {
+    width: 100%; 
+    background-color: grey; 
+    border: 0px; 
+    color: white; 
+    font-size: 20px;
+}

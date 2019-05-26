@@ -34,7 +34,7 @@ public class StepsDefs extends TestApplication{
     
     @Given("that I have access to the platform's website,")
     public void openWebsite() {
-        driver.get("http://localhost:8080/home");
+        driver.get("http://localhost:8080/loginPage");
     }
     
     @When("I login")

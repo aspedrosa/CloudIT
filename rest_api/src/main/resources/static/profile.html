@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="A.Brandao, A.Pedrosa, F.Pires, J.Alegria">
+    <title>Profile</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Core CSS -->
+    <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/header.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/profile.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top header-distributed" >
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand header-logo" id="home" href="/homePage">Cloud<span>IT</span></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="search" href="/searchPage">Search</a></li>
+                <li><a id="messages" href="/messagesPage">Messages</a></li>
+                <li class="active"><a id="profile" href="/profilePage">Profile</a></li>
+                <li><a id="about" href="/aboutPage">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main" class="container mt-100">
+        <div class="row mt-30" >
+            <form id="profile_form" class="center-content col-md-9">
+                <h1 class="left-align ">Profile</h1>
+                <div class="row form-group ">
+                    <div class="col-md-6 left-align">
+                        <label for="type">Account Type:</label>
+                        <p class="form-control" id="type">Freelancer</p>
+                    </div>
+                    <div class="col-md-6" style="text-align: left;">
+                        <label for="username">Username:</label>
+                        <p class="form-control" id="username"></p>
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-6 left-align">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" value="My Name">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12 left-align">
+                        <label for="email">Email address:</label>
+                        <input type="email" class="form-control" id="email" value="myemail@gmail.com">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12 left-align">
+                        <label for="description">Qualifications:</label>
+                        <textarea type="text" class="form-control" id="description">My description here ...</textarea>
+                    </div>
+                </div>
+                <div class="row form-group mt-10">
+                    <div class="col-md-6 left-align">
+                        <label for="cur_pwd">Current Password:</label>
+                        <input type="password" class="form-control" id="cur_pwd">
+                    </div>
+                    <div class="col-md-6 left-align">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="row form-group mt-10">
+                    <div class="col-md-6 left-align">
+                        <label for="new_pwd">New Password:</label>
+                        <input type="password" class="form-control" id="new_pwd">
+                    </div>
+                    <div class="col-md-6 left-align">
+                        <label for="new_pwd_conf">Confirm New Password:</label>
+                        <input type="password" class="form-control" id="new_pwd_conf">
+                    </div>
+                </div>
+                <div class="row form-group mt-10">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6">
+                            <button type="button" id="clear_btn" class="btn btn-secondary clear-btn">Clear</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-secondary update-btn">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-distributed">
+        <div class="footer-left">
+            <h3>Cloud<span>IT</span></h3>
+            <p class="footer-links">
+                <a href="/welcomePage">Home</a> ·
+                <a href="/searchPage">IT Search</a> ·
+                <a href="/messagesPage">Messages</a> ·
+                <a href="/profilePage">Profile</a> ·
+                <a href="/aboutPage">About</a>
+            </p>
+            <p class="footer-company-name">CloudIT &copy; 2019</p>
+        </div>
+        <div class="footer-center">
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Campus Universitário de Santiago, </span>3810-193 Aveiro</p>
+            </div>
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+351 234 567 890</p>
+            </div>
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:support@company.com">cloudit_support@cloudit.com</a></p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <p class="footer-company-about">
+                <span>About Us</span>
+                Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
+            </p>
+            <div class="footer-icons">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-github"></i></a>
+            </div>
+        </div>
+    </footer> 
+
+    <!-- Core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+</html>

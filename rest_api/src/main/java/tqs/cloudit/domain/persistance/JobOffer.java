@@ -21,9 +21,14 @@ public class JobOffer {
     private long id;
 
     /**
-     * Job name
+     * Job title
      */
-    private String name;
+    private String title;
+    
+    /**
+     * Job description
+     */
+    private String description;
     
     /**
      * Job area
@@ -55,7 +60,8 @@ public class JobOffer {
 
     
     public JobOffer(tqs.cloudit.domain.rest.JobOffer jobOffer) {
-        this.name = jobOffer.getName();
+        this.title = jobOffer.getTitle();
+        this.description = jobOffer.getDescription();
         this.area = jobOffer.getArea();
         this.amount = jobOffer.getAmount();
         this.date = jobOffer.getDate();   
@@ -74,12 +80,20 @@ public class JobOffer {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getArea() {

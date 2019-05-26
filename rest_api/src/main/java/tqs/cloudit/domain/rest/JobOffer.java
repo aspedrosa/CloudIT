@@ -11,7 +11,9 @@ package tqs.cloudit.domain.rest;
  */
 public class JobOffer {
     
-    private String name;
+    private String title;
+    
+    private String description;
     
     private String area;
     
@@ -19,8 +21,9 @@ public class JobOffer {
 
     private String date;
 
-    public JobOffer(String name, String area, Integer amount, String date) {
-        this.name = name;
+    public JobOffer(String title, String description, String area, Integer amount, String date) {
+        this.title = title;
+        this.description = description;
         this.area = area;
         this.amount = amount;
         this.date = date;
@@ -30,12 +33,20 @@ public class JobOffer {
     }
 
     
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getArea() {
@@ -63,7 +74,7 @@ public class JobOffer {
     }
 
     public boolean allDefined() {
-        Object[] tmp = new Object[]{this.name, this.date, this.amount, this.area};
+        Object[] tmp = new Object[]{this.title, this.description, this.date, this.amount, this.area};
         for(Object aux : tmp){
             if(aux==null){
                 return false;
