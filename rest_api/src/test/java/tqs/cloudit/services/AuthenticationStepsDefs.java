@@ -14,15 +14,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import tqs.cloudit.domain.rest.User;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @Ignore
 public class AuthenticationStepsDefs extends TestApplication {
     
-    private final WebDriver driver = new PhantomJSDriver();
+    private final WebDriver driver;
     
     @Autowired
     private AuthenticationService authenticationService;
    
+    public AuthenticationStepsDefs() {
+        WebDriverManager.phantomjs().setup();
+        driver = new PhantomJSDriver();
+    }
     
     @Given("that I have access to the platform's website,")
     public void openWebsite() {
