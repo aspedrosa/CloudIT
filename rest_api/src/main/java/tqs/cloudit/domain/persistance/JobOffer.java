@@ -37,7 +37,33 @@ public class JobOffer {
      * Job deliver date
      */
     private String date;
+    
+    /**
+     * Job creator
+     */
+    private String creator;
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    
+    public JobOffer(tqs.cloudit.domain.rest.JobOffer jobOffer) {
+        this.name = jobOffer.getName();
+        this.area = jobOffer.getArea();
+        this.amount = jobOffer.getAmount();
+        this.date = jobOffer.getDate();   
+    }
+
+    public JobOffer() {
+    }
+    
+    
+    
     public long getId() {
         return id;
     }
