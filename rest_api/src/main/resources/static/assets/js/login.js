@@ -42,7 +42,6 @@ function sign_in() {
     });
 }
 
-
 function sign_up() {
     $("#invalid_credentials_message").remove();
     var name = document.getElementById("name").value;

@@ -1,4 +1,3 @@
-
 package tqs.cloudit.services;
 
 import org.springframework.boot.test.context.SpringBootContextLoader;
