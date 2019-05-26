@@ -1112,7 +1112,7 @@ mark,
     /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(45deg, #3ac5c8 1%, #0b509e 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#3ac5c8', endColorstr='#0b509e', GradientType=1);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#3ac5c8', endColorstr='#0b509e', GradientType=1);*/
     /* IE6-9 fallback on horizontal gradient */
 }
 
@@ -1128,7 +1128,7 @@ mark,
     /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(45deg, #0b509e 1%, #3ac5c8 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#0b509e', endColorstr='#3ac5c8', GradientType=1);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#0b509e', endColorstr='#3ac5c8', GradientType=1);*/
     /* IE6-9 fallback on horizontal gradient */
 }
 

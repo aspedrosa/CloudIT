@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebSiteController {
     
-    @GetMapping(path = "/home")
-    public String home() {
+    @GetMapping(path = "/login")
+    public String login() {
         return "login.html";
     }
     
@@ -24,5 +24,15 @@ public class WebSiteController {
     @GetMapping(path = "/messages")
     public String messages() {
         return "messageCenter.html";
+    }
+    
+    @GetMapping(path = "/search")
+    public String search() {
+        return "search.html";
+    }
+    
+    @GetMapping(path = "/profile")
+    public String profile() {
+        return "profile.html";
     }
 }
