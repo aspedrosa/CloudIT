@@ -1,12 +1,9 @@
 package tqs.cloudit.config;
 
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,19 +16,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author aspedrosa
  */
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    
     /**
      * JDBC data source used to get usernames and passwords
      * Configurations on src/main/resources/application.settings
      */
+    
     @Autowired
     DataSource dataSource;
 
     /**
-     * Passoword encoder to be used on user authentication on the api
+     * Password encoder to be used on user authentication on the api
      */
     private PasswordEncoder passwordEncoder;
 
@@ -47,22 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http
-                .authorizeRequests().antMatchers("/login",
-                                                 "/register").permitAll()
-                .anyRequest().authenticated()
-            .and()
-                .httpBasic()
-            .and()
-                .rememberMe()
-            .and()
-                .logout()
-                .logoutUrl("/logout")
-                .deleteCookies("JSESSIONID")
-            .and()
-                .csrf().disable();*/
-        http.authorizeRequests().anyRequest().permitAll()
-            .antMatchers("/company","/hire/id/**", "/joboffer", "/messages", "/messages/id/**").authenticated()
+        http.authorizeRequests()
+            .antMatchers("/company","/hire/id/**", "/joboffer", "/messages", "/messages/id/**", "/login").authenticated()
+            .anyRequest().permitAll()
             .and().httpBasic()
             .and().rememberMe()
             .and().logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
@@ -70,9 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Configure from where the authentication credentials will be retrived
+     * Configure from where the authentication credentials will be retrieved
      *
-     * @param auth builder of a authentication manager (depency injection)
+     * @param auth builder of a authentication manager (dependency injection)
      */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
