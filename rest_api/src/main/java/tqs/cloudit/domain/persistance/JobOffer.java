@@ -4,12 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author joaoalegria
  */
 @Entity
+@Table(name="joboffer")
 public class JobOffer {
     /**
      * Internal Id

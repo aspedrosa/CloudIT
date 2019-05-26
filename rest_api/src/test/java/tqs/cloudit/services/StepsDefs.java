@@ -39,7 +39,7 @@ public class StepsDefs extends TestApplication{
     
     @When("I login")
     public void Login() throws InterruptedException {
-        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "", new TreeSet<>())));
+        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "Freelancer", new TreeSet<>())));
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
         username.sendKeys("teste");
@@ -89,7 +89,7 @@ public class StepsDefs extends TestApplication{
         name.sendKeys("u1");
         username.sendKeys("u1");
         email.sendKeys("u1@mail.pt");
-        type.sendKeys("freelancer");
+        type.sendKeys("Freelancer");
         pwd.sendKeys("123");
     }
     
@@ -120,7 +120,7 @@ public class StepsDefs extends TestApplication{
         name.sendKeys("teste");
         username.sendKeys("teste");
         email.sendKeys("teste@mail.pt");
-        type.sendKeys("freelancer");
+        type.sendKeys("Freelancer");
     }
     
     @Then("I should be notified about the errors or missing fields")

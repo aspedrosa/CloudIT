@@ -1,5 +1,5 @@
-var base_api_url = "http://192.168.160.63:8080";
-//var base_api_url = "http://localhost:8080";
+//var base_api_url = "http://192.168.160.63:8080";
+var base_api_url = "http://localhost:8080";
 
 function sign_up_tab() {
     var form = document.getElementById("signin_signup_form");
