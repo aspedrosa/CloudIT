@@ -13,6 +13,12 @@ pipeline {
                     sh "mvn -U test cobertura:cobertura -Dcobertura.report.format=xml"
                 }
             }
+            post {
+                always {
+                    junit '**/target/*-reports/TEST-*.xml'
+                    step([$class: 'CoberturaPublisher', coberturaReportFile: '**/target/site/cobertura/coverage.xml'])
+                }
+            }
         }
         stage('SonarQube analysis') {
             steps {
@@ -20,6 +26,28 @@ pipeline {
                     dir('rest_api') {
                         sh 'mvn sonar:sonar'
                     }
+                }
+            }
+        }
+        stage('Deployment') {
+            when {
+                branch 'master'
+            }
+            steps {
+                dir('rest_api') {
+                    sh '''
+                        mvn package -Dmaven.test.skip=true -DskipTests
+
+                        docker build -t production_server .
+
+                        #Assume that only one container is running the production_server image
+                        if [[ $(docker ps | awk \'{print $2}\' | grep production_server | wc | awk \'{print $1}\') -gt 0 ]] ; then
+                            docker stop production
+                            docker rm production
+                        fi;
+
+                        docker run -p 8080:8080 -d --name production production_server
+                    '''
                 }
             }
         }
