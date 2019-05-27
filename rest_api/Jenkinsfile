@@ -2,15 +2,15 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.6.1-jdk-8'
-            args '-v /root/.m2:/root/.m2'
+            image 'pipeline_agent'
+            args '-v /root/.m2:/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
         stage('Test') {
             steps {
                 dir('rest_api') {
-                    sh "mvn -U clean test cobertura:cobertura -Dcobertura.report.format=xml"
+                    sh "mvn -U test cobertura:cobertura -Dcobertura.report.format=xml"
                 }
             }
             post {
@@ -21,11 +21,33 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-             steps {
+            steps {
                 withSonarQubeEnv('sonar') {
                     dir('rest_api') {
-                        sh 'mvn clean package sonar:sonar'
+                        sh 'mvn sonar:sonar'
                     }
+                }
+            }
+        }
+        stage('Deployment') {
+            when {
+                branch 'master'
+            }
+            steps {
+                dir('rest_api') {
+                    sh '''
+                        mvn package -Dmaven.test.skip=true -DskipTests
+
+                        docker build -t production_server .
+
+                        #Assume that only one container is running the production_server image
+                        if [[ $(docker ps | awk \'{print $2}\' | grep production_server | wc | awk \'{print $1}\') -gt 0 ]] ; then
+                            docker stop production
+                            docker rm production
+                        fi;
+
+                        docker run -p 8080:8080 -d --name production production_server
+                    '''
                 }
             }
         }
