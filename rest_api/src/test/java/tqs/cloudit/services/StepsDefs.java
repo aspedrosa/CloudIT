@@ -13,6 +13,8 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,15 @@ import tqs.cloudit.domain.rest.User;
 
 public class StepsDefs extends TestApplication{
     
-    private static WebDriver driver;
+    private WebDriver driver;
+    private String currentUsername;
 
     public StepsDefs() {
+        FirefoxOptions options = new FirefoxOptions();
+        options.setHeadless(true);
+
         WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+        driver = new FirefoxDriver(options);
     }
     
     
@@ -39,12 +45,13 @@ public class StepsDefs extends TestApplication{
     
     @When("I login")
     public void Login() throws InterruptedException {
-        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "", new TreeSet<>())));
+        System.out.println(authenticationService.register(new User("test", "test", "", "", "", new TreeSet<>())));
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        username.sendKeys("teste");
-        pwd.sendKeys("teste");
+        username.sendKeys("test");
+        pwd.sendKeys("test");
         driver.findElement(By.id("submit_button")).click();
+        currentUsername = "test";
     }
 
     /* see line 99
@@ -83,11 +90,12 @@ public class StepsDefs extends TestApplication{
         WebElement email = driver.findElement(By.id("email"));
         WebElement type = driver.findElement(By.id("type"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        name.sendKeys("test");
-        username.sendKeys("test");
-        email.sendKeys("test@mail.pt");
+        name.sendKeys("test2");
+        username.sendKeys("test2");
+        email.sendKeys("test2@mail.pt");
         type.sendKeys("freelancer");
-        pwd.sendKeys("test");
+        pwd.sendKeys("test2");
+        currentUsername = "test2";
     }
     
     @And("I click the submit button")
@@ -99,7 +107,7 @@ public class StepsDefs extends TestApplication{
     @Then("I should see the welcome page.")
     public void checkWelcomePage() {
         new WebDriverWait(driver,10L).until(
-                (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().equals("welcome test!"));
+                (WebDriver d) -> d.findElement(By.id("welcome_title")).getText().toLowerCase().equals(String.format("welcome %s!", currentUsername)));
         driver.quit();
     }
     
@@ -114,9 +122,9 @@ public class StepsDefs extends TestApplication{
         WebElement username = driver.findElement(By.id("username"));
         WebElement email = driver.findElement(By.id("email"));
         WebElement type = driver.findElement(By.id("type"));
-        name.sendKeys("teste");
-        username.sendKeys("teste");
-        email.sendKeys("teste@mail.pt");
+        name.sendKeys("test2");
+        username.sendKeys("test2");
+        email.sendKeys("test2@mail.pt");
         type.sendKeys("freelancer");
     }
     
@@ -146,4 +154,32 @@ public class StepsDefs extends TestApplication{
         assertTrue(driver.findElements(By.id("type")).size() > 0);
         driver.quit();
     }
+
+    /*
+     * vvvvvvvvvvvvvvvvvvvvvvvv Learn about user platform vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+     */
+
+    /* See line 35
+    @Given("that I have access to the platform's website,")
+    public void openWebsite() {
+    }
+    */
+
+    @When("I click on the about tab")
+    public void clickAbout() {
+        driver.findElement(By.id("about")).click();
+    }
+
+    @Then("I should see the about page.")
+    public void checkAboutPage() {
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> d.findElement(By.id("about_page_content")) != null);
+        driver.quit();
+    }
+
+    /* See line 40
+    @When("I login")
+    public void Login() {
+    }
+    */
 }
