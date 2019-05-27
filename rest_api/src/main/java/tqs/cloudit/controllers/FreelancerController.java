@@ -63,7 +63,7 @@ public class FreelancerController {
     
     
     /**
-     *  THIS ENDPOINT DOES NOT EXIST. REPACE THIS TEST ENDPOINT WITH A /profile one, [get, put, delete].
+     *  THIS ENDPOINT DOES NOT EXIST. REPLACE THIS TEST ENDPOINT WITH A /profile one, [get, put, delete].
      */
     @GetMapping("/info")
     public ResponseEntity getInfo(Principal p) {

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -48,13 +50,22 @@ public class JobOffer {
     /**
      * Job creator
      */
-    private String creator;
+    @ManyToOne
+    @JoinColumn(name="id", nullable=false)
+    private User creator;
+    
+    /**
+     * Job worker
+     */
+    @ManyToOne
+    @JoinColumn(name="id", nullable=false)
+    private User worker;
 
-    public String getCreator() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
@@ -118,6 +129,14 @@ public class JobOffer {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    
+    public User getWorker() {
+        return worker;
+    }
+
+    public void setWorker(User worker) {
+        this.worker = worker;
     }
     
 }

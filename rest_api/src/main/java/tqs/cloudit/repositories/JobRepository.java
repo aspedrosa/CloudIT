@@ -21,4 +21,6 @@ public interface JobRepository extends CrudRepository<JobOffer, Long>{
     
     @Query(value= "select * from joboffer where creator=?1", nativeQuery=true)
     public List<JobOffer> getUserOffers(String name);
+
+    public List<JobOffer> getUserOffersAccepted(String name);
 }

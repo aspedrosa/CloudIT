@@ -15,14 +15,6 @@ SECTION
     margin: 0 auto;
 }
 
-.section {
-    background-color: #ffffff;
-    padding: 10rem 0;
-    position: relative;
-    display: block;
-    overflow: hidden;
-}
-
 .section.bt {
     border-top: 1px solid #eee;
 }
@@ -323,7 +315,9 @@ hr.invis2 {
 .blog-box {
     display: block;
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px dotted #eee;
 }
 
@@ -550,20 +544,6 @@ OTHERS
     margin: 0 auto;
 }
 
-.blog-box {
-    display: block;
-    position: relative;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px dotted #eee;
-}
-
-.blog-box.page-template {
-    padding-bottom: 0;
-    margin-bottom: 0 !important;
-    border-bottom: 0;
-}
-
 .blog-alt .media-box {
     margin-bottom: 20px;
 }
@@ -695,33 +675,6 @@ OTHERS
 
 .tags .readmore {
     margin-right: 7px;
-}
-
-.pagination > li > a,
-.pagination > li > span {
-    background-color: #fff;
-    border: 1px solid #eee !important;
-    border-radius: 0 !important;
-    color: #232323;
-    float: none;
-    line-height: 1.42857;
-    margin-left: -1px;
-    margin-right: 5px;
-    padding: 12px 17px;
-    position: relative;
-    text-decoration: none;
-}
-
-.pagination {
-    float: none;
-    display: block;
-    margin: 20px auto 0;
-}
-
-.text-center .pagination {
-    float: none;
-    display: block;
-    margin: 50px auto 0;
 }
 
 .contact_form.comment-form .form-control {

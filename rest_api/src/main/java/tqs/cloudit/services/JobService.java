@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.repositories.JobRepository;
+import tqs.cloudit.repositories.UserRepository;
 
 /**
  *
@@ -25,6 +26,9 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
     
     public ResponseEntity getOffers() {
         Iterator offersIter = jobRepository.findAll().iterator();
@@ -48,7 +52,7 @@ public class JobService {
         }
         
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
-        jo.setCreator(creator);
+        jo.setCreator(userRepository.getInfo(creator));
         jobRepository.save(jo);
         
         JSONObject response = new JSONObject();
@@ -71,6 +75,30 @@ public class JobService {
 
     public ResponseEntity getUserOffers(String name) {
         List<tqs.cloudit.domain.persistance.JobOffer> offers = jobRepository.getUserOffers(name);
+        
+        JSONObject response = new JSONObject();
+        response.put("message", "Information fetched with success.");
+        response.put("data", offers);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    public ResponseEntity deleteSpecificOffer(long id) {
+        if(jobRepository.existsById(id)){
+            jobRepository.deleteById(id);
+            
+            JSONObject response = new JSONObject();
+            response.put("message", "Job removed with success.");
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        
+        JSONObject response = new JSONObject();
+        response.put("message", "Job id doesn't exist.");
+        return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        
+    }
+
+    public ResponseEntity getUserOffersAccepted(String name) {
+        List<tqs.cloudit.domain.persistance.JobOffer> offers = jobRepository.getUserOffersAccepted(name);
         
         JSONObject response = new JSONObject();
         response.put("message", "Information fetched with success.");

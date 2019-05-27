@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -31,6 +32,12 @@ public class User {
     private String email;
     
     private String type;
+    
+    @OneToMany(mappedBy="creator")
+    private Set<JobOffer> myOffers;
+    
+    @OneToMany(mappedBy="worker")
+    private Set<JobOffer> acceptedOffers;
 
     @ManyToMany
     @JoinTable(
