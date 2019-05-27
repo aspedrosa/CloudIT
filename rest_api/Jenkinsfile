@@ -2,15 +2,15 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.6.1-jdk-8'
-            args '-v /root/.m2:/root/.m2'
+            image 'pipeline_agent'
+            args '-v /root/.m2:/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
         stage('Test') {
             steps {
                 dir('rest_api') {
-                    sh "mvn -U test"
+                    sh "mvn -U test cobertura:cobertura -Dcobertura.report.format=xml"
                 }
             }
         }
