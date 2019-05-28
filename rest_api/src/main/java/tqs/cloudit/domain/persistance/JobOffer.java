@@ -1,5 +1,7 @@
 package tqs.cloudit.domain.persistance;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -51,24 +54,17 @@ public class JobOffer {
      * Job creator
      */
     @ManyToOne
-    @JoinColumn(name="id", nullable=false)
+    @JoinColumn(name = "creator_id", nullable=false)
+    @JsonIgnore
     private User creator;
     
     /**
      * Job worker
      */
     @ManyToOne
-    @JoinColumn(name="id", nullable=false)
+    @JoinColumn(name = "worker_id", nullable=true)
+    @JsonIgnore
     private User worker;
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
     
     public JobOffer(tqs.cloudit.domain.rest.JobOffer jobOffer) {
         this.title = jobOffer.getTitle();
@@ -77,11 +73,27 @@ public class JobOffer {
         this.amount = jobOffer.getAmount();
         this.date = jobOffer.getDate();   
     }
+    
+    public JobOffer(String title, String description, String area, int amount, String date, User creator) {
+        this.title = title;
+        this.description = description;
+        this.area = area;
+        this.amount = amount;
+        this.date = date;
+        this.creator = creator;
+    }
 
     public JobOffer() {
     }
     
-    
+    @JsonGetter("creator")
+    public JSONObject getTheName() {
+        JSONObject owner = new JSONObject();
+        owner.put("name", creator.getName());
+        owner.put("username", creator.getUsername());
+        owner.put("email", creator.getEmail());
+        return owner;
+    }
     
     public long getId() {
         return id;
@@ -131,12 +143,11 @@ public class JobOffer {
         this.date = date;
     }
     
-    public User getWorker() {
-        return worker;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setWorker(User worker) {
-        this.worker = worker;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
-    
 }

@@ -30,6 +30,9 @@ import tqs.cloudit.services.AuthenticationService;
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+/**
+ * This test class only serves to guarantee that the rest mapping is working, since all the logic is in the services.
+ */
 public class AuthenticationControllerTest {
     
     private ObjectMapper mapper = new ObjectMapper();

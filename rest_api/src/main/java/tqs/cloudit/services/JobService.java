@@ -8,6 +8,7 @@ package tqs.cloudit.services;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,12 +48,13 @@ public class JobService {
     public ResponseEntity registerOffer(String creator, JobOffer jobOffer) {
         if(!jobOffer.allDefined()){
             JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. When registering you need to provide the offer name, area, amount and date(to be delivered).");
+            response.put("message", "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
             return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
         }
         
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
         jo.setCreator(userRepository.getInfo(creator));
+        userRepository.getInfo(creator).addNewOffer(jo);
         jobRepository.save(jo);
         
         JSONObject response = new JSONObject();
@@ -74,7 +76,7 @@ public class JobService {
     }
 
     public ResponseEntity getUserOffers(String name) {
-        List<tqs.cloudit.domain.persistance.JobOffer> offers = jobRepository.getUserOffers(name);
+        Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getMyOffers();
         
         JSONObject response = new JSONObject();
         response.put("message", "Information fetched with success.");
@@ -96,9 +98,9 @@ public class JobService {
         return new ResponseEntity(response,HttpStatus.NOT_FOUND);
         
     }
-
+    
     public ResponseEntity getUserOffersAccepted(String name) {
-        List<tqs.cloudit.domain.persistance.JobOffer> offers = jobRepository.getUserOffersAccepted(name);
+        Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getAcceptedOffers();
         
         JSONObject response = new JSONObject();
         response.put("message", "Information fetched with success.");

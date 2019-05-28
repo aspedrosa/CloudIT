@@ -1,7 +1,9 @@
 package tqs.cloudit.domain.persistance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String name;
@@ -34,10 +37,12 @@ public class User {
     private String type;
     
     @OneToMany(mappedBy="creator")
-    private Set<JobOffer> myOffers;
+    @JsonIgnore
+    private Set<JobOffer> myOffers = new TreeSet();
     
     @OneToMany(mappedBy="worker")
-    private Set<JobOffer> acceptedOffers;
+    @JsonIgnore
+    private Set<JobOffer> acceptedOffers = new TreeSet();
 
     @ManyToMany
     @JoinTable(
@@ -58,10 +63,17 @@ public class User {
                 this.interestedAreas.add(new Area(area));
             }
         }
-        
     }
 
     public User() {}
+    
+    public void addNewOffer(JobOffer jo){
+        this.myOffers.add(jo);
+    }
+    
+    public void addAcceptedOffer(JobOffer jo){
+        this.acceptedOffers.add(jo);
+    }
 
     public long getId() {
         return id;
@@ -119,4 +131,22 @@ public class User {
         this.interestedAreas = interestedAreas;
     }
 
+    public Set<JobOffer> getMyOffers() {
+        return myOffers;
+    }
+
+    public void setMyOffers(Set<JobOffer> myOffers) {
+        this.myOffers = myOffers;
+    }
+
+    public Set<JobOffer> getAcceptedOffers() {
+        return this.acceptedOffers;
+    }
+
+    public void setAcceptedOffers(Set<JobOffer> acceptedOffers) {
+        this.acceptedOffers = acceptedOffers;
+    }
+
+    
+    
 }

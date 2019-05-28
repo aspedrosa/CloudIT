@@ -59,6 +59,7 @@ function sign_in() {
 
 
 function sign_up() {
+    var self=this;
     $("#invalid_credentials_message").remove();
     var name = document.getElementById("name").value;
     var username = document.getElementById("username").value;
@@ -92,10 +93,7 @@ function sign_up() {
             if(status!=="success"){
                 alert(JSON.stringify(data));
             }else{
-                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
-                localStorage.setItem("username", username);
-                localStorage.setItem("token", btoa(username + ":" + password));
-                window.location.href= base_api_url+"/welcomePage";
+                sign_in();
             }
         },
         error: function(data, status, xhr) {

@@ -24,7 +24,7 @@ import tqs.cloudit.repositories.UserRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
     @TestConfiguration
-    static class WeatherServiceTestContextConfiguration {
+    static class Config{
   
         @Bean
         public AuthenticationService authenticationService() {

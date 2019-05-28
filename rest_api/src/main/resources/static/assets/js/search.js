@@ -42,7 +42,9 @@ function showModal(job){
     $("#modalAmount").text(job.amount);
     $("#modalDescription").text(job.description);
     $("#modalDate").text(job.date);
-    $("#modalCreator").text(job.creator);
+    $("#modalCreatorName").text(job.creator.name);
+    $("#modalCreatorUsername").text(job.creator.username);
+    $("#modalCreatorEmail").text(job.creator.email);
 }
 
 $(document).ready(function(e){    

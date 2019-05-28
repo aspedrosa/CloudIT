@@ -48,17 +48,23 @@
                     <div class="row" style="margin:5px">
                         <h2>My Offers</h2>
                     </div>
-                    <div class="row" id="allOffers" data-bind="foreach: { data: myOffers, as: 'job' }">
+                    <div id="allOffers" data-bind="foreach: { data: myOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: showModal(job)">
-                            <button data-bind="click: deleteOffer(job)" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px"><span aria-hidden="true">&times;</span></button>
-                            <!-- Box -->
-                            <div class="media-box col-md-4">
-                                <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                            <div class="col-md-11">
+                                <div class="row">
+                                    <!-- Box -->
+                                    <div class="media-box col-md-4">
+                                        <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                    </div>
+                                    <div class="blog-desc col-md-8" >
+                                        <h3><a data-bind="text: job.title" style="color: black"></a></h3>
+                                        <p data-bind="text: job.description"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="blog-desc col-md-8" >
-                                <h3><a data-bind="text: job.title" style="color: black"></a></h3>
-                                <p data-bind="text: job.description"></p>
+                            <div class="col-md-1">
+                                <button data-bind="click: function(job){deleteOffer(job)}" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px;"><span aria-hidden="true">&times;</span></button>
                             </div>
                         </div>
                     </div>
@@ -81,14 +87,18 @@
                     </div>
                     <div id="allOffers" data-bind="foreach: { data: acceptedOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: showModal(job)">
-                            <!-- Box -->
-                            <div class="media-box col-md-4">
-                                <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                            </div>
-                            <div class="blog-desc col-md-8" >
-                                <h3><a data-bind="text: job.title" style="color: black"></a></h3>
-                                <p data-bind="text: job.description"></p>
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <!-- Box -->
+                                    <div class="media-box col-md-4">
+                                        <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                    </div>
+                                    <div class="blog-desc col-md-8" >
+                                        <h3><a data-bind="text: job.title" style="color: black"></a></h3>
+                                        <p data-bind="text: job.description"></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,6 +128,10 @@
                                 </div>
                                 <div class="col-md-8" style="font-size: 18px; margin-top: 10px">
                                     <div class="row">
+                                        <div class="col-md-3"><p>Description:</p></div>
+                                        <div class="col-md-9"><p id="modalDescription"></p></div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-3"><p>Area:</p></div>
                                         <div class="col-md-9"><p id="modalArea"></p></div>
                                     </div>
@@ -130,12 +144,24 @@
                                         <div class="col-md-9"><p id="modalAmount"></p></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3"><p>Creator:</p></div>
-                                        <div class="col-md-9"><p id="modalCreator"></p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Description:</p></div>
-                                        <div class="col-md-9"><p id="modalDescription"></p></div>
+                                        <div class="col-md-12"><p>Creator:</p></div>
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Name:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorName"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Username:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorUsername"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Email:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorEmail"></p></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
