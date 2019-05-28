@@ -36,6 +36,7 @@ function sign_in() {
                 </div>');
                 alert(JSON.stringify(data));
             }else{
+                localStorage.setItem("type", data.data.type);
                 localStorage.setItem("username", username);
                 localStorage.setItem("token", btoa(username + ":" + password));
                 window.location.href= base_api_url+"/welcomePage";
@@ -93,6 +94,7 @@ function sign_up() {
                 alert(JSON.stringify(data));
             }else{
                 console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
+                localStorage.setItem("type", type);
                 localStorage.setItem("username", username);
                 localStorage.setItem("token", btoa(username + ":" + password));
                 window.location.href= base_api_url+"/welcomePage";

@@ -1,5 +1,6 @@
 package tqs.cloudit.domain.persistance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,15 @@ public class Area {
     private String area;
     
     @ManyToMany(mappedBy="interestedAreas")
+    @JsonIgnore
     private Set<User> users;
+
+    public Area() {
+    }
+    
+    public Area(String area) {
+        this.area = area;
+    }
 
     public String getArea() {
         return area;
@@ -40,8 +49,6 @@ public class Area {
         this.users = users;
     }
 
-    public Area(String area) {
-        this.area = area;
-    }
+    
 
 }

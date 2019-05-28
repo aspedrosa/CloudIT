@@ -1,5 +1,7 @@
 package tqs.cloudit.domain.rest;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,14 +21,27 @@ public class User {
     private String type;
 
     private Set<String> interestedAreas;
+    
+    private String newPassword;
 
-    public User(String username, String password, String name, String email, String type, Set<String> interestedAreas) {
+    public User(String username, String password, String name, String email, String type, List<String> interestedAreas, String newPassword) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.type = type;
-        this.interestedAreas = interestedAreas;
+        this.interestedAreas = new HashSet<>(interestedAreas);
+        this.newPassword = newPassword;
+    }
+    
+    public User(String username, String password, String name, String email, String type, List<String> interestedAreas) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+        this.interestedAreas = new HashSet<>(interestedAreas);
+        this.newPassword = null;
     }
     
     public User(){
@@ -79,6 +94,14 @@ public class User {
     public void setInterestedAreas(Set<String> interestedAreas) {
         this.interestedAreas = interestedAreas;
     }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
     
     public boolean allDefined(){
         Object[] tmp = new Object[]{this.username, this.password, this.name, this.email, this.type};
@@ -89,5 +112,11 @@ public class User {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", type=" + type + ", interestedAreas=" + interestedAreas + ", newPassword=" + newPassword + '}';
+    }
+    
 
 }

@@ -11,7 +11,8 @@
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    
     <!-- Core CSS -->
     <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
     <link href="assets/css/header.css" rel="stylesheet" type="text/css">
@@ -25,7 +26,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top header-distributed" >
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand header-logo" id="home" href="/homePage">Cloud<span>IT</span></a>
+                <a class="navbar-brand header-logo" id="home" href="/welcomePage">Cloud<span>IT</span></a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a id="search" href="/searchPage">Search</a></li>
@@ -43,7 +44,7 @@
                 <div class="row form-group ">
                     <div class="col-md-6 left-align">
                         <label for="type">Account Type:</label>
-                        <p class="form-control" id="type">Freelancer</p>
+                        <p class="form-control" id="type"></p>
                     </div>
                     <div class="col-md-6" style="text-align: left;">
                         <label for="username">Username:</label>
@@ -53,19 +54,19 @@
                 <div class="row form-group ">
                     <div class="col-md-6 left-align">
                         <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" value="My Name">
+                        <input type="text" class="form-control" id="name">
                     </div>
                 </div>
                 <div class="row form-group ">
                     <div class="col-md-12 left-align">
                         <label for="email">Email address:</label>
-                        <input type="email" class="form-control" id="email" value="myemail@gmail.com">
+                        <input type="email" class="form-control" id="email">
                     </div>
                 </div>
                 <div class="row form-group ">
                     <div class="col-md-12 left-align">
-                        <label for="description">Qualifications:</label>
-                        <textarea type="text" class="form-control" id="description">My description here ...</textarea>
+                        <label for="description">Areas of Interest:</label>
+                        <input data-role="tagsinput" class="form-control input-tags" id="interestedAreas"></textarea>
                     </div>
                 </div>
                 <div class="row form-group mt-10">
@@ -95,7 +96,7 @@
                             <button type="button" id="clear_btn" class="btn btn-secondary clear-btn">Clear</button>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-secondary update-btn">Update</button>
+                            <button type="button" id="update_btn" class="btn btn-secondary update-btn">Update</button>
                         </div>
                     </div>
                 </div>
@@ -147,6 +148,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script src="assets/js/profile.js"></script>
 </body>
 </html>
