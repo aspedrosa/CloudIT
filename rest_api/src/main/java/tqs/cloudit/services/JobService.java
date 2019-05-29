@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tqs.cloudit.domain.persistance.User;
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.UserRepository;
@@ -53,8 +54,9 @@ public class JobService {
         }
         
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
-        jo.setCreator(userRepository.getInfo(creator));
-        userRepository.getInfo(creator).addNewOffer(jo);
+        User aux = userRepository.getInfo(creator);
+        jo.setCreator(aux);
+        aux.addNewOffer(jo);
         jobRepository.save(jo);
         
         JSONObject response = new JSONObject();

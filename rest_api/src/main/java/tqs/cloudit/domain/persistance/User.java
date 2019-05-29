@@ -3,7 +3,6 @@ package tqs.cloudit.domain.persistance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,11 +37,11 @@ public class User {
     
     @OneToMany(mappedBy="creator")
     @JsonIgnore
-    private Set<JobOffer> myOffers = new TreeSet();
+    private Set<JobOffer> myOffers = new HashSet();
     
     @OneToMany(mappedBy="worker")
     @JsonIgnore
-    private Set<JobOffer> acceptedOffers = new TreeSet();
+    private Set<JobOffer> acceptedOffers = new HashSet();
 
     @ManyToMany
     @JoinTable(

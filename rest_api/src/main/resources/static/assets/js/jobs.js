@@ -79,11 +79,21 @@ function createOffer(){
     var date = document.getElementById("offerDate").value;
     
     let data={};
-    data["title"]=title;
-    data["description"]=description;
-    data["area"]=area;
-    data["amount"]=amount;
-    data["date"]=date;
+    if(title!==""){
+        data["title"]=title;
+    }
+    if(description!==""){
+        data["description"]=description;
+    }
+    if(area!==""){
+        data["area"]=area;
+    }
+    if(amount!==""){
+        data["amount"]=amount;
+    }
+    if(date!==""){
+        data["date"]=date;
+    }
     
     $.ajax({
         url: base_api_url+"/joboffer",

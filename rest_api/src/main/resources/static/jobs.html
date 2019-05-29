@@ -41,7 +41,7 @@
     <section class="section" style="min-height: 15vh; margin-top: 100px;">
         <div class="container">
             <div class="row">
-                <button type="button" data-toggle="modal" data-target="#createModal" class="btn btn-default" id="myButton" style="margin:10px; font-size: 18px; font-weight: bold">Create a new Job Offer</button>
+                <button type="button" data-toggle="modal" data-target="#createModal" class="btn btn-default" id="createJobButton" style="margin:10px; font-size: 18px; font-weight: bold">Create a new Job Offer</button>
             </div>
             <div class="row">
                 <div class="content col-md-6 col-sm-6" id="offersDiv">
@@ -58,7 +58,7 @@
                                         <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
                                     </div>
                                     <div class="blog-desc col-md-8" >
-                                        <h3><a data-bind="text: job.title" style="color: black"></a></h3>
+                                        <h3><a data-bind="text: job.title,  attr: { id: job.id }" style="color: black"></a></h3>
                                         <p data-bind="text: job.description"></p>
                                     </div>
                                 </div>
@@ -207,7 +207,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" onClick="createOffer()">Create</button>
+                                <button id="submitOfferButton" type="button" class="btn btn-default" onClick="createOffer()">Create</button>
                             </div>
                         </div>
                     </div>

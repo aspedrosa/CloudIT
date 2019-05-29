@@ -150,4 +150,10 @@ public class JobOffer {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
+    @Override
+    public String toString() {
+        return "JobOffer{" + "id=" + id + ", title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", creator=" + creator + ", worker=" + worker + '}';
+    }
+    
 }
