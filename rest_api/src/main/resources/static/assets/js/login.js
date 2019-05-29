@@ -1,5 +1,4 @@
-//var base_api_url = "http://192.168.160.63:8080";
-var base_api_url = "http://localhost:8080";
+var base_api_url = "http://" + window.location.host;
 
 function sign_up_tab() {
     var form = document.getElementById("signin_signup_form");
@@ -56,7 +55,6 @@ function sign_in() {
     window.location.href= base_api_url+"/welcome";
      */
 }
-
 
 function sign_up() {
     var self=this;

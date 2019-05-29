@@ -1,8 +1,10 @@
+var base_api_url = "http://" + window.location.host;
+
 var profile = {};
 
 window.onload = function() {
-    profile["type"] = "tmp";//localStorage.getItem("type");
-    profile["username"] = "tmp";//localStorage.getItem("username");
+    profile["type"] = localStorage.getItem("type");
+    profile["username"] = localStorage.getItem("username");
     document.getElementById("type").innerHTML = profile["type"];
     document.getElementById("username").innerHTML = profile["username"];
 };

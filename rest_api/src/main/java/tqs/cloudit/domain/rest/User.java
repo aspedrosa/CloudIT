@@ -28,8 +28,8 @@ public class User {
         this.type = type;
         this.interestedAreas = interestedAreas;
     }
-    
-    public User(){
+
+    public User() {
     }
 
     public String getUsername() {
