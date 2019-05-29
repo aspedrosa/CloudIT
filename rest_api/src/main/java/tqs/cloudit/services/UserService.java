@@ -1,7 +1,6 @@
 package tqs.cloudit.services;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,14 @@ public class UserService {
     private BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
     
     public ResponseEntity getUserInfoFromUsername(String username, boolean withPassword) {
+        JSONObject response = new JSONObject();
         tqs.cloudit.domain.persistance.User user = this.userRepository.getInfo(username);
-        if (!withPassword)
+        if (!withPassword) {
             user.setPassword("");
-        return new ResponseEntity(user, HttpStatus.OK);
+        }
+        response.put("message", "User information found.");
+        response.put("data", user);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
     public ResponseEntity updateUserInfo(User user) {
         JSONObject response = new JSONObject();
@@ -42,7 +45,7 @@ public class UserService {
         }
         if(user.getEmail() != null && !user.getEmail().equals(old_user.getEmail())) {
             if(userRepository.emailExists(user.getEmail()) > 0){
-                response.put("message", "Invalid field. Your email must be unique. This email is already registered in the platform.");
+                response.put("message", "Unable to update profile. Your email must be unique. This email is already registered in the platform.");
                 return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
             }
             old_user.setEmail(user.getEmail());
@@ -51,7 +54,7 @@ public class UserService {
         //System.out.println("Passwords: user.getPassword()='"+user.getPassword()+"', user.getNewPassword()='"+user.getNewPassword()+"', old_user.getPassword()='"+old_user.getPassword()+"'");
         if(user.getPassword() != null && user.getNewPassword() != null && !bcpe.matches(user.getNewPassword(), old_user.getPassword())) {
             if(!bcpe.matches(user.getPassword(), old_user.getPassword())) {
-                response.put("message", "Invalid password. In order to change password you need to type in the current one.");
+                response.put("message", "Unable to update profile. In order to change password you need to type in the current one correctly.");
                 return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
             }
             old_user.setPassword(this.bcpe.encode(user.getNewPassword()));
@@ -59,13 +62,17 @@ public class UserService {
         }
         Set<String> interestedAreasStr = user.getInterestedAreas();
         if(interestedAreasStr != null) {
+            Set<Area> interestedAreasSet = new HashSet<>();
             for(String s: interestedAreasStr){
+                interestedAreasSet.add(new Area(s));
                 if(this.areaRepository.existsByArea(s)==0) {
                     this.areaRepository.save(new Area(s));
                 }
             }
-            old_user.setInterestedAreas(interestedAreasStr);
-            changes = true;
+            if(interestedAreasSet.equals(old_user.getInterestedAreas())) {
+                old_user.setInterestedAreas(interestedAreasStr);
+                changes = true;
+            }
         }
         
         if(changes) {

@@ -22,6 +22,7 @@ window.onload = function() {
                 alert(JSON.stringify(data));
             }else{
                 console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
+                data = data.data;
                 document.getElementById("name").value = data.name;
                 document.getElementById("email").value = data.email;
                 for(var i=0; i<data.interestedAreas.length; i++) {
