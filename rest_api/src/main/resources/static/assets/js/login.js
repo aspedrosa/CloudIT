@@ -26,6 +26,7 @@ function sign_in() {
             "Authorization": "Basic " + btoa(username + ":" + password),
             'X-Requested-With': 'XMLHttpRequest'
         },
+        xhrFields: { withCredentials: true },   
         crossDomain:true,
         success: function(data, status, xhr) {
             console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
@@ -34,7 +35,7 @@ function sign_in() {
                     <strong>Error!</strong> Invalid Credentials.\
                 </div>');
                 alert(JSON.stringify(data));
-            }else{
+        }else{
                 localStorage.setItem("username", username);
                 localStorage.setItem("token", btoa(username + ":" + password));
                 window.location.href= base_api_url+"/welcomePage";
