@@ -25,6 +25,7 @@ window.onload = function() {
                 data = data.data;
                 document.getElementById("name").value = data.name;
                 document.getElementById("email").value = data.email;
+                console.log(data.interestedAreas);
                 for(var i=0; i<data.interestedAreas.length; i++) {
                     $("#interestedAreas").tagsinput("add",data.interestedAreas[i]["area"]);
                 }

@@ -69,7 +69,7 @@ public class UserService {
                     this.areaRepository.save(new Area(s));
                 }
             }
-            if(interestedAreasSet.equals(old_user.getInterestedAreas())) {
+            if(!interestedAreasSet.equals(old_user.getInterestedAreas())) {
                 old_user.setInterestedAreas(interestedAreasStr);
                 changes = true;
             }
