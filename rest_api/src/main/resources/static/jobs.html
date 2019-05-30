@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="A.Brandao, A.Pedrosa, F.Pires, J.Alegria">
+    <title>Search</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Core CSS -->
+    <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/header.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/jobs.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body >
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top header-distributed" >
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand header-logo" id="home" href="/welcomePage">Cloud<span>IT</span></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a id="search" href="/searchPage">Search</a></li>
+                <li><a id="messages" href="/messagesPage">Messages</a></li>
+                <li class="active"><a id="jobs" href="/jobsPage">MyJobs</a></li>
+                <li><a id="profile" href="/profilePage">Profile</a></li>
+                <li><a id="about" href="/aboutPage">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Body -->
+    <section class="section" style="min-height: 15vh; margin-top: 100px;">
+        <div class="container">
+            <div class="row">
+                <button type="button" data-toggle="modal" data-target="#createModal" class="btn btn-default" id="createJobButton" style="margin:10px; font-size: 18px; font-weight: bold">Create a new Job Offer</button>
+            </div>
+            <div class="row">
+                <div class="content col-md-6 col-sm-6" id="offersDiv">
+                    <div class="row" style="margin:5px">
+                        <h2>My Offers</h2>
+                    </div>
+                    <div id="allOffers" data-bind="foreach: { data: myOffers, as: 'job' }">
+                        <!-- Post -->
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                            <div class="col-md-11">
+                                <div class="row">
+                                    <!-- Box -->
+                                    <div class="media-box col-md-4">
+                                        <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                    </div>
+                                    <div class="blog-desc col-md-8" >
+                                        <h3><a data-bind="text: job.title,  attr: { id: job.id }" style="color: black"></a></h3>
+                                        <p data-bind="text: job.description"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button data-bind="click: function(job){deleteOffer(job)}" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px;"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination-wrapper row">
+                        <ul class="pagination col-md-12">
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="content col-md-6 col-sm-6">
+                    <div class="row" style="margin:5px">
+                        <h2>Accepted Offers</h2>
+                    </div>
+                    <div id="allOffers" data-bind="foreach: { data: acceptedOffers, as: 'job' }">
+                        <!-- Post -->
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <!-- Box -->
+                                    <div class="media-box col-md-4">
+                                        <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                    </div>
+                                    <div class="blog-desc col-md-8" >
+                                        <h3><a data-bind="text: job.title" style="color: black"></a></h3>
+                                        <p data-bind="text: job.description"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination-wrapper row">
+                        <ul class="pagination col-md-12">
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Offer Modal -->
+                <div id="offerModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" id="modalTitle"></h3>
+                            </div>
+                            <div class="row modal-body">
+                                <div class="media-box col-md-4">
+                                    <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                </div>
+                                <div class="col-md-8" style="font-size: 18px; margin-top: 10px">
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Description:</p></div>
+                                        <div class="col-md-9"><p id="modalDescription"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Area:</p></div>
+                                        <div class="col-md-9"><p id="modalArea"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Deliver Date:</p></div>
+                                        <div class="col-md-9"><p id="modalDate"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3"><p>Amount:</p></div>
+                                        <div class="col-md-9"><p id="modalAmount"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12"><p>Creator:</p></div>
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Name:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorName"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Username:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorUsername"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3"><p>Email:</p></div>
+                                                <div class="col-md-8"><p id="modalCreatorEmail"></p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- Create Offer Modal -->
+                <div id="createModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">New Job Offer</h3>
+                            </div>
+                            <div class="row modal-body" style="margin-left: 10px; margin-right: 10px;">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="offerTitle">Offer Title:</label>
+                                        <input type="text" class="form-control" id="offerTitle" placeholder="Title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="offerDescription">Offer Description:</label>
+                                        <input type="text" class="form-control" id="offerDescription" placeholder="Description">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="offerArea">Offer Area of Work:</label>
+                                        <input type="text" class="form-control" id="offerArea" placeholder="Area">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="offerAmount">Offer Payment:</label>
+                                        <input type="number" class="form-control" id="offerAmount" placeholder="Payment">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="offerDate">Offer Deliver Date:</label>
+                                        <input type="date" class="form-control" id="offerDate">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="submitOfferButton" type="button" class="btn btn-default" onClick="createOffer()">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-distributed">
+        <div class="footer-left">
+            <h3>Cloud<span>IT</span></h3>
+            <p class="footer-links">
+                <a href="/welcomePage">Home</a> ·
+                <a href="/searchPage">IT Search</a> ·
+                <a href="/messagesPage">Messages</a> ·
+                <a href="/jobsPage">MyJobs</a> ·
+                <a href="/profilePage">Profile</a> ·
+                <a href="/aboutPage">About</a>
+            </p>
+            <p class="footer-company-name">CloudIT &copy; 2019</p>
+        </div>
+        <div class="footer-center">
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Campus Universitário de Santiago, </span>3810-193 Aveiro</p>
+            </div>
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+351 234 567 890</p>
+            </div>
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:support@company.com">cloudit_support@cloudit.com</a></p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <p class="footer-company-about">
+                <span>About Us</span>
+                Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
+            </p>
+            <div class="footer-icons">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-github"></i></a>
+            </div>
+        </div>
+    </footer> 
+
+    <!-- Core JavaScript -->   
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js" type = "text/javascript"></script>
+    <script type='text/javascript' src="assets/js/jobs.js"></script>
+</body>
+</html>

@@ -41,4 +41,5 @@ local.properties
 .idea/
 *.iml
 
+#logs
 *.log

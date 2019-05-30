@@ -1,0 +1,46 @@
+.blog-box {
+    display: block;
+    position: relative;
+    margin-bottom: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #eee;
+    width: 100%;
+}
+
+.blog-box:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  cursor: pointer;
+}
+
+#createJobButton{
+    border: 0;
+    color: #ffffff;
+    background: #3ac5c8;
+    /* Old browsers */
+    background: -moz-linear-gradient(45deg, #3ac5c8 1%, #0b509e 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #3ac5c8 1%, #0b509e 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #3ac5c8 1%, #0b509e 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#3ac5c8', endColorstr='#0b509e', GradientType=1);*/
+    /* IE6-9 fallback on horizontal gradient */
+}
+
+.modal-dialog {
+    width: 80vw;
+}
+
+.blog-desc p {
+    margin-bottom: 10px;
+}
+
+.blog-single h3.post-title,
+.blog-desc h3 {
+    padding: 8px 0 10px;
+    margin: 0;
+    line-height: 1.3;
+    font-weight: bold;
+    font-size: 28px;
+}

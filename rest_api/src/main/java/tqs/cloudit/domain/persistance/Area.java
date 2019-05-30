@@ -1,17 +1,20 @@
 package tqs.cloudit.domain.persistance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author aspedrosa
  */
 @Entity
+@Table(name="area")
 public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +23,7 @@ public class Area {
     private String area;
     
     @ManyToMany(mappedBy="interestedAreas")
+    @JsonIgnore
     private Set<User> users;
 
     public String getArea() {

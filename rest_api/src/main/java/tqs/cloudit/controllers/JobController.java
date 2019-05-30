@@ -1,13 +1,18 @@
 package tqs.cloudit.controllers;
 
-import tqs.cloudit.domain.persistance.JobOffer;
+import java.security.Principal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.services.JobService;
 
 /**
  * Paths related to the build in message system between
@@ -16,8 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author aspedrosa
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/joboffer")
 public class JobController {
+    
+    @Autowired
+    private JobService jobService;
+    
     /**
      * Returns all job offers registered in the platform
      * 
@@ -27,19 +37,19 @@ public class JobController {
      */
     @GetMapping
     public ResponseEntity getAll() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        return jobService.getOffers();
     }
     
     /**
      * Registers a job offer in the platform
      * 
-     * @param joboffer Information relative to the job
+     * @param jobOffer Information relative to the job
      * @return HTTP response with a descriptive message of what went wrong or
      *  a successful massage if all went good
      */
     @PostMapping
-    public ResponseEntity register(@RequestBody JobOffer joboffer) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    public ResponseEntity register(@RequestBody JobOffer jobOffer, Principal principal) {
+        return jobService.registerOffer(principal.getName(), jobOffer);
     }
     
     /**
@@ -51,6 +61,40 @@ public class JobController {
      */
     @GetMapping("/id/{id}")
     public ResponseEntity getById(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        return jobService.getSpecificOffer(id);
+    }
+    
+    /**
+     * Deletes the job identified by the id
+     * 
+     * @param id ID of the job
+     * @return HTTP response with a descriptive message of what went wrong OR
+     *  a successful message if all went good and the detailed description of the job
+     */
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity deleteById(@PathVariable long id) {
+        return jobService.deleteSpecificOffer(id);
+    }
+    
+    /**
+     * Return the description of the jobs of the user.
+     * 
+     * @return HTTP response with a descriptive message of what went wrong OR
+     *  a successful message if all went good and the detailed description of the job
+     */
+    @GetMapping("/self")
+    public ResponseEntity getMyOffers(Principal principal) {
+        return jobService.getUserOffers(principal.getName());
+    }
+    
+    /**
+     * Return the description of the jobs accepted by the user.
+     * 
+     * @return HTTP response with a descriptive message of what went wrong OR
+     *  a successful message if all went good and the detailed description of the job
+     */
+    @GetMapping("/accepted")
+    public ResponseEntity getMyOffersAccepted(Principal principal) {
+        return jobService.getUserOffersAccepted(principal.getName());
     }
 }
