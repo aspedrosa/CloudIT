@@ -1,7 +1,7 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
-import org.json.simple.JSONObject;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.services.UserService;
+import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  * All request paths associated with users (employers and freelancers)
@@ -26,11 +27,11 @@ public class UserController {
     
     @Autowired
     public UserService userService;
-    
+
     /*
         User Profile
     */
-    
+
     /**
      * Return the profile data of the user identified by the id
      * 
@@ -52,6 +53,46 @@ public class UserController {
     @PutMapping(path="/profile", consumes="application/json", produces="application/json")
     public ResponseEntity updateProfile(@RequestBody User user) {
         return this.userService.updateUserInfo(user);
+    }
+
+    @GetMapping(path="/profile/search", produces="application/json")
+    public ResponseEntity searchProfile(@RequestParam (required = false) String name,
+                                        @RequestParam(required = false) List<String> interestedAreas,
+                                        @RequestParam(required = false) String userType) {
+        if (userType != null) {
+            userType = userType.trim().toLowerCase();
+            if (!userType.equals("freelancer") && !userType.equals("employer")) {
+                return new ResponseEntity(
+                    ResponseBuilder.buildWithMessage("userType field can only be \"freelancer\" or \"employer\""),
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+        }
+
+        if (interestedAreas != null && interestedAreas.size() == 0) {
+            interestedAreas = null;
+        }
+
+        if (name != null) {
+            name = name.trim();
+            if (name.length() == 0) {
+                name = null;
+            }
+        }
+
+        List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, interestedAreas, userType);
+
+        if (matchedUsers.size() > 0) {
+            return new ResponseEntity(
+                ResponseBuilder.buildWithMessageAndData("Users found", matchedUsers),
+                HttpStatus.ACCEPTED
+            );
+        }
+
+        return new ResponseEntity(
+            ResponseBuilder.buildWithMessage("No users found for the given parameters"),
+            HttpStatus.NOT_FOUND
+        );
     }
     
     /*

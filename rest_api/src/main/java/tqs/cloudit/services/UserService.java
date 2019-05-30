@@ -2,6 +2,9 @@ package tqs.cloudit.services;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,5 +87,24 @@ public class UserService {
         
         return new ResponseEntity(response,HttpStatus.OK);
         
+    }
+
+    public List<tqs.cloudit.domain.responses.User> searchUser(String name,
+                                                              List<String> interestedAreas,
+                                                              String userType) {
+        Iterable<tqs.cloudit.domain.persistance.User> users = userRepository.userSearch(name, userType);
+        Iterator<tqs.cloudit.domain.persistance.User> it = users.iterator();
+
+        List<tqs.cloudit.domain.responses.User> matchedUsers = new ArrayList<>();
+
+        while (it.hasNext()) {
+            tqs.cloudit.domain.persistance.User possibleMatchUser = it.next();
+
+            if (interestedAreas == null || possibleMatchUser.getInterestedAreas().containsAll(interestedAreas)) {
+                matchedUsers.add(new tqs.cloudit.domain.responses.User(possibleMatchUser));
+            }
+        }
+
+        return matchedUsers;
     }
 }

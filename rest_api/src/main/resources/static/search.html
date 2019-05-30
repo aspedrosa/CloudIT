@@ -11,12 +11,20 @@
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
     <!-- Core CSS -->
     <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
     <link href="assets/css/header.css" rel="stylesheet" type="text/css">
     <link href="assets/css/search.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .mtb-10 {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body >
@@ -40,26 +48,69 @@
     <!-- Search Bar -->
     <div class="container" style="min-height: 15vh; margin-top: 100px;">
         <div class="row">    
-            <div class="col-xs-8 col-xs-offset-2">
-                <div class="input-group">
-                    <div class="input-group-btn search-panel">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right: 1px;">
-                            <span id="search_concept">Filter by</span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#contains">Contains</a></li>
-                            <li><a href="#its_equal">It's equal</a></li>
-                            <li><a href="#greather_than">Greather than ></a></li>
-                            <li><a href="#less_than">Less than < </a></li>
-                            <li class="divider"></li>
-                            <li><a href="#all">Anything</a></li>
-                        </ul>
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <input type="radio" id="searchByJobs" name="searchBy" value="jobs" data-bind="checked: searchBy"  />
+                            <label for="searchByJobs">Jobs</label>
+                        </div>
+                        <div class="row">
+                            <input type="radio" id="searchByUsers" name="searchBy" value="users" data-bind="checked: searchBy"  />
+                            <label for="searchByUsers">Users</label>
+                        </div>
                     </div>
-                    <input type="hidden" name="search_param" value="all" id="search_param">         
-                    <input type="text" class="form-control" name="x" placeholder="Search term...">
-                    <span class="input-group-btn" >
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" ></span></button>
-                    </span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div data-bind="if: searchBy() == 'jobs'">
+                    <div class="input-group">
+                        <div class="input-group-btn search-panel">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right: 1px;">
+                                <span id="search_concept">Filter by</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#contains">Contains</a></li>
+                                <li><a href="#its_equal">It's equal</a></li>
+                                <li><a href="#greather_than">Greather than ></a></li>
+                                <li><a href="#less_than">Less than < </a></li>
+                                <li class="divider"></li>
+                                <li><a href="#all">Anything</a></li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="search_param" value="all" id="search_param" />
+                        <input type="text" class="form-control" name="x" placeholder="Search term...">
+                        <span class="input-group-btn" >
+                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" ></span></button>
+                        </span>
+                    </div>
+                </div>
+                <div data-bind="if: searchBy() == 'users'">
+                    <div class="from-group row mtb-10">
+                        <label class="col-md-3 col-form-label" for="searchUserName" >Name</label>
+                        <div class="col-md-9">
+                            <input id="searchUserName" class="form-control" placeholder="Name" />
+                        </div>
+                    </div>
+                    <div class="form-group row mtb-10">
+                        <label class="col-md-3" for="searchUserInterestedAreas">Areas of Interest</label>
+                        <div class="col-md-9">
+                            <input data-role="tagsinput" class="form-control input-tags" id="searchUserInterestedAreas" />
+                        </div>
+                    </div>
+                    <div class="form-group row mtb-10">
+                        <label class="col-md-3" for="searchUserType">User type</label>
+                        <div class="col-md-9">
+                            <select id="searchUserType" class="form-control">
+                                <option value="null">All</option>
+                                <option value="Freelancer">Freelancer</option>
+                                <option value="Employer">Employer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row mtb-10">
+                        <button class="btn btn-info col-md-2" id="userSearchBtn">Search</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,6 +296,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js" type = "text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script type='text/javascript' src="assets/js/search.js"></script>
 </body>
 </html>

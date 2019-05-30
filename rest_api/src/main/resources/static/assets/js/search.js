@@ -1,9 +1,10 @@
 var base_api_url = "http://" + window.location.host;
 
-function getOffers() {
+function AppViewModel() {
     var self=this;
     self.jobOffers=ko.observableArray([])
-    
+    self.searchBy = ko.observable("users");
+
     self.refresh = function(){
         $.ajax({
             url: base_api_url+"/joboffer",
@@ -29,11 +30,44 @@ function getOffers() {
     }
 };
 
-var offers = new getOffers()
-offers.refresh()
+var appViewModel = new AppViewModel()
+appViewModel.refresh()
 
-ko.applyBindings(offers);
+ko.applyBindings(appViewModel);
 
+$("#userSearchBtn").click(function() {
+    let name =  $("#searchUserName").val().trim();
+    let interestedAreas =  $("#searchUserInterestedAreas").tagsinput("items");
+    let userType =  $("#searchUserType").val();
+
+    let requestParams = {};
+
+    if (name.length > 0) {
+        requestParams["name"] = name;
+    }
+    if (interestedAreas.length > 0) {
+        requestParams["interestedAreas"] = interestedAreas;
+    }
+    if (userType != "null") {
+        requestParams["userType"] = userType;
+    }
+
+    $.ajax({
+        url: base_api_url + "/profile/search",
+        type: "GET",
+        data: requestParams,
+        crossDomain: true,
+        success: function (data, status, xhr) {
+            console.log(data);
+            console.log(status);
+        },
+        error: function(data, status, xhr) {
+            console.log(data.responseText);
+            console.log(status);
+            alert("Some error occurred while searching for users. Try again later.")
+        }
+    });
+});
 
 function showModal(job){
     $("#modalTitle").text(job.title);

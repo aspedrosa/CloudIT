@@ -6,10 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import tqs.cloudit.domain.persistance.User;
 
-/**
- *
- * @author aspedrosa
- */
 public interface UserRepository extends CrudRepository<User, Long> {
     
     @Query(value= "select password from user where username=?1", nativeQuery=true)
@@ -33,4 +29,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value= "select type from user where username = ?1", nativeQuery=true)
     public String getType(String name);
     
+    @Query(value ="SELECT * FROM user WHERE " +
+                  "(?2 IS NULL OR (?2 IS NOT NULL AND type = ?2)) " +
+                  "AND (?1 IS NULL OR (?1 IS NOT NULL AND name LIKE CONCAT('%', ?1, '%'))) ", nativeQuery = true)
+    Iterable<User> userSearch(String name, String userType);
+
 }
