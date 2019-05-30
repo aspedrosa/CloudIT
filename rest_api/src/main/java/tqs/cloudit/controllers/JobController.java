@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tqs.cloudit.domain.rest.AdvancedSearch;
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.services.JobService;
 
@@ -38,6 +39,46 @@ public class JobController {
     @GetMapping
     public ResponseEntity getAll() {
         return jobService.getOffers();
+    }
+    
+    @PostMapping("/advancedSearch")
+    public ResponseEntity advancedSearch(@RequestBody AdvancedSearch advancedSearch) {
+        if (advancedSearch.getFromAmount() < 0.0)
+            advancedSearch.setFromAmount(0.0);
+        if (advancedSearch.getToAmount() < 0.0)
+            advancedSearch.setToAmount(Double.MAX_VALUE);
+        if (advancedSearch.getFromDate().equals(""))
+            advancedSearch.setFromDate("0000-00-00");
+        if (advancedSearch.getToDate().equals(""))
+            advancedSearch.setToDate("9999-99-99");
+        if (advancedSearch.isTitle() && advancedSearch.isArea())
+            return jobService.getJobOffersFromTextAmountAndDate(advancedSearch.getQuery(), 
+                                                                advancedSearch.getQuery(), 
+                                                                advancedSearch.getFromAmount(),
+                                                                advancedSearch.getToAmount(), 
+                                                                advancedSearch.getFromDate(),
+                                                                advancedSearch.getToDate());
+        if (advancedSearch.isTitle())
+            return jobService.getJobOffersFromTextAmountAndDateOnlyTitle(advancedSearch.getQuery(), 
+                                                                         advancedSearch.getQuery(), 
+                                                                         advancedSearch.getFromAmount(),
+                                                                         advancedSearch.getToAmount(), 
+                                                                         advancedSearch.getFromDate(),
+                                                                         advancedSearch.getToDate());
+        if (advancedSearch.isArea())
+            return jobService.getJobOffersFromTextAmountAndDateOnlyArea(advancedSearch.getQuery(), 
+                                                                        advancedSearch.getQuery(), 
+                                                                        advancedSearch.getFromAmount(),
+                                                                        advancedSearch.getToAmount(), 
+                                                                        advancedSearch.getFromDate(),
+                                                                        advancedSearch.getToDate());
+        return jobService.getJobOffersFromTextAmountAndDate("", 
+                                                            "", 
+                                                            advancedSearch.getFromAmount(),
+                                                            advancedSearch.getToAmount(), 
+                                                            advancedSearch.getFromDate(),
+                                                            advancedSearch.getToDate());
+        
     }
     
     /**

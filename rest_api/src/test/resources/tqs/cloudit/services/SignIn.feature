@@ -11,4 +11,4 @@ Feature: User can sign in on the platform.
     Scenario: User fails sign in.
         Given that I have access to the platform's website,
         When I login without filling the form correctly
-        Then I should be notified about the invalid fields.
+        Then I should be notified about the errors or missing fields.

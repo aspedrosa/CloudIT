@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers(HttpMethod.POST, "/joboffer").authenticated()
-            .antMatchers("/company","/hire/id/**", "/joboffer/self", "/messages", "/messages/id/**", "/login", "/profile").authenticated()
+            .antMatchers("/company","/hire/id/**", "/joboffer/self", "/messages", "/messages/id/**", "/login").authenticated()
             .antMatchers(HttpMethod.GET, "/joboffer").permitAll()
             .anyRequest().permitAll()
             .and().httpBasic()
