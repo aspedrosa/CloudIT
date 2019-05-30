@@ -51,7 +51,7 @@ public class StepsDefs extends TestApplication{
         assertEquals(driver.findElement(By.id("profile_form_title")).getText(), "Profile");
     }
     
-    @Then("I should see the information that is visible to all members")
+    @Then("I should see the information that is visible to all members | have the chance to correct my submission")
     public void seeProfileInfo() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) ->   d.findElement(By.id("username")).getText().equals("teste")
@@ -96,18 +96,13 @@ public class StepsDefs extends TestApplication{
         WebElement new_pwd_conf = driver.findElement(By.id("new_pwd_conf"));
         name.sendKeys("Teste 2");
         email.sendKeys("teste2@mail.com");
-        cur_pwd.sendKeys("pass errada");
+        cur_pwd.sendKeys("pwd errada");
         new_pwd.sendKeys("teste2");
         new_pwd_conf.sendKeys("teste2");
         driver.findElement(By.id("update_btn")).click();
     }
     
-    @Then("I should be notified about the errors or missing fields")
-    public void notifyIncorrectFields() {
-        
-    }
     
-    @Then("have the chance to correct my submission")
     public void correctSubmission() {
         
     }
@@ -147,8 +142,8 @@ public class StepsDefs extends TestApplication{
         driver.findElement(By.id("submit_button")).click();
     }
     
-    @Then("I should be notified about the errors or missing fields.")
-    public void checkErroMessage() {
+    @Then("I should be notified about the invalid fields")
+    public void checkErrorMessage() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElements(By.id("invalid_credentials_message")).size() > 0);
         assertTrue(driver.findElements( By.id("invalid_credentials_message") ).size() > 0);
