@@ -1,5 +1,6 @@
 package tqs.cloudit.domain.persistance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -25,6 +27,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String name;
@@ -32,6 +35,14 @@ public class User {
     private String email;
     
     private String type;
+    
+    @OneToMany(mappedBy="creator")
+    @JsonIgnore
+    private Set<JobOffer> myOffers = new HashSet();
+    
+    @OneToMany(mappedBy="worker")
+    @JsonIgnore
+    private Set<JobOffer> acceptedOffers = new HashSet();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -52,10 +63,17 @@ public class User {
                 this.interestedAreas.add(new Area(area));
             }
         }
-        
     }
 
     public User() {}
+    
+    public void addNewOffer(JobOffer jo){
+        this.myOffers.add(jo);
+    }
+    
+    public void addAcceptedOffer(JobOffer jo){
+        this.acceptedOffers.add(jo);
+    }
 
     public long getId() {
         return id;
@@ -118,4 +136,22 @@ public class User {
         }
     }
 
+    public Set<JobOffer> getMyOffers() {
+        return myOffers;
+    }
+
+    public void setMyOffers(Set<JobOffer> myOffers) {
+        this.myOffers = myOffers;
+    }
+
+    public Set<JobOffer> getAcceptedOffers() {
+        return this.acceptedOffers;
+    }
+
+    public void setAcceptedOffers(Set<JobOffer> acceptedOffers) {
+        this.acceptedOffers = acceptedOffers;
+    }
+
+    
+    
 }

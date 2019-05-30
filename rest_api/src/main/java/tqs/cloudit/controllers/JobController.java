@@ -4,6 +4,7 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,6 +65,18 @@ public class JobController {
     }
     
     /**
+     * Deletes the job identified by the id
+     * 
+     * @param id ID of the job
+     * @return HTTP response with a descriptive message of what went wrong OR
+     *  a successful message if all went good and the detailed description of the job
+     */
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity deleteById(@PathVariable long id) {
+        return jobService.deleteSpecificOffer(id);
+    }
+    
+    /**
      * Return the description of the jobs of the user.
      * 
      * @return HTTP response with a descriptive message of what went wrong OR
@@ -72,5 +85,16 @@ public class JobController {
     @GetMapping("/self")
     public ResponseEntity getMyOffers(Principal principal) {
         return jobService.getUserOffers(principal.getName());
+    }
+    
+    /**
+     * Return the description of the jobs accepted by the user.
+     * 
+     * @return HTTP response with a descriptive message of what went wrong OR
+     *  a successful message if all went good and the detailed description of the job
+     */
+    @GetMapping("/accepted")
+    public ResponseEntity getMyOffersAccepted(Principal principal) {
+        return jobService.getUserOffersAccepted(principal.getName());
     }
 }

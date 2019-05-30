@@ -5,7 +5,6 @@
  */
 package tqs.cloudit.repositories;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import tqs.cloudit.domain.persistance.JobOffer;
@@ -18,7 +17,5 @@ public interface JobRepository extends CrudRepository<JobOffer, Long>{
     
     @Query(value= "select * from joboffer where id=?1", nativeQuery=true)
     public JobOffer getJobOffer(Long id);
-    
-    @Query(value= "select * from joboffer where creator=?1", nativeQuery=true)
-    public List<JobOffer> getUserOffers(String name);
+
 }

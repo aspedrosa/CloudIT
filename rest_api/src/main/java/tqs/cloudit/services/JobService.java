@@ -8,13 +8,16 @@ package tqs.cloudit.services;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tqs.cloudit.domain.persistance.User;
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.repositories.JobRepository;
+import tqs.cloudit.repositories.UserRepository;
 
 /**
  *
@@ -25,6 +28,9 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
     
     public ResponseEntity getOffers() {
         Iterator offersIter = jobRepository.findAll().iterator();
@@ -43,12 +49,14 @@ public class JobService {
     public ResponseEntity registerOffer(String creator, JobOffer jobOffer) {
         if(!jobOffer.allDefined()){
             JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. When registering you need to provide the offer name, area, amount and date(to be delivered).");
+            response.put("message", "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
             return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
         }
         
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
-        jo.setCreator(creator);
+        User aux = userRepository.getInfo(creator);
+        jo.setCreator(aux);
+        aux.addNewOffer(jo);
         jobRepository.save(jo);
         
         JSONObject response = new JSONObject();
@@ -70,7 +78,31 @@ public class JobService {
     }
 
     public ResponseEntity getUserOffers(String name) {
-        List<tqs.cloudit.domain.persistance.JobOffer> offers = jobRepository.getUserOffers(name);
+        Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getMyOffers();
+        
+        JSONObject response = new JSONObject();
+        response.put("message", "Information fetched with success.");
+        response.put("data", offers);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    public ResponseEntity deleteSpecificOffer(long id) {
+        if(jobRepository.existsById(id)){
+            jobRepository.deleteById(id);
+            
+            JSONObject response = new JSONObject();
+            response.put("message", "Job removed with success.");
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        
+        JSONObject response = new JSONObject();
+        response.put("message", "Job id doesn't exist.");
+        return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        
+    }
+    
+    public ResponseEntity getUserOffersAccepted(String name) {
+        Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getAcceptedOffers();
         
         JSONObject response = new JSONObject();
         response.put("message", "Information fetched with success.");

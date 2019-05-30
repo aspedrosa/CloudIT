@@ -1,32 +1,38 @@
-//var base_api_url = "http://192.168.160.63:8080";
-var base_api_url = "http://localhost:8080";
+var base_api_url = "http://" + window.location.host;
 
 function getOffers() {
     var self=this;
     self.jobOffers=ko.observableArray([])
-    $.ajax({
-        url: base_api_url+"/joboffer",
-        type: "GET",
-        crossDomain:true,
-        success: function(data, status, xhr) {
-            console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
-            if(status!=="success"){
-                alert(JSON.stringify(data));
-            }else{
-                console.log(data)
-                for(let index in data.data){
-                    self.jobOffers.push(data.data[index]);
-                }
-            }
-        },
-        error: function(data, status, xhr) {
-            alert(JSON.stringify(data));
-            console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
-        }
-    });
     
+    self.refresh = function(){
+        $.ajax({
+            url: base_api_url+"/joboffer",
+            type: "GET",
+            crossDomain:true,
+            success: function(data, status, xhr) {
+                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
+                if(status!=="success"){
+                    alert(JSON.stringify(data));
+                }else{
+                    console.log(data)
+                    self.jobOffers.removeAll()
+                    for(let index in data.data){
+                        self.jobOffers.push(data.data[index]);
+                    }
+                }
+            },
+            error: function(data, status, xhr) {
+                alert(JSON.stringify(data));
+                console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+            }
+        });
+    }
 };
-ko.applyBindings(new getOffers());
+
+var offers = new getOffers()
+offers.refresh()
+
+ko.applyBindings(offers);
 
 
 function showModal(job){
@@ -35,7 +41,9 @@ function showModal(job){
     $("#modalAmount").text(job.amount);
     $("#modalDescription").text(job.description);
     $("#modalDate").text(job.date);
-    $("#modalCreator").text(job.creator);
+    $("#modalCreatorName").text(job.creator.name);
+    $("#modalCreatorUsername").text(job.creator.username);
+    $("#modalCreatorEmail").text(job.creator.email);
 }
 
 $(document).ready(function(e){    

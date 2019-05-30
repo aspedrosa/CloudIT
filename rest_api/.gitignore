@@ -11,9 +11,7 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 # netbeans
-**/nbproject/private/
-**/nbproject/Makefile-*.mk
-**/nbproject/Package-*.bash
+nbproject/
 build/
 nbbuild/
 dist/
@@ -39,5 +37,9 @@ local.properties
 .classpath
 .project
 
-# logs
+#intellij
+.idea/
+*.iml
+
+#logs
 *.log

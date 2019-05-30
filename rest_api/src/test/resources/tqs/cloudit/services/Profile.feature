@@ -13,7 +13,7 @@ Feature: As a logged in member of CloudIT
 
     Scenario: User accesses other user's profile.
         Given that I am logged in,
-        When I'm on some other member's profile page
+        When I'm on another user profile page
         Then I should see the information he/she made available
         And be able to start a conversation.
 
@@ -28,4 +28,4 @@ Feature: As a logged in member of CloudIT
         When I'm on the profile page
         And I submit any change to the information without the correct format
         Then I should be notified about the errors or missing fields
-        And have the chance to correct my submission.
+        And have the chance to correct my update submission.

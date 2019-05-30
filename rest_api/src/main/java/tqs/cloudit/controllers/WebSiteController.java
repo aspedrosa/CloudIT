@@ -37,4 +37,9 @@ public class WebSiteController {
     public String profile() {
         return "profile.html";
     }
+    
+    @GetMapping("/jobsPage")
+    public String jobs() {
+        return "jobs.html";
+    }
 }

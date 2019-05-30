@@ -43,8 +43,8 @@ public class User {
         this.interestedAreas = new HashSet<>(interestedAreas);
         this.newPassword = null;
     }
-    
-    public User(){
+
+    public User() {
     }
 
     public String getUsername() {
