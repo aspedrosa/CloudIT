@@ -53,13 +53,13 @@ public class AuthenticationService {
             response.put("message", "Registration invalid. Your email must be unique. This email is already registered in the platform.");
             return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
         }
-         List<String> supportedTypes = new ArrayList(Arrays.asList("Freelancer", "Employer"));
-         
-         if(!supportedTypes.contains(user.getType())){
-             JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. User type must be Freelancer or Employer.");
-            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
-         }
+        List<String> supportedTypes = new ArrayList(Arrays.asList("Freelancer", "Employer"));
+
+        if(!supportedTypes.contains(user.getType())){
+            JSONObject response = new JSONObject();
+           response.put("message", "Registration invalid. User type must be Freelancer or Employer.");
+           return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+        }
         
         tqs.cloudit.domain.persistance.User pUser=new tqs.cloudit.domain.persistance.User(user);
         if(pUser.getInterestedAreas()!=null){
@@ -74,5 +74,9 @@ public class AuthenticationService {
         JSONObject response = new JSONObject();
         response.put("message", "Registered with success");
         return new ResponseEntity(response,HttpStatus.OK);
+    }
+    
+    public String getType(String name) {
+        return this.userRepository.getType(name);
     }
 }

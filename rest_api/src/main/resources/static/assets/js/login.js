@@ -35,6 +35,7 @@ function sign_in() {
                 </div>');
                 alert(JSON.stringify(data));
             }else{
+                localStorage.setItem("type", data.data.type);
                 localStorage.setItem("username", username);
                 localStorage.setItem("token", btoa(username + ":" + password));
                 window.location.href= base_api_url+"/welcomePage";
