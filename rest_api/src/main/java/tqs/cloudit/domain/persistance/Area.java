@@ -1,6 +1,7 @@
 package tqs.cloudit.domain.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,31 @@ public class Area {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.area);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Area other = (Area) obj;
+        if (!Objects.equals(this.area, other.area)) {
+            return false;
+        }
+        return true;
     }
 
     
