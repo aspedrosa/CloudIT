@@ -46,7 +46,7 @@ $("#userSearchBtn").click(function() {
         requestParams["name"] = name;
     }
     if (interestedAreas.length > 0) {
-        requestParams["interestedAreas"] = interestedAreas;
+        requestParams["areas"] = interestedAreas;
     }
     if (userType != "null") {
         requestParams["userType"] = userType;
@@ -54,8 +54,10 @@ $("#userSearchBtn").click(function() {
 
     $.ajax({
         url: base_api_url + "/profile/search",
-        type: "GET",
-        data: requestParams,
+        type: "POST",
+        data: JSON.stringify(requestParams),
+        dataType: "json",
+        contentType: "application/json",
         crossDomain: true,
         success: function (data, status, xhr) {
             console.log(data);

@@ -90,8 +90,16 @@ public class UserService {
     }
 
     public List<tqs.cloudit.domain.responses.User> searchUser(String name,
-                                                              List<String> interestedAreas,
+                                                              Set<String> interestedAreas,
                                                               String userType) {
+        //transform string areas into persistence areas
+        Set<Area> interestedAreasPersist = new HashSet<>();
+        if (interestedAreas != null) {
+            for (String area : interestedAreas) {
+                interestedAreasPersist.add(new Area(area));
+            }
+        }
+
         Iterable<tqs.cloudit.domain.persistance.User> users = userRepository.userSearch(name, userType);
         Iterator<tqs.cloudit.domain.persistance.User> it = users.iterator();
 
@@ -100,7 +108,7 @@ public class UserService {
         while (it.hasNext()) {
             tqs.cloudit.domain.persistance.User possibleMatchUser = it.next();
 
-            if (interestedAreas == null || possibleMatchUser.getInterestedAreas().containsAll(interestedAreas)) {
+            if (possibleMatchUser.getInterestedAreas().containsAll(interestedAreasPersist)) {
                 matchedUsers.add(new tqs.cloudit.domain.responses.User(possibleMatchUser));
             }
         }

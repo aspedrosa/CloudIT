@@ -1,7 +1,9 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
 import tqs.cloudit.domain.rest.User;
+import tqs.cloudit.domain.rest.UserSearch;
 import tqs.cloudit.services.UserService;
 import tqs.cloudit.utils.ResponseBuilder;
 
@@ -55,10 +58,12 @@ public class UserController {
         return this.userService.updateUserInfo(user);
     }
 
-    @GetMapping(path="/profile/search", produces="application/json")
-    public ResponseEntity searchProfile(@RequestParam (required = false) String name,
-                                        @RequestParam(required = false) List<String> interestedAreas,
-                                        @RequestParam(required = false) String userType) {
+    @PostMapping(path="/profile/search", produces="application/json", consumes="application/json")
+    public ResponseEntity searchProfile(@RequestBody UserSearch userSearch) {
+        String name = userSearch.getName();
+        String userType = userSearch.getUserType();
+        Set<String> areas = userSearch.getAreas();
+
         if (userType != null) {
             userType = userType.trim().toLowerCase();
             if (!userType.equals("freelancer") && !userType.equals("employer")) {
@@ -69,8 +74,8 @@ public class UserController {
             }
         }
 
-        if (interestedAreas != null && interestedAreas.size() == 0) {
-            interestedAreas = null;
+        if (areas != null && areas.size() == 0) {
+            areas = null;
         }
 
         if (name != null) {
@@ -80,7 +85,7 @@ public class UserController {
             }
         }
 
-        List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, interestedAreas, userType);
+        List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, areas, userType);
 
         if (matchedUsers.size() > 0) {
             return new ResponseEntity(
