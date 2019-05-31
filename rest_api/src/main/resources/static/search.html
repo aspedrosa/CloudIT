@@ -24,6 +24,18 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
+
+        .area-card {
+            border-color: #000000;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 25px;
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            padding: 5px;
+        }
     </style>
 </head>
 
@@ -109,7 +121,7 @@
                         </div>
                     </div>
                     <div class="form-group row mtb-10">
-                        <button class="btn btn-info col-md-2" id="userSearchBtn">Search</button>
+                        <button class="btn btn-info col-md-2" id="userSearchBtn" data-bind="click: searchUsers">Search</button>
                     </div>
                 </div>
             </div>
@@ -121,29 +133,166 @@
         <div class="container">
             <div class="row">
                 <div class="content col-md-8" id="offersDiv">
-                    
-                    <div id="allOffers" data-bind="foreach: { data: jobOffers, as: 'job' }">
-                        <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#m1" data-bind="click: showModal(job)">
-                            <!-- Box -->
-                            <div class="media-box col-md-4">
-                                <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                    <div data-bind="if: searchBy() == 'jobs'">
+                        <div id="allOffers" data-bind="foreach: { data: jobOffers, as: 'job' }">
+                            <!-- Post -->
+                            <div class="blog-box clearfix row" data-toggle="modal" data-target="#m1" data-bind="click: showModal(job)">
+                                <!-- Box -->
+                                <div class="media-box col-md-4">
+                                    <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                </div>
+                                <div class="blog-desc col-md-8" >
+                                    <h3><a data-bind="text: job.title"></a></h3>
+                                    <p data-bind="text: job.description"></p>
+                                </div>
                             </div>
-                            <div class="blog-desc col-md-8" >
-                                <h3><a data-bind="text: job.title"></a></h3>
-                                <p data-bind="text: job.description"></p>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="m1" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h3 class="modal-title" id="modalTitle"></h3>
+                                    </div>
+                                    <div class="row modal-body">
+                                        <div class="media-box col-md-4">
+                                            <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                        </div>
+                                        <div class="col-md-8" style="font-size: 18px; margin-top: 10px">
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Description:</p></div>
+                                                <div class="col-md-9"><p id="modalDescription"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Area:</p></div>
+                                                <div class="col-md-9"><p id="modalArea"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Deliver Date:</p></div>
+                                                <div class="col-md-9"><p id="modalDate"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Amount:</p></div>
+                                                <div class="col-md-9"><p id="modalAmount"></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"><p>Creator:</p></div>
+                                                <div class="row">
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Name:</p></div>
+                                                        <div class="col-md-8"><p id="modalCreatorName"></p></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Username:</p></div>
+                                                        <div class="col-md-8"><p id="modalCreatorUsername"></p></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Email:</p></div>
+                                                        <div class="col-md-8"><p id="modalCreatorEmail"></p></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="pagination-wrapper row">
-                        <ul class="pagination col-md-12">
-                            <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
+                    <div data-bind="if: searchBy() == 'users'">
+                        <div id="allUsers" data-bind="foreach: { data: users, as: 'user' }">
+                            <!-- Post -->
+                            <div class="blog-box clearfix row"
+                                 data-toggle="modal"
+                                 data-target="#userModal"
+                                 data-bind="click: fillSearchUserModalTable(user.name, user.userType, user.jobOffers)"
+                            >
+                                <!-- Box -->
+                                <div class="media-box col-md-4">
+                                    <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                                </div>
+                                <div class="blog-desc col-md-8" >
+                                    <h3><a data-bind="text: user.name"></a></h3>
+                                    <div class="row">
+                                        <span class="col-md-2">Email: </span>
+                                        <span class="col-md-10" data-bind="text: user.email"></span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="col-md-2">User type: </span>
+                                        <span class="col-md-10" data-bind="text: user.userType"></span>
+                                    </div>
+                                    <div class="row" data-bind="ifnot: user.interestedAreas.length == 0">
+                                        <span class="col-md-2">Areas:</span>
+                                        <div class="col-md-10" data-bind="foreach: {data: user.interestedAreas, as: 'area'}">
+                                            <div class="text-center area-card">
+                                                <span data-bind="text: area"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="userModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h3 class="modal-title" id="userModalTitle"></h3>
+                                    </div>
+                                    <div class="row modal-body">
+                                        <div class="media-box col-md-4">
+                                            <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                        </div>
+                                        <div class="col-md-8" id="modalContent" style="font-size: 18px; margin-top: 10px">
+                                            <div data-bind="if: userModalJobs().length == 0">
+                                                <div data-bind="if: userModalUserType() == 'freelancer'">
+                                                    <span>No job proposals for this user.</span>
+                                                </div>
+                                                <div data-bind="if: userModalUserType() == 'employer'">
+                                                    <span>No job offers for this user.</span>
+                                                </div>
+                                            </div>
+                                            <div data-bind="if: userModalJobs().length > 0">
+                                                <table  style="width: 100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Description</th>
+                                                            <th>Date</th>
+                                                            <th>Area</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody data-bind="foreach: {data: userModalJobs, as: 'job'}">
+                                                        <tr>
+                                                            <td data-bind="text: job.title"></td>
+                                                            <td data-bind="text: job.description"></td>
+                                                            <td data-bind="text: job.date"></td>
+                                                            <td data-bind="text: job.area"></td>
+                                                            <td data-bind="text: job.amount"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -182,69 +331,11 @@
                     </div>
                 </div>
             </div>
-            
-            
-            
-            
-            <!-- Modal -->
-                <div id="m1" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h3 class="modal-title" id="modalTitle"></h3>
-                            </div>
-                            <div class="row modal-body">
-                                <div class="media-box col-md-4">
-                                    <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
-                                </div>
-                                <div class="col-md-8" style="font-size: 18px; margin-top: 10px">
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Description:</p></div>
-                                        <div class="col-md-9"><p id="modalDescription"></p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Area:</p></div>
-                                        <div class="col-md-9"><p id="modalArea"></p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Deliver Date:</p></div>
-                                        <div class="col-md-9"><p id="modalDate"></p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3"><p>Amount:</p></div>
-                                        <div class="col-md-9"><p id="modalAmount"></p></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12"><p>Creator:</p></div>
-                                        <div class="row">
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-3"><p>Name:</p></div>
-                                                <div class="col-md-8"><p id="modalCreatorName"></p></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-3"><p>Username:</p></div>
-                                                <div class="col-md-8"><p id="modalCreatorUsername"></p></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-3"><p>Email:</p></div>
-                                                <div class="col-md-8"><p id="modalCreatorEmail"></p></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-            
+
+
+
+
             
         </div>
     </section>

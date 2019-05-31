@@ -55,6 +55,19 @@ public class UserController {
      */
     @PutMapping(path="/profile", consumes="application/json", produces="application/json")
     public ResponseEntity updateProfile(@RequestBody User user) {
+
+
+        if (user.getInterestedAreas() != null) {
+            for (String area : user.getInterestedAreas()) {
+                if (area.length() > 30) {
+                    return new ResponseEntity(
+                        ResponseBuilder.buildWithMessage("Areas must not have more than 30 characters"),
+                        HttpStatus.BAD_REQUEST
+                    );
+                }
+            }
+        }
+
         return this.userService.updateUserInfo(user);
     }
 
@@ -74,8 +87,20 @@ public class UserController {
             }
         }
 
-        if (areas != null && areas.size() == 0) {
-            areas = null;
+        if (areas != null) {
+            if (areas.size() == 0) {
+                areas = null;
+            }
+            else {
+                for (String area : areas) {
+                    if (area.length() > 30) {
+                        return new ResponseEntity(
+                            ResponseBuilder.buildWithMessage("Areas must have less than 30 characters"),
+                            HttpStatus.BAD_REQUEST
+                        );
+                    }
+                }
+            }
         }
 
         if (name != null) {

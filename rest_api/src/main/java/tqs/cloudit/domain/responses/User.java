@@ -1,6 +1,7 @@
 package tqs.cloudit.domain.responses;
 
 import tqs.cloudit.domain.persistance.Area;
+import tqs.cloudit.domain.persistance.JobOffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ public class User {
     private String email;
     private String userType;
     private List<String> interestedAreas;
+    private List<JobOffer> jobOffers;
 
     public User(tqs.cloudit.domain.persistance.User user) {
         name = user.getName();
@@ -19,9 +21,8 @@ public class User {
         for (Area area : user.getInterestedAreas()) {
             interestedAreas.add(area.getArea());
         }
+        jobOffers = new ArrayList<>(user.getMyOffers());
     }
-
-    public User() {}
 
     public String getName() {
         return name;
@@ -39,19 +40,8 @@ public class User {
         return interestedAreas;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<JobOffer> getJobOffers() {
+        return jobOffers;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public void setInterestedAreas(List<String> interestedAreas) {
-        this.interestedAreas = interestedAreas;
-    }
 }
