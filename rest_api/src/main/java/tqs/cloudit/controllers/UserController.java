@@ -71,6 +71,12 @@ public class UserController {
         return this.userService.updateUserInfo(user);
     }
 
+    /**
+     * Get all users on the platform filtered by parameters
+     *
+     * @param userSearch where the parameters to filter the user are sent
+     * @return users that matched the filters
+     */
     @PostMapping(path="/profile/search", produces="application/json", consumes="application/json")
     public ResponseEntity searchProfile(@RequestBody UserSearch userSearch) {
         String name = userSearch.getName();

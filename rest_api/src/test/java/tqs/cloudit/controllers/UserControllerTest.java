@@ -3,6 +3,9 @@ package tqs.cloudit.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import static org.hamcrest.Matchers.is;
 import org.json.simple.JSONObject;
 import org.junit.Ignore; 
@@ -22,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import tqs.cloudit.domain.rest.User;
+import tqs.cloudit.domain.rest.UserSearch;
 import tqs.cloudit.services.AuthenticationService;
 import tqs.cloudit.services.UserService;
 
@@ -277,7 +281,121 @@ public class UserControllerTest {
         System.out.println("getEmployerById");
         
     }
-    
+
+    /**
+     * If the client insert an invalid user type, different from freelancer or employer
+     *  should return a BAD_REQUEST HTTP response
+     *
+     * @throws Exception by MockMvc
+     */
+    @Test
+    public void testSearchProfile400onInvalidUserType() throws Exception {
+        UserSearch search = new UserSearch();
+        search.setUserType("WrongUserType");
+
+        mvc.perform(
+            post("/profile/search")
+            .content(toJson(search))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"userType field can only be \\\"freelancer\\\" or \\\"employer\\\"\"}"));
+    }
+
+    /**
+     * If the client insert a area with more than 30 character should return
+     *  a BAD_REQUEST HTTP response
+     *
+     * @throws Exception by MockMvc
+     */
+    @Test
+    public void testSearchProfileAreasTooLarge() throws Exception {
+        UserSearch search = new UserSearch();
+        Set<String> areas = new HashSet<>();
+        areas.add("1234567890123456789012345678901");
+        search.setAreas(areas);
+
+        mvc.perform(
+            post("/profile/search")
+                .content(toJson(search))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"Areas must have less than 30 characters\"}"));
+    }
+
+    /**
+     * if the services doesn't find any user should return a
+     *  NOT_FOUND HTTP response
+     *
+     * @throws Exception by MockMvc
+     */
+    @Test
+    public void testSearchProfile404OnNoUser() throws Exception {
+        Mockito.when(service.searchUser(null, null, null)).thenReturn(Collections.emptyList());
+
+        mvc.perform(
+            post("/profile/search")
+                .content(toJson(new UserSearch()))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("{\"message\":\"No users found for the given parameters\"}"));
+    }
+
+    /**
+     * When the client inserts a name with just empty spaces and/or a list of Areas empty
+     *  should convert them into null
+     *
+     * @throws Exception by MockMvc
+     */
+    @Test
+    public void testSearchProfileToNullOnEmpty() throws Exception {
+        List<tqs.cloudit.domain.responses.User> response = new ArrayList<>();
+        response.add(new tqs.cloudit.domain.responses.User(new tqs.cloudit.domain.persistance.User(user1)));
+        response.add(new tqs.cloudit.domain.responses.User(new tqs.cloudit.domain.persistance.User(user2)));
+
+        Mockito.when(service.searchUser(null, null, null)).thenReturn(response);
+
+        UserSearch search = new UserSearch();
+        search.setName("    ");
+        Set<String> areas = new HashSet<>();
+        search.setAreas(areas);
+
+        mvc.perform(
+            post("/profile/search")
+                .content(toJson(search))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isAccepted())
+            .andExpect(content().json("{\"data\":[{\"name\":\"Joao\",\"email\":\"emaidojoao@mail.com\"," +
+                "\"userType\":\"Freelancer\",\"interestedAreas\":[],\"jobOffers\":[]},{\"name\":\"Filipe\"," +
+                "\"email\":\"emaidofilipe@mail.com\",\"userType\":\"Freelancer\",\"interestedAreas\":[]," +
+                "\"jobOffers\":[]}],\"message\":\"Users found\"}"));
+
+        Mockito.verify(service, Mockito.times(1)).searchUser(null, null, null);
+    }
+
+    /**
+     * Test normal successful flow
+     *
+     * @throws Exception by MockMvc
+     */
+    @Test
+    public void testSearchProfileSuccessfulFlow() throws Exception {
+        List<tqs.cloudit.domain.responses.User> response = new ArrayList<>();
+        response.add(new tqs.cloudit.domain.responses.User(new tqs.cloudit.domain.persistance.User(user1)));
+        response.add(new tqs.cloudit.domain.responses.User(new tqs.cloudit.domain.persistance.User(user2)));
+
+        Mockito.when(service.searchUser(null, null, null)).thenReturn(response);
+
+        mvc.perform(
+            post("/profile/search")
+                .content(toJson(new UserSearch()))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isAccepted())
+            .andExpect(content().json("{\"data\":[{\"name\":\"Joao\",\"email\":\"emaidojoao@mail.com\"," +
+                "\"userType\":\"Freelancer\",\"interestedAreas\":[],\"jobOffers\":[]},{\"name\":\"Filipe\"," +
+                "\"email\":\"emaidofilipe@mail.com\",\"userType\":\"Freelancer\",\"interestedAreas\":[]," +
+                "\"jobOffers\":[]}],\"message\":\"Users found\"}"));
+    }
+
     /*
         Aux Methods
     */

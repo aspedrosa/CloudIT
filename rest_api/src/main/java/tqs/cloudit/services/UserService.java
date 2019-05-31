@@ -89,6 +89,14 @@ public class UserService {
         
     }
 
+    /**
+     * Searches for all users that respect the given arguments
+     *
+     * @param name the user must have the given string on the name to be a match
+     * @param interestedAreas the user must have all areas received to be a match
+     * @param userType the user must be the type specified
+     * @return All the users that match the arguments
+     */
     public List<tqs.cloudit.domain.responses.User> searchUser(String name,
                                                               Set<String> interestedAreas,
                                                               String userType) {
