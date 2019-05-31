@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +19,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.domain.rest.User;
 
 /**
@@ -63,6 +65,9 @@ public class StepsDefs extends TestApplication{
     
     @Autowired
     private AuthenticationService authenticationService;
+    
+    @Autowired
+    private JobService jobService;
     
     /* ============================== SIGNIN TEST ============================== */
 
@@ -506,6 +511,79 @@ public class StepsDefs extends TestApplication{
         assertTrue(driver.findElements(By.id("email")).size() > 0);
         assertTrue(driver.findElements(By.id("cur_pwd")).size() > 0);
         driver.quit();
+    }
+    
+    @When("I access the search tab")
+    public void accessTheSearchTab() {
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
+        WebElement search_tab = driver.findElement(By.id("search"));
+        search_tab.click();
+        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
+    }
+    
+    @And("choose the option of job proposals for freelancers")
+    public void chooseJobProposals() {
+    }
+    
+    @And("I type in one or more keywords like the name of a programming language")
+    public void searchKeywords() {
+        WebElement query = driver.findElement(By.id("query"));
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> query.isDisplayed());
+        query.clear();
+        query.sendKeys("java");
+        driver.findElement(By.id("search_btn")).click();
+    }
+    
+    @Then("I should see a list job proposals related to that keyword.")
+    public void viewJobProposals() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("I choose a filtering option")
+    public void chooseFilteringOption() {
+        driver.findElement(By.id("filters_btn")).click();
+        driver.findElement(By.id("fromAmount")).clear();
+        driver.findElement(By.id("fromAmount")).sendKeys("10");
+        driver.findElement(By.id("toAmount")).clear();
+        driver.findElement(By.id("toAmount")).sendKeys("1000");
+    }
+    
+    @Then("I should see a list of job proposals filtered according to the chosen rule.")
+    public void viewJobProposals2() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("the results are presented")
+    public void viewJobProposals3() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("I click on one job")
+    public void clickJobOffer() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        first_offer.click();
+    }
+    
+    @Then("I should see all information related to that job")
+    public void seeInformationRelatedToJob() {
+        WebElement offer_modal = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Blog Categories'])[1]/following::div[5]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> offer_modal.isDisplayed());
+    }
+    
+    @And("I should be able to contact the proposal's author.")
+    public void contactAuthorProposal() {
+        WebElement contact_btn = driver.findElement(By.id("contact_btn"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> contact_btn.isDisplayed());
     }
     
     /*
