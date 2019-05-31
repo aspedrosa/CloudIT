@@ -6,7 +6,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
-import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -61,13 +60,11 @@ public class StepsDefs extends TestApplication{
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver(options);
     }
-
+    
     @Autowired
     private AuthenticationService authenticationService;
-
-    /*
-     * Specific to feature -> User can sign up on the platform (SignUp.feature)
-     */
+    
+    /* ============================== SIGNIN TEST ============================== */
 
     /**
      * User can sign up on the platform (SignUp.feature)
@@ -95,7 +92,7 @@ public class StepsDefs extends TestApplication{
      *  - User logs in and learns more about the platform.
      */
     @When("I login")
-    public void Login() throws InterruptedException {
+    public void Login() {
         changeCurrentUsername();
 
         User newUser = new User(
@@ -103,7 +100,7 @@ public class StepsDefs extends TestApplication{
             "test",
             "",
             currentUsername + "@mail.com",
-            "",
+            "Freelancer",
             new ArrayList<>()
         );
         System.out.println(authenticationService.register(newUser));
@@ -111,74 +108,11 @@ public class StepsDefs extends TestApplication{
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
         username.sendKeys(currentUsername);
+        pwd.clear();
         pwd.sendKeys("test");
         driver.findElement(By.id("submit_button")).click();
     }
-
-    /**
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User fails sign in.
-     */
-    @When("I login without filling the form correctly")
-    public void BadLogin() {
-        WebElement username = driver.findElement(By.id("username"));
-        WebElement pwd = driver.findElement(By.id("pwd"));
-        username.sendKeys("NonExistingAccount");
-        pwd.sendKeys("NonExistingAccount");
-        driver.findElement(By.id("submit_button")).click();
-    }
-
-    /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User fails to register in the platform.
-     *
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User fails sign in.
-     */
-    @Then("I should be notified about the errors or missing fields.")
-    public void checkErrorMessage() {
-        new WebDriverWait(driver,10L).until(
-                (WebDriver d) -> d.findElements(By.id("invalid_credentials_message")).size() > 0);
-        assertTrue(driver.findElements( By.id("invalid_credentials_message") ).size() > 0);
-        assertEquals(driver.findElement( By.id("invalid_credentials_message") ).getText(), "Error! Invalid Credentials.");
-        driver.quit();
-    }
-
-    /*
-     * Specific to feature -> User can sign in on the platform. (SignIn.feature)
-     */
-
-    /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
-     */
-    @When("I register in the platform")
-    public void register() {
-        changeCurrentUsername();
-
-        driver.findElement(By.id("sign_up_link")).click();
-        WebElement name = driver.findElement(By.id("name"));
-        WebElement username = driver.findElement(By.id("username"));
-        WebElement email = driver.findElement(By.id("email"));
-        WebElement type = driver.findElement(By.id("type"));
-        WebElement pwd = driver.findElement(By.id("pwd"));
-        name.sendKeys("test");
-        username.sendKeys(currentUsername);
-        email.sendKeys(currentUsername + "@mail.pt");
-        type.sendKeys("freelancer");
-        pwd.sendKeys("test");
-    }
-
-    /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
-     *  - User fails to register in the platform.
-     */
-    @And("I click the submit button")
-    public void click(){
-        driver.findElement(By.id("signUpButton")).click();
-    }
-
+    
     /**
      * User can sign up on the platform (SignUp.feature)
      *  - User register in on the platform.
@@ -199,6 +133,79 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
+     * User can sign in on the platform. (SignIn.feature)
+     *  - User fails sign in.
+     */
+    @When("I login without filling the form correctly")
+    public void BadLogin() {
+        WebElement username = driver.findElement(By.id("username"));
+        WebElement pwd = driver.findElement(By.id("pwd"));
+        username.sendKeys("NonExistingAccount");
+        pwd.clear();
+        pwd.sendKeys("NonExistingAccount");
+        driver.findElement(By.id("submit_button")).click();
+    }
+
+    /**
+     * User can sign up on the platform (SignUp.feature)
+     *  - User fails to register in the platform.
+     *
+     * User can sign in on the platform. (SignIn.feature)
+     *  - User fails sign in.
+     */
+    @Then("I should be notified about the invalid fields.")
+    public void checkErrorMessage() {
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElements(By.id("invalid_credentials_message")).size() > 0);
+        assertTrue(driver.findElements( By.id("invalid_credentials_message") ).size() > 0);
+        assertEquals(driver.findElement( By.id("invalid_credentials_message") ).getText(), "Error! Invalid Credentials.");
+        driver.quit();
+    }
+    
+    /* ============================== SIGNUP TEST ============================== */
+    
+    /*
+        @Given("that I have access to the platform's website,") -> Sign In Steps
+    */
+
+    /**
+     * User can sign up on the platform (SignUp.feature)
+     *  - User register in on the platform.
+     */
+    @When("I register in the platform")
+    public void register() {
+        changeCurrentUsername();
+
+        driver.findElement(By.id("sign_up_link")).click();
+        WebElement name = driver.findElement(By.id("name"));
+        WebElement username = driver.findElement(By.id("username"));
+        WebElement email = driver.findElement(By.id("email"));
+        WebElement type = driver.findElement(By.id("type"));
+        WebElement pwd = driver.findElement(By.id("pwd"));
+        name.sendKeys("test");
+        username.sendKeys(currentUsername);
+        email.clear();
+        email.sendKeys(currentUsername + "@mail.pt");
+        type.sendKeys("Freelancer");
+        pwd.clear();
+        pwd.sendKeys("test");
+    }
+
+    /**
+     * User can sign up on the platform (SignUp.feature)
+     *  - User register in on the platform.
+     *  - User fails to register in the platform.
+     */
+    @And("I click the submit button")
+    public void click(){
+        driver.findElement(By.id("signUpButton")).click();
+    }
+
+    /*
+        @Then("I should see the welcome page.") -> Sign In Steps
+    */
+
+    /**
      * User can sign up on the platform (SignUp.feature)
      *  - User fails to register in the platform.
      */
@@ -216,9 +223,14 @@ public class StepsDefs extends TestApplication{
         WebElement type = driver.findElement(By.id("type"));
         name.sendKeys("test");
         username.sendKeys(currentUsername);
+        email.clear();
         email.sendKeys(currentUsername + "@mail.pt");
-        type.sendKeys("freelancer");
+        type.sendKeys("Freelancer");
     }
+    
+    /*
+        @And("I click the submit button") -> Above this step
+    */
 
     /**
      * User can sign up on the platform (SignUp.feature)
@@ -243,25 +255,30 @@ public class StepsDefs extends TestApplication{
                                         }   // catch 
                                     });
     }
-
+    
     /**
      * User can sign up on the platform (SignUp.feature)
      *  - User fails to register in the platform.
      */
     @And("have the chance to correct my submission.")
     public void canCorrectForm(){
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("name")).isDisplayed());
         assertTrue(driver.findElements(By.id("name")).size() > 0);
-        assertTrue(driver.findElements(By.id("username")).size() > 0);
         assertTrue(driver.findElements(By.id("email")).size() > 0);
         assertTrue(driver.findElements(By.id("pwd")).size() > 0);
-        assertTrue(driver.findElements(By.id("type")).size() > 0);
         driver.quit();
     }
     
-
+    /* ============================== ABOUT TEST ============================== */
+    
     /*
-     * Specific to feature -> User can learn about the use of the platform through the website. (AboutPlatform.feature)
-     */
+        @Given("that I have access to the platform's website,") -> Sign In Steps
+    */
+    
+    /*
+        @When("I login") -> Sign In Steps
+    */
 
     /**
      *  User can learn about the use of the platform through the website. (AboutPlatform.feature)
@@ -285,27 +302,32 @@ public class StepsDefs extends TestApplication{
         driver.quit();
     }
 
-    
-    /*
-     * Specific to feature -> Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     */
+    /* ============================== EMPLOYERPOSTJOB TEST ============================== */
 
-    /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer asserts that it's possible to create a job offer.
-     * - Employer creates a job offer, both correctly and without necessary fields.
-     */
     @Given("that I am logged in,")
-    public void loggedIn() throws InterruptedException {
+    public void openWebsiteAndLogin() {
         driver.get("http://localhost:8080/loginPage");
-        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "Freelancer", new ArrayList<>())));
+        
+        changeCurrentUsername();
+
+        User newUser = new User(
+            currentUsername,
+            "test",
+            "",
+            currentUsername + "@mail.com",
+            "Freelancer",
+            new ArrayList<>()
+        );
+        System.out.println(authenticationService.register(newUser));
+        
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        username.sendKeys("teste");
-        pwd.sendKeys("teste");
+        username.sendKeys(currentUsername);
+        pwd.clear();
+        pwd.sendKeys("test");
         driver.findElement(By.id("submit_button")).click();
     }
-
+    
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
@@ -403,5 +425,110 @@ public class StepsDefs extends TestApplication{
         driver.quit();
     }
     
+    /* ============================== PROFILE TEST ============================== */
+    
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    @When("I'm on the profile page")
+    public void enterProfilePage() {
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
+                (WebDriver d) -> d.findElement(By.id("profile")).isDisplayed());
+        driver.findElement(By.id("profile")).click();
+        assertTrue(driver.findElements(By.id("profile_form")).size() > 0);
+        assertEquals(driver.findElement(By.id("profile_form_title")).getText(), "Profile");
+    }
+    
+    @Then("I should see the information that is visible to all members.")
+    public void seeProfileInfo() {
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) ->   d.findElement(By.id("username")).getText().equals(currentUsername)
+                                && d.findElement(By.id("type")).getText().equals("Freelancer") 
+                                && d.findElement(By.id("email")).getAttribute("value").equals(currentUsername + "@mail.com"));
+    }
+    
+    @Then("be able to update any information I desire.")
+    public void clickUpdateInfo() {
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) ->   d.findElement(By.id("update_btn")).isDisplayed());
+        assertTrue(driver.findElements(By.id("update_btn")).size() > 0);
+        driver.quit();
+    }
+    
+    @When("I submit any change to the information") 
+    public void submitProfileUpdate() {
+        WebElement name = driver.findElement(By.id("name"));
+        WebElement email = driver.findElement(By.id("email"));
+        WebElement cur_pwd = driver.findElement(By.id("cur_pwd"));
+        WebElement new_pwd = driver.findElement(By.id("new_pwd"));
+        WebElement new_pwd_conf = driver.findElement(By.id("new_pwd_conf"));
+        name.sendKeys("Teste 2");
+        email.clear();
+        email.sendKeys("teste2@mail.com");
+        cur_pwd.clear();
+        cur_pwd.sendKeys("test");
+        new_pwd.sendKeys("teste2");
+        new_pwd_conf.sendKeys("teste2");
+        driver.findElement(By.id("update_btn")).click();
+    }
+    
+    @Then("I should see all changes instantly.")
+    public void seeProfileInfoUpdated() {
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) ->   d.findElement(By.id("name")).getAttribute("value").equals("Teste 2")
+                                && d.findElement(By.id("email")).getAttribute("value").equals("teste2@mail.com"));
+        driver.quit();
+    }
+    
+    @When("I submit any change to the information without the correct format") 
+    public void submitProfileUpdateIncorrect() {
+        WebElement name = driver.findElement(By.id("name"));
+        WebElement email = driver.findElement(By.id("email"));
+        WebElement cur_pwd = driver.findElement(By.id("cur_pwd"));
+        WebElement new_pwd = driver.findElement(By.id("new_pwd"));
+        WebElement new_pwd_conf = driver.findElement(By.id("new_pwd_conf"));
+        name.sendKeys("Teste 2");
+        email.clear();
+        email.sendKeys("teste3@mail.com");
+        cur_pwd.clear();
+        cur_pwd.sendKeys("pwd errada");
+        new_pwd.sendKeys("teste3");
+        new_pwd_conf.sendKeys("teste3");
+        driver.findElement(By.id("update_btn")).click();
+    }
+    
+    @And("have the chance to correct my update submission.")
+    public void canCorrectFormUpdate(){
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("name")).isDisplayed());
+        assertTrue(driver.findElements(By.id("name")).size() > 0);
+        assertTrue(driver.findElements(By.id("email")).size() > 0);
+        assertTrue(driver.findElements(By.id("cur_pwd")).size() > 0);
+        driver.quit();
+    }
+    
+    /*
+        The 3 steps below are not yet supported by the system
+    */
+    
+    @When("I'm on another user profile page")
+    public void accessUserProfileInfo() {
+        // to do ...
+    }
+    
+    @Then("I should see the information he/she made available")
+    public void seeUserProfileInfo() {
+        // to do ...
+    }
+    
+    @And("be able to start a conversation.")
+    public void startConversation() {
+        // to do ...
+    }
+    
+    /* ==============================  ============================== */
+    
+    // add new steps here...
     
 }
