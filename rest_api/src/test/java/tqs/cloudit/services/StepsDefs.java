@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.ArrayList;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -103,7 +104,7 @@ public class StepsDefs extends TestApplication{
             "",
             currentUsername + "@mail.com",
             "",
-            new TreeSet<>()
+            new ArrayList<>()
         );
         System.out.println(authenticationService.register(newUser));
 
@@ -297,7 +298,7 @@ public class StepsDefs extends TestApplication{
     @Given("that I am logged in,")
     public void loggedIn() throws InterruptedException {
         driver.get("http://localhost:8080/loginPage");
-        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "Freelancer", new TreeSet<>())));
+        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "Freelancer", new ArrayList<>())));
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
         username.sendKeys("teste");
