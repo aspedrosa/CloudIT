@@ -1,8 +1,7 @@
 package tqs.cloudit.controllers;
 
-import org.json.simple.JSONObject;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +38,8 @@ public class AuthenticationController {
      * @return 
      */
     @GetMapping("/login")
-    public ResponseEntity login() {
-        JSONObject response = new JSONObject();
-        response.put("message", "Logged in with success");
-        return new ResponseEntity(response, HttpStatus.OK);
+    public ResponseEntity login(Principal principal) {
+        return authServ.login(principal.getName());
     }
 
     /**

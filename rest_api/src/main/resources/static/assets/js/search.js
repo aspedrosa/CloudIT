@@ -2,7 +2,8 @@ var base_api_url = "http://" + window.location.host;
 
 function getOffers() {
     var self=this;
-    self.jobOffers=ko.observableArray([])
+    self.jobOffersColumn1=ko.observableArray([])
+    self.jobOffersColumn2=ko.observableArray([])
     
     self.refresh = function(){
         $.ajax({
@@ -15,9 +16,14 @@ function getOffers() {
                     alert(JSON.stringify(data));
                 }else{
                     console.log(data)
-                    self.jobOffers.removeAll()
+                    self.jobOffersColumn1.removeAll()
+                    self.jobOffersColumn2.removeAll()
                     for(let index in data.data){
-                        self.jobOffers.push(data.data[index]);
+                        if(index%2===0){
+                            self.jobOffersColumn1.push(data.data[index]);
+                        }else{
+                            self.jobOffersColumn2.push(data.data[index]);
+                        }
                     }
                 }
             },

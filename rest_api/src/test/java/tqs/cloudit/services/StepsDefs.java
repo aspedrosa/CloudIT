@@ -102,7 +102,7 @@ public class StepsDefs extends TestApplication{
             "test",
             "",
             currentUsername + "@mail.com",
-            "",
+            "Freelancer",
             new TreeSet<>()
         );
         System.out.println(authenticationService.register(newUser));
@@ -164,7 +164,7 @@ public class StepsDefs extends TestApplication{
         name.sendKeys("test");
         username.sendKeys(currentUsername);
         email.sendKeys(currentUsername + "@mail.pt");
-        type.sendKeys("freelancer");
+        type.sendKeys("Freelancer");
         pwd.sendKeys("test");
     }
 
@@ -216,7 +216,7 @@ public class StepsDefs extends TestApplication{
         name.sendKeys("test");
         username.sendKeys(currentUsername);
         email.sendKeys(currentUsername + "@mail.pt");
-        type.sendKeys("freelancer");
+        type.sendKeys("Freelancer");
     }
 
     /**
@@ -293,25 +293,32 @@ public class StepsDefs extends TestApplication{
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Given("that I am logged in,")
     public void loggedIn() throws InterruptedException {
         driver.get("http://localhost:8080/loginPage");
-        System.out.println(authenticationService.register(new User("teste", "teste", "", "", "Freelancer", new TreeSet<>())));
+        System.out.println(authenticationService.register(new User("testeEmployer", "testeEmployer", "", "", "Employer", new TreeSet<>())));
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        username.sendKeys("teste");
-        pwd.sendKeys("teste");
+        username.sendKeys("testeEmployer");
+        pwd.sendKeys("testeEmployer");
         driver.findElement(By.id("submit_button")).click();
     }
 
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @Given("I have accessed to MyJobs page,")
     public void accessedMyJobs() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,14L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
         driver.findElement(By.id("jobs")).click();
     }
@@ -319,8 +326,11 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
-    @When("I choose the option to post a job offer")
+    @When("I choose the option to post a job (offer|advertisement)")
     public void chooseOptionPostOffer() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
@@ -330,6 +340,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @Then("I should see a form to be filled.")
     public void shouldSeeForm() {
@@ -346,6 +359,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I execute the previous steps")
     public void executePreviousSteps() {
@@ -360,6 +376,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I fill in and submit the form,")
     public void fillAndSubmit() {
@@ -379,6 +398,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Then("I should see a message informing me about the success\\/failure of the operation")
     public void shouldSeeMessageInformingSuccessFailure() {
@@ -394,6 +416,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Then("\\(if successful) I should see a new post added to my profile.")
     public void ifSuccessfulShouldSeeNewPostAddedToProfile() {

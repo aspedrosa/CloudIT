@@ -37,7 +37,7 @@ function sign_in() {
                 alert(JSON.stringify(data));
         }else{
                 localStorage.setItem("username", username);
-                localStorage.setItem("token", btoa(username + ":" + password));
+                localStorage.setItem("type", data.data.type);
                 window.location.href= base_api_url+"/welcomePage";
             }
         },

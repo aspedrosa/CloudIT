@@ -2,9 +2,6 @@
 MODAL
 ************************************/
 
-.modal-dialog {
-    width: 80vw;
-}
 
 
 /************************************
@@ -313,7 +310,6 @@ hr.invis2 {
 }
 
 .blog-box {
-    display: block;
     position: relative;
     margin-bottom: 20px;
     padding-top: 10px;
