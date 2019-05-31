@@ -73,10 +73,6 @@ offers.refresh()
 
 ko.applyBindings(offers);
 
-function advancedSearch() {
-    offers.search();
-}
-
 function showModal(job){
     $("#modalTitle").text(job.title);
     $("#modalArea").text(job.area);
