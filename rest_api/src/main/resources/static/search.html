@@ -217,7 +217,7 @@
                             <div class="blog-box clearfix row userSearchResult"
                                  data-toggle="modal"
                                  data-target="#userModal"
-                                 data-bind="click: fillSearchUserModalTable(user.name, user.userType, user.jobOffers)"
+                                 data-bind="click: fillSearchUserModalTable(user.name, user.userType, user.email, user.jobOffers)"
                             >
                                 <!-- Box -->
                                 <div class="media-box col-md-4">
@@ -226,16 +226,16 @@
                                 <div class="blog-desc col-md-8" >
                                     <h3 data-bind="text: user.name"></h3>
                                     <div class="row">
-                                        <span class="col-md-2">Email: </span>
-                                        <span class="col-md-10" data-bind="text: user.email"></span>
+                                        <span class="col-md-3">Email: </span>
+                                        <span class="col-md-9" data-bind="text: user.email"></span>
                                     </div>
                                     <div class="row">
-                                        <span class="col-md-2">User type: </span>
-                                        <span class="userSearchType col-md-10" data-bind="text: user.userType"></span>
+                                        <span class="col-md-3">User type: </span>
+                                        <span class="userSearchType col-md-9" data-bind="text: user.userType"></span>
                                     </div>
                                     <div class="row" data-bind="ifnot: user.interestedAreas.length == 0">
-                                        <span class="col-md-2">Areas:</span>
-                                        <div class="col-md-10" data-bind="foreach: {data: user.interestedAreas, as: 'area'}">
+                                        <span class="col-md-3">Areas:</span>
+                                        <div class="col-md-9" data-bind="foreach: {data: user.interestedAreas, as: 'area'}">
                                             <div class="text-center area-card">
                                                 <span data-bind="text: area"></span>
                                             </div>
@@ -258,6 +258,14 @@
                                             <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
                                         </div>
                                         <div class="col-md-8" id="modalContent" style="font-size: 18px; margin-top: 10px">
+                                            <div class="row">
+                                                <span class="col-md-2">Email: </span>
+                                                <span class="col-md-10" id="userModalEmail"></span>
+                                            </div>
+                                            <div class="row">
+                                                <span class="col-md-2">User type: </span>
+                                                <span class="userSearchType col-md-10" data-bind="text: userModalUserType"></span>
+                                            </div>
                                             <div data-bind="if: userModalJobs().length == 0">
                                                 <div data-bind="if: userModalUserType() == 'freelancer'">
                                                     <span>No job proposals for this user.</span>

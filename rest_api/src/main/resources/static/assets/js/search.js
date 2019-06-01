@@ -12,11 +12,9 @@ function AppViewModel() {
             type: "GET",
             crossDomain:true,
             success: function(data, status, xhr) {
-                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
                 if(status!=="success"){
                     alert(JSON.stringify(data));
                 }else{
-                    console.log(data)
                     self.jobOffers.removeAll()
                     for(let index in data.data){
                         self.jobOffers.push(data.data[index]);
@@ -59,7 +57,6 @@ function AppViewModel() {
             contentType: "application/json",
             crossDomain: true,
             success: function (data, status, xhr) {
-                console.log(data.data);
                 self.users.removeAll();
                 for (let index in data.data) {
                     self.users.push(data.data[index]);
@@ -94,24 +91,13 @@ function showModal(job){
 /**
  * Updates information on variables for the clicked user
  */
-function fillSearchUserModalTable(name, userType, jobs) {
-    userType = userType.toLowerCase();
-    console.log(userType);
+function fillSearchUserModalTable(name, userType, email, jobs) {
+    $("#userModalTitle").text(name);
+    $("#userModalEmail").text(email);
 
-    let jobType;
-    if (userType == "employer") {
-        jobType = "offers";
-    }
-    else {
-        jobType = "proposals";
-    }
-
-    $("#userModalTitle").text(name + "'s job " + jobType);
-
-    appViewModel.userModalUserType(userType);
+    appViewModel.userModalUserType(userType.toLowerCase());
     appViewModel.userModalJobs.removeAll();
     jobs.forEach(function (job, _) {
-        console.log(job);
         appViewModel.userModalJobs.push(job);
     })
 }
