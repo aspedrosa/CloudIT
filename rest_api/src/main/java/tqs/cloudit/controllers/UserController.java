@@ -60,9 +60,9 @@ public class UserController {
         if (user.getInterestedAreas() != null) {
             for (String area : user.getInterestedAreas()) {
                 if (area.length() > 30) {
-                    return new ResponseEntity(
-                        ResponseBuilder.buildWithMessage("Areas must not have more than 30 characters"),
-                        HttpStatus.BAD_REQUEST
+                    return ResponseBuilder.buildWithMessage(
+                        HttpStatus.BAD_REQUEST,
+                        "Areas must not have more than 30 characters"
                     );
                 }
             }
@@ -86,9 +86,9 @@ public class UserController {
         if (userType != null) {
             userType = userType.trim().toLowerCase();
             if (!userType.equals("freelancer") && !userType.equals("employer")) {
-                return new ResponseEntity(
-                    ResponseBuilder.buildWithMessage("userType field can only be \"freelancer\" or \"employer\""),
-                    HttpStatus.BAD_REQUEST
+                return ResponseBuilder.buildWithMessage(
+                    HttpStatus.BAD_REQUEST,
+                    "userType field can only be \"freelancer\" or \"employer\""
                 );
             }
         }
@@ -100,9 +100,9 @@ public class UserController {
             else {
                 for (String area : areas) {
                     if (area.length() > 30) {
-                        return new ResponseEntity(
-                            ResponseBuilder.buildWithMessage("Areas must have less than 30 characters"),
-                            HttpStatus.BAD_REQUEST
+                        return ResponseBuilder.buildWithMessage(
+                            HttpStatus.BAD_REQUEST,
+                            "Areas must have less than 30 characters"
                         );
                     }
                 }
@@ -119,15 +119,16 @@ public class UserController {
         List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, areas, userType);
 
         if (matchedUsers.size() > 0) {
-            return new ResponseEntity(
-                ResponseBuilder.buildWithMessageAndData("Users found", matchedUsers),
-                HttpStatus.ACCEPTED
+            return ResponseBuilder.buildWithMessageAndData(
+                HttpStatus.ACCEPTED,
+                "Users found",
+                matchedUsers
             );
         }
 
-        return new ResponseEntity(
-            ResponseBuilder.buildWithMessage("No users found for the given parameters"),
-            HttpStatus.NOT_FOUND
+        return ResponseBuilder.buildWithMessage(
+            HttpStatus.NOT_FOUND,
+            "No users found for the given parameters"
         );
     }
     

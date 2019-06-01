@@ -15,6 +15,7 @@ import tqs.cloudit.domain.persistance.Area;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
 import tqs.cloudit.repositories.UserRepository;
+import tqs.cloudit.utils.ResponseBuilder;
 
 @Service
 public class UserService {
@@ -33,12 +34,9 @@ public class UserService {
         if (!withPassword) {
             user.setPassword("");
         }
-        response.put("message", "User information found.");
-        response.put("data", user);
-        return new ResponseEntity(response, HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "User information found.", user);
     }
     public ResponseEntity updateUserInfo(User user) {
-        JSONObject response = new JSONObject();
         tqs.cloudit.domain.persistance.User old_user = this.userRepository.getInfo(user.getUsername());
         boolean changes = false;
         
@@ -48,8 +46,7 @@ public class UserService {
         }
         if(user.getEmail() != null && !user.getEmail().equals(old_user.getEmail())) {
             if(userRepository.emailExists(user.getEmail()) > 0){
-                response.put("message", "Unable to update profile. Your email must be unique. This email is already registered in the platform.");
-                return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+                return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Unable to update profile. Your email must be unique. This email is already registered in the platform.");
             }
             old_user.setEmail(user.getEmail());
             changes = true;
@@ -57,8 +54,7 @@ public class UserService {
         //System.out.println("Passwords: user.getPassword()='"+user.getPassword()+"', user.getNewPassword()='"+user.getNewPassword()+"', old_user.getPassword()='"+old_user.getPassword()+"'");
         if(user.getPassword() != null && user.getNewPassword() != null && !bcpe.matches(user.getNewPassword(), old_user.getPassword())) {
             if(!bcpe.matches(user.getPassword(), old_user.getPassword())) {
-                response.put("message", "Unable to update profile. In order to change password you need to type in the current one correctly.");
-                return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+                return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Unable to update profile. In order to change password you need to type in the current one correctly.");
             }
             old_user.setPassword(this.bcpe.encode(user.getNewPassword()));
             changes = true;
@@ -77,16 +73,17 @@ public class UserService {
                 changes = true;
             }
         }
-        
+
+        String message;
         if(changes) {
             this.userRepository.save(old_user);
-            response.put("message", "User update successful.");
+            message = "User update successful.";
         } else {
-            response.put("message", "No changes to the current user information were detected.");
+            message = "No changes to the current user information were detected.";
         }
         
-        return new ResponseEntity(response,HttpStatus.OK);
-        
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, message);
+
     }
 
     /**

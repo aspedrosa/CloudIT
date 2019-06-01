@@ -1,5 +1,8 @@
 package tqs.cloudit.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Util to beautify areas, so they obey the same format, title case
  */
@@ -23,22 +26,31 @@ public class AreaBeautifier {
 
         String[] words = area.split(DELIMITER);
 
-        String[] titled_words = new String[words.length];
+        StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            if (word.length() == 1 || word.length() == 0) {
+        for (String word : words) {
+            if (word.length() == 0) {
                 continue;
             }
 
-            if (Character.isLetter(word.charAt(1))) {
-                titled_words[i] = Character.toUpperCase(word.charAt(0)) + word.substring(1);
+            word = word.toLowerCase();
+
+            if (word.length() == 1) {
+                sb.append(word.toUpperCase());
+            }
+            else if (!Character.isLetter(word.charAt(0))) {
+                sb.append(word);
             }
             else {
-                titled_words[i] = word;
+                sb.append(Character.toUpperCase(word.charAt(0)));
+                sb.append(word.substring(1));
             }
+
+            sb.append(DELIMITER);
         }
 
-        return String.join(DELIMITER, titled_words);
+        sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
     }
 }

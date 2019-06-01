@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tqs.cloudit.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +13,7 @@ import tqs.cloudit.domain.persistance.Area;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
 import tqs.cloudit.repositories.UserRepository;
+import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  *
@@ -39,26 +33,18 @@ public class AuthenticationService {
     
     public ResponseEntity register(User user) {
         if(!user.allDefined()){
-            JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
-            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
         }
         if(userRepository.usernameExists(user.getUsername()) > 0){
-            JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. Username must be unique. This username already exists.");
-            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. Username must be unique. This username already exists.");
         }
         if(userRepository.emailExists(user.getEmail()) > 0){
-            JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. Your email must be unique. This email is already registered in the platform.");
-            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. Your email must be unique. This email is already registered in the platform.");
         }
-        List<String> supportedTypes = new ArrayList(Arrays.asList("Freelancer", "Employer"));
+        List<String> supportedTypes = Arrays.asList("Freelancer", "Employer");
 
         if(!supportedTypes.contains(user.getType())){
-            JSONObject response = new JSONObject();
-           response.put("message", "Registration invalid. User type must be Freelancer or Employer.");
-           return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+           return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. User type must be Freelancer or Employer.");
         }
         
         tqs.cloudit.domain.persistance.User pUser=new tqs.cloudit.domain.persistance.User(user);
@@ -71,9 +57,7 @@ public class AuthenticationService {
         pUser.setPassword(this.bcpe.encode(pUser.getPassword()));
         this.userRepository.save(pUser);
         
-        JSONObject response = new JSONObject();
-        response.put("message", "Registered with success");
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Registered with success");
     }
     
     public String getType(String name) {

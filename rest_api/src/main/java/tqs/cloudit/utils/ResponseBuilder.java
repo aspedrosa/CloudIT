@@ -1,6 +1,8 @@
 package tqs.cloudit.utils;
 
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Used to prevent code duplication.
@@ -8,18 +10,24 @@ import org.json.simple.JSONObject;
  */
 public class ResponseBuilder {
 
+    private static JSONObject jsonWithMessage(String message) {
+        JSONObject response = new JSONObject();
+
+        response.put("message", message);
+
+        return response;
+    }
+
     /**
      * Generates a response to be sent by a controller with only a message
      *
      * @param message to be sent
      * @return json object with key "message"
      */
-    public static JSONObject buildWithMessage(String message) {
-        JSONObject response = new JSONObject();
+    public static ResponseEntity buildWithMessage(HttpStatus status, String message) {
+        JSONObject response = jsonWithMessage(message);
 
-        response.put("message", message);
-
-        return response;
+        return new ResponseEntity<>(response, status);
     }
 
     /**
@@ -29,11 +37,11 @@ public class ResponseBuilder {
      * @param data to be sent
      * @return json object with keys "message" and "data"
      */
-    public static JSONObject buildWithMessageAndData(String message, Object data) {
-        JSONObject response = buildWithMessage(message);
+    public static ResponseEntity buildWithMessageAndData(HttpStatus status, String message, Object data) {
+        JSONObject response = jsonWithMessage(message);
 
         response.put("data", data);
 
-        return response;
+        return new ResponseEntity<>(response, status);
     }
 }
