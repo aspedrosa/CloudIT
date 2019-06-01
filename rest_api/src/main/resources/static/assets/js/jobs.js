@@ -10,11 +10,9 @@ function getOffers() {
             type: "GET",
             crossDomain:true,
             success: function(data, status, xhr) {
-                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
                 if(status!=="success"){
                     alert(JSON.stringify(data));
                 }else{
-                    console.log(data)
                     self.myOffers.removeAll()
                     for(let index in data.data){
                         self.myOffers.push(data.data[index]);
@@ -32,11 +30,9 @@ function getOffers() {
             type: "GET",
             crossDomain:true,
             success: function(data, status, xhr) {
-                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
                 if(status!=="success"){
                     alert(JSON.stringify(data));
                 }else{
-                    console.log(data)
                     self.acceptedOffers.removeAll()
                     for(let index in data.data){
                         self.acceptedOffers.push(data.data[index]);
@@ -57,16 +53,18 @@ offers.refresh()
 
 ko.applyBindings(offers);
 
-
+var currentModalId = null;
 function showModal(job){
+    currentModalId = job.id;
+    $("#modalTitleH3").text(job.title);
     $("#modalTitle").text(job.title);
-    $("#modalArea").text(job.area);
-    $("#modalAmount").text(job.amount);
-    $("#modalDescription").text(job.description);
-    $("#modalDate").text(job.date);
-    $("#modalCreatorName").text(job.creator.name);
-    $("#modalCreatorUsername").text(job.creator.username);
-    $("#modalCreatorEmail").text(job.creator.email);
+    $("#modalArea").val(job.area);
+    $("#modalAmount").val(job.amount);
+    $("#modalDescription").val(job.description);
+    $("#modalDate").val(job.date);
+    $("#modalCreatorName").val(job.creator.name);
+    $("#modalCreatorUsername").val(job.creator.username);
+    $("#modalCreatorEmail").val(job.creator.email);
 }
 
 function createOffer(){
@@ -102,11 +100,9 @@ function createOffer(){
         contentType: "application/json",
         crossDomain:true,
         success: function(data, status, xhr) {
-            console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
             if(status!=="success"){
                 alert(JSON.stringify(data));
             }else{
-                console.log(data)
                 offers.refresh()
                 $('#createModal').modal('hide');
             }
@@ -118,6 +114,80 @@ function createOffer(){
     });
 }
 
+function enableEdit_orSave() {
+    if($("#edit_save_btn").text()=="Edit") {
+        console.log("Edit Mode");
+        $("#edit_save_btn").text("Save");
+       
+        $("#titleEdit").prop('hidden', false);
+        document.getElementById("modalTitle").value = document.getElementById("modalTitleH3").textContent;
+        $("#modalTitleH3").text("Edit Job");
+        $("#modalDescription").prop('disabled', false);
+        $("#modalArea").prop('disabled', false);
+        $("#modalDate").prop('disabled', false);
+        $("#modalAmount").prop('disabled', false);
+
+    } else {
+        console.log("View Mode");
+        
+        var title = document.getElementById("modalTitle").value;
+        var description = document.getElementById("modalDescription").value;
+        var area = document.getElementById("modalArea").value;
+        var amount = document.getElementById("modalAmount").value;
+        var date = document.getElementById("modalDate").value;
+        
+        if(title=="" || description=="" || area=="" || amount=="" || date==""){
+            // warning toast
+            return;
+        }
+        $("#edit_save_btn").text("Edit");
+
+        let data={};
+        data["title"]=title;
+        data["description"]=description;
+        data["area"]=area;
+        data["amount"]=amount;
+        data["date"]=date;
+
+        console.log("Data to be sent:");
+        console.log(data);
+
+        $.ajax({
+            url: base_api_url+"/joboffer/edit/" + currentModalId,
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            crossDomain:true,
+            success: function(data, status, xhr) {
+                if(status!=="success"){
+                    alert(JSON.stringify(data));
+                }else{
+                    console.log("Data received:");
+                    console.log(data);
+
+                    offers.refresh();
+
+                    $("#modalTitleH3").text(title);
+                    $("#titleEdit").prop('hidden', true);
+                    $("#modalDescription").prop('disabled', true);
+                    $("#modalArea").prop('disabled', true);
+                    $("#modalDate").prop('disabled', true);
+                    $("#modalAmount").prop('disabled', true);
+
+                    console.log("Update saved.");
+                }
+            },
+            error: function(data, status, xhr) {
+                alert(JSON.stringify(data));
+                console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+            }
+        });
+
+        
+    }
+}
+
 function deleteOffer(data){
     event.stopPropagation()
     $.ajax({
@@ -125,11 +195,9 @@ function deleteOffer(data){
         type: "DELETE",
         crossDomain:true,
         success: function(data, status, xhr) {
-            console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
             if(status!=="success"){
                 alert(JSON.stringify(data));
             }else{
-                console.log(data)
                 offers.refresh()
             }
         },

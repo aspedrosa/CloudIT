@@ -332,7 +332,7 @@ public class StepsDefs extends TestApplication{
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
      */
-    @Given("I have accessed to MyJobs page,")
+    @Given("I have access to MyJobs page,")
     public void accessedMyJobs() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
@@ -525,6 +525,51 @@ public class StepsDefs extends TestApplication{
     @And("be able to start a conversation.")
     public void startConversation() {
         // to do ...
+    }
+    
+    /* ============================== EDIT POSTS TEST ============================== */
+    
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    /*
+        @And("I have access to MyJobs page,") - EmployerPostJob Steps
+    */
+    
+    @And("I have one or more posts published,")
+    public void havePostsPublished() {
+        // to do...
+    }
+    
+    @When("I choose the option to edit a job")
+    public void chooseEditOption() {
+        // to do...
+    }
+    
+    @Then("I should see a form prefilled with the current data.")
+    public void seePrefilledForm() {
+        // to do...
+    }
+    
+    @When("I execute the previous edit steps")
+    public void executePreviousEditSteps() {
+        // to do...
+    }
+    
+    @And("I edit and submit the form,")
+    public void editAndSubmitForm() {
+        
+    }
+    
+    @Then("I should see a message informing me about the success/failure of the operation")
+    public void operationInfoMessage() {
+        // to do...
+    }
+    
+    @And("(if successful) I should see the updates on my posts.")
+    public void seePostsUpdated() {
+        // to do...
     }
     
     /* ==============================  ============================== */

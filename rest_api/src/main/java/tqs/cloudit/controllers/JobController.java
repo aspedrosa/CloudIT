@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class JobController {
      * Returns all job offers registered in the platform
      * 
      * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with all the jobs 
+     *  a successful message if all went good and a list with all the jobs 
      *  available in the platform
      */
     @GetMapping
@@ -62,6 +63,19 @@ public class JobController {
     @GetMapping("/id/{id}")
     public ResponseEntity getById(@PathVariable long id) {
         return jobService.getSpecificOffer(id);
+    }
+    
+    /**
+     * Edits an existing job offer in the platform of a given user.
+     * 
+     * @param id identification of the user whose job offer is to be edited
+     * @param jobOffer Information relative to the job
+     * @return HTTP response with a descriptive message of what went wrong or
+     *  a successful message if all went good
+     */
+    @PutMapping("/edit/{id}")
+    public ResponseEntity editById(@PathVariable long id, @RequestBody JobOffer jobOffer,Principal principal) {
+        return jobService.editOffer(id, jobOffer);
     }
     
     /**

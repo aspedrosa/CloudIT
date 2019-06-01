@@ -2,7 +2,7 @@ package tqs.cloudit.services;
 
 import java.io.IOException;
 import java.util.Collections;
-import org.json.simple.JSONArray;
+import java.util.HashSet;
 import org.json.simple.JSONObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -39,7 +39,7 @@ public class JobServiceTest {
     }
     
     
-    private static ResponseEntity emptyResponse, incompleteResponse, completeResponse, fullResponse;
+    private static ResponseEntity emptyResponse, incompleteResponse, completeResponse, fullResponse, editCompleteResponse, editIncompleteResponse;
     private static JobOffer jo;
     private static User user1;
     
@@ -58,7 +58,7 @@ public class JobServiceTest {
         
         JSONObject response4 = new JSONObject();
         response4.put("message", "Information fetched with success.");
-        JSONArray aux = new JSONArray();
+        HashSet<tqs.cloudit.domain.persistance.JobOffer> aux = new HashSet();
         aux.add(new tqs.cloudit.domain.persistance.JobOffer(jo));
         response4.put("data", aux);
         fullResponse = new ResponseEntity(response4, HttpStatus.OK);
@@ -71,6 +71,14 @@ public class JobServiceTest {
         response3.put("message", "Job offer registered with success.");
         completeResponse = new ResponseEntity(response3, HttpStatus.OK);
         
+        JSONObject response5 = new JSONObject();
+        response5.put("message", "Job offer edited with success.");
+        editCompleteResponse = new ResponseEntity(response5, HttpStatus.OK);
+        
+        JSONObject response6 = new JSONObject();
+        response6.put("message", "Update invalid. When updating a job offer you need to provide the offer title, description, working area, amount and date(to be delivered).");
+        editIncompleteResponse = new ResponseEntity(response6, HttpStatus.NOT_ACCEPTABLE);
+        
         user1 = new User();
         user1.setUsername("joao");
         user1.setPassword("123");
@@ -79,7 +87,6 @@ public class JobServiceTest {
         user1.setType("Freelancer");
         user1.addNewOffer( new tqs.cloudit.domain.persistance.JobOffer(jo));
     }
-    
     
     @InjectMocks
     JobService service;
@@ -165,7 +172,7 @@ public class JobServiceTest {
         Mockito.when(userRepository.getInfo("teste")).thenReturn(user1);
         ResponseEntity result = service.getUserOffers("teste");
         assertEquals(fullResponse.getStatusCode(), result.getStatusCode());
-        assertEquals(fullResponse.getBody().toString(), result.getBody().toString());
+        assertEquals(((JSONObject)fullResponse.getBody()).get("data"), ((JSONObject)result.getBody()).get("data"));
         Mockito.verify(userRepository).getInfo("teste");
     }
 
@@ -196,7 +203,59 @@ public class JobServiceTest {
         assertEquals(new ResponseEntity(response,HttpStatus.NOT_FOUND), result);
         Mockito.verify(jobRepository).existsById(5l);
     }
-
+    
+    /**
+     * Test of editOffer method, of class JobService, with all fields correct.
+     */
+    @Test
+    public void testEditOfferComplete() {
+        System.out.println("editOfferComplete");
+        Long id = 1L;
+        tqs.cloudit.domain.persistance.JobOffer old_jobOffer = new tqs.cloudit.domain.persistance.JobOffer(jo);
+        old_jobOffer.setId(id);
+        old_jobOffer.setCreator(user1);
+        Mockito.when(jobRepository.getJobOffer(id)).thenReturn(old_jobOffer);
+        
+        jo.setTitle("titulo2");
+        jo.setDescription("descript2");
+        jo.setAmount(20);
+        jo.setDate("hoje2");
+        jo.setArea("Web2");
+        ResponseEntity result = service.editOffer(id, jo);
+        assertEquals(editCompleteResponse, result);
+        Mockito.verify(jobRepository).getJobOffer(id);
+    }
+    
+    /**
+     * Test of editOffer method, of class JobService, with missing input fields.
+     */
+    @Test
+    public void testEditOfferIncomplete() {
+        System.out.println("editOfferIncomplete");
+        
+        JobOffer jo2 = new JobOffer();
+        jo2.setTitle("");
+        jo2.setDescription("");
+        jo2.setAmount(null);
+        jo2.setDate("");
+        jo2.setArea("");
+        
+        Long id = 2L;
+        
+        ResponseEntity result = service.editOffer(id, jo2);
+        assertEquals(editIncompleteResponse, result);
+    }
+    
+    /**
+     * Test of getOffers method, of class JobService.
+     */
+    @Test
+    @Ignore
+    public void testGetOffers() {
+        System.out.println("getOffers");
+        fail("Not Implemented yet.");
+    }
+    
     /**
      * Test of getUserOffersAccepted method, of class JobService.
      */

@@ -63,6 +63,25 @@ public class JobService {
         response.put("message", "Job offer registered with success.");
         return new ResponseEntity(response,HttpStatus.OK);
     }
+    
+    public ResponseEntity editOffer(Long id, JobOffer jobOffer) {
+        if(!jobOffer.allDefined()){
+            JSONObject response = new JSONObject();
+            response.put("message", "Update invalid. When updating a job offer you need to provide the offer title, description, working area, amount and date(to be delivered).");
+            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+        }
+        
+        tqs.cloudit.domain.persistance.JobOffer old_jobOffer = this.jobRepository.getJobOffer(id);
+        
+        User aux = old_jobOffer.getCreator();
+        aux.removeOffer(old_jobOffer);
+        aux.addNewOffer(old_jobOffer);
+        jobRepository.save(old_jobOffer);
+        
+        JSONObject response = new JSONObject();
+        response.put("message", "Job offer edited with success.");
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
 
     public ResponseEntity getSpecificOffer(long id) {
         tqs.cloudit.domain.persistance.JobOffer jo = jobRepository.getJobOffer(id);
@@ -79,7 +98,6 @@ public class JobService {
 
     public ResponseEntity getUserOffers(String name) {
         Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getMyOffers();
-        
         JSONObject response = new JSONObject();
         response.put("message", "Information fetched with success.");
         response.put("data", offers);
