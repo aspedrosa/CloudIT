@@ -17,15 +17,15 @@ services:
     environment:
       - sonar.jdbc.username=sonar
       - sonar.jdbc.passowrd=sonar
-      - sonar.jdbc.url=jdbc:postgresql://db/sonar
+      - sonar.jdbc.url=jdbc:postgresql://sonar_db/sonar
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
     depends_on:
-      - db
+      - sonar_db
 
-  db:
+  sonar_db:
     image: postgres:11.3
     environment:
       - POSTGRES_USER=sonar
@@ -35,6 +35,16 @@ services:
       - postgresql_data:/var/lib/postgresql/data
     expose:
       - 5432
+
+  db:
+    image: mysql:8.0.16
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
 
 volumes:
   jenkins-data:
