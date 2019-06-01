@@ -36,6 +36,10 @@
             display: inline-block;
             padding: 5px;
         }
+
+        .userSearchResult {}
+
+        .userSearchType {}
     </style>
 </head>
 
@@ -210,7 +214,7 @@
                     <div data-bind="if: searchBy() == 'users'">
                         <div id="allUsers" data-bind="foreach: { data: users, as: 'user' }">
                             <!-- Post -->
-                            <div class="blog-box clearfix row"
+                            <div class="blog-box clearfix row userSearchResult"
                                  data-toggle="modal"
                                  data-target="#userModal"
                                  data-bind="click: fillSearchUserModalTable(user.name, user.userType, user.jobOffers)"
@@ -220,14 +224,14 @@
                                     <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
                                 </div>
                                 <div class="blog-desc col-md-8" >
-                                    <h3><a data-bind="text: user.name"></a></h3>
+                                    <h3 data-bind="text: user.name"></h3>
                                     <div class="row">
                                         <span class="col-md-2">Email: </span>
                                         <span class="col-md-10" data-bind="text: user.email"></span>
                                     </div>
                                     <div class="row">
                                         <span class="col-md-2">User type: </span>
-                                        <span class="col-md-10" data-bind="text: user.userType"></span>
+                                        <span class="userSearchType col-md-10" data-bind="text: user.userType"></span>
                                     </div>
                                     <div class="row" data-bind="ifnot: user.interestedAreas.length == 0">
                                         <span class="col-md-2">Areas:</span>
@@ -287,7 +291,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
                                     </div>
                                 </div>
 

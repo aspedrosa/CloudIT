@@ -1,9 +1,9 @@
-Feature: As a logged in member of CloudIT
-        I want to be able to view my personal information
-        And update its fields any time
-        And view other members' public information
-        So that I can keep up-to-date
-        And I can decide if it is an interesting person to contact.
+Feature: Member can access the profile page and change its information
+    I want to be able to view my personal information
+    And update its fields any time
+    And view other members' public information
+    So that I can keep up-to-date
+    And I can decide if it is an interesting person to contact.
 
     Scenario: User accesses profile.
         Given that I am logged in,

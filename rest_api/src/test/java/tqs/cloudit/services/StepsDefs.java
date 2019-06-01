@@ -4,8 +4,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -16,15 +19,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.domain.rest.User;
 
 /**
  * Where all the steps of all features are defined here
  * Each step has referenced on javadoc on what Scenario(s) of which Feature(s) it is used
  */
-public class StepsDefs extends TestApplication{
+@TestPropertySource (value={"classpath:application.properties"})
+@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class StepsDefs {
 
     private WebDriver driver;
 
@@ -63,21 +74,18 @@ public class StepsDefs extends TestApplication{
     
     @Autowired
     private AuthenticationService authenticationService;
-    
+
+    @Autowired
+    private JobService jobService;
+
     /* ============================== SIGNIN TEST ============================== */
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
-     *  - User fails to register in the platform.
+     * SignUp.feature -> all
      *
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User sign in on the platform.
-     *  - User fails sign in.
+     * SignIn.feature -> all
      *
-     *  User can learn about the use of the platform through the website. (AboutPlatform.feature)
-     *  - User accesses the platform's about page.
-     *  - User logs in and learns more about the platform.
+     * AboutPlatform.feature -> all
      */
     @Given("that I have access to the platform's website,")
     public void openWebsite() {
@@ -85,11 +93,9 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User sign in on the platform.
+     * SignIn.feature -> 1
      *
-     *  User can learn about the use of the platform through the website. (AboutPlatform.feature)
-     *  - User logs in and learns more about the platform.
+     * AboutPlatform.feature -> 2
      */
     @When("I login")
     public void Login() {
@@ -114,11 +120,9 @@ public class StepsDefs extends TestApplication{
     }
     
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
+     * SignUp.feature -> 1
      *
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User sign in on the platform.
+     * SignIn.feature -> 1
      */
     @Then("I should see the welcome page.")
     public void checkWelcomePage() {
@@ -133,8 +137,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User fails sign in.
+     * SignIn.feature -> 2
      */
     @When("I login without filling the form correctly")
     public void BadLogin() {
@@ -147,11 +150,9 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User fails to register in the platform.
+     * SignUp.feature -> 2
      *
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User fails sign in.
+     * SignIn.feature -> 2
      */
     @Then("I should be notified about the invalid fields.")
     public void checkErrorMessage() {
@@ -165,12 +166,11 @@ public class StepsDefs extends TestApplication{
     /* ============================== SIGNUP TEST ============================== */
     
     /*
-        @Given("that I have access to the platform's website,") -> Sign In Steps
+    @Given("that I have access to the platform's website,") -> Sign In Steps
     */
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
+     * SignUp.feature -> 1
      */
     @When("I register in the platform")
     public void register() {
@@ -192,9 +192,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User register in on the platform.
-     *  - User fails to register in the platform.
+     * SignUp.feature -> all
      */
     @And("I click the submit button")
     public void click(){
@@ -202,12 +200,11 @@ public class StepsDefs extends TestApplication{
     }
 
     /*
-        @Then("I should see the welcome page.") -> Sign In Steps
+    @Then("I should see the welcome page.") -> Sign In Steps
     */
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User fails to register in the platform.
+     * SignUp.feature -> 2
      */
     @When("I register in the platform incorrectly")
     public void badRegister() {
@@ -229,15 +226,13 @@ public class StepsDefs extends TestApplication{
     }
     
     /*
-        @And("I click the submit button") -> Above this step
+    @And("I click the submit button") -> Above this step
     */
 
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User fails to register in the platform.
+     * SignUp.feature -> 2
      *
-     * User can sign in on the platform. (SignIn.feature)
-     *  - User fails sign in.
+     * SignIn.feature -> 2
      */
     @Then("I should be notified about the errors or missing fields")
     public void checkErrorRegisterMessage() {
@@ -257,8 +252,7 @@ public class StepsDefs extends TestApplication{
     }
     
     /**
-     * User can sign up on the platform (SignUp.feature)
-     *  - User fails to register in the platform.
+     * SignUp.feature -> 2
      */
     @And("have the chance to correct my submission.")
     public void canCorrectForm(){
@@ -273,17 +267,15 @@ public class StepsDefs extends TestApplication{
     /* ============================== ABOUT TEST ============================== */
     
     /*
-        @Given("that I have access to the platform's website,") -> Sign In Steps
+    @Given("that I have access to the platform's website,") -> Sign In Steps
     */
     
     /*
-        @When("I login") -> Sign In Steps
+    @When("I login") -> Sign In Steps
     */
 
     /**
-     *  User can learn about the use of the platform through the website. (AboutPlatform.feature)
-     *  - User accesses the platform's about page.
-     *  - User logs in and learns more about the platform.
+     *  AboutPlatform.feature -> all
      */
     @When("I click on the about tab")
     public void clickAbout() {
@@ -291,9 +283,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     *  User can learn about the use of the platform through the website. (AboutPlatform.feature)
-     *  - User accesses the platform's about page.
-     *  - User logs in and learns more about the platform.
+     *  AboutPlatform.feature -> all
      */
     @Then("I should see the about page.")
     public void checkAboutPage() {
@@ -304,6 +294,11 @@ public class StepsDefs extends TestApplication{
 
     /* ============================== EMPLOYERPOSTJOB TEST ============================== */
 
+    /**
+     * EmployerPostJob -> all
+     * Profile -> all
+     * SearchUser -> all
+     */
     @Given("that I am logged in,")
     public void openWebsiteAndLogin() {
         driver.get("http://localhost:8080/loginPage");
@@ -329,8 +324,7 @@ public class StepsDefs extends TestApplication{
     }
     
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer asserts that it's possible to create a job offer.
+     * EmployerPostJob -> 1
      */
     @Given("I have accessed to MyJobs page,")
     public void accessedMyJobs() {
@@ -340,8 +334,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer asserts that it's possible to create a job offer.
+     * EmployerPostJob -> 1
      */
     @When("I choose the option to post a job offer")
     public void chooseOptionPostOffer() {
@@ -351,8 +344,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer asserts that it's possible to create a job offer.
+     * EmployerPostJob -> 1
      */
     @Then("I should see a form to be filled.")
     public void shouldSeeForm() {
@@ -367,8 +359,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer creates a job offer, both correctly and without necessary fields.
+     * EmployerPostJob -> 2
      */
     @When("I execute the previous steps")
     public void executePreviousSteps() {
@@ -381,8 +372,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer creates a job offer, both correctly and without necessary fields.
+     * EmployerPostJob -> 2
      */
     @When("I fill in and submit the form,")
     public void fillAndSubmit() {
@@ -400,8 +390,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer creates a job offer, both correctly and without necessary fields.
+     * EmployerPostJob -> 2
      */
     @Then("I should see a message informing me about the success\\/failure of the operation")
     public void shouldSeeMessageInformingSuccessFailure() {
@@ -415,8 +404,7 @@ public class StepsDefs extends TestApplication{
     }
 
     /**
-     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
-     * - Employer creates a job offer, both correctly and without necessary fields.
+     * EmployerPostJob -> 2
      */
     @Then("\\(if successful) I should see a new post added to my profile.")
     public void ifSuccessfulShouldSeeNewPostAddedToProfile() {
@@ -428,9 +416,12 @@ public class StepsDefs extends TestApplication{
     /* ============================== PROFILE TEST ============================== */
     
     /*
-        @Given("that I am logged in,") -> EmployerPostJob Steps
+    @Given("that I am logged in,") -> EmployerPostJob Steps
     */
-    
+
+    /**
+     * Profile -> 1, 2, 4
+     */
     @When("I'm on the profile page")
     public void enterProfilePage() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
@@ -439,7 +430,10 @@ public class StepsDefs extends TestApplication{
         assertTrue(driver.findElements(By.id("profile_form")).size() > 0);
         assertEquals(driver.findElement(By.id("profile_form_title")).getText(), "Profile");
     }
-    
+
+    /**
+     * Profile -> 1
+     */
     @Then("I should see the information that is visible to all members.")
     public void seeProfileInfo() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
@@ -447,7 +441,10 @@ public class StepsDefs extends TestApplication{
                                 && d.findElement(By.id("type")).getText().equals("Freelancer") 
                                 && d.findElement(By.id("email")).getAttribute("value").equals(currentUsername + "@mail.com"));
     }
-    
+
+    /**
+     * Profile -> 1
+     */
     @Then("be able to update any information I desire.")
     public void clickUpdateInfo() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
@@ -455,8 +452,11 @@ public class StepsDefs extends TestApplication{
         assertTrue(driver.findElements(By.id("update_btn")).size() > 0);
         driver.quit();
     }
-    
-    @When("I submit any change to the information") 
+
+    /**
+     * Profile -> 3
+     */
+    @When("I submit any change to the information")
     public void submitProfileUpdate() {
         WebElement name = driver.findElement(By.id("name"));
         WebElement email = driver.findElement(By.id("email"));
@@ -472,7 +472,10 @@ public class StepsDefs extends TestApplication{
         new_pwd_conf.sendKeys("teste2");
         driver.findElement(By.id("update_btn")).click();
     }
-    
+
+    /**
+     * Profile -> 3
+     */
     @Then("I should see all changes instantly.")
     public void seeProfileInfoUpdated() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
@@ -480,8 +483,11 @@ public class StepsDefs extends TestApplication{
                                 && d.findElement(By.id("email")).getAttribute("value").equals("teste2@mail.com"));
         driver.quit();
     }
-    
-    @When("I submit any change to the information without the correct format") 
+
+    /**
+     * Profile -> 4
+     */
+    @When("I submit any change to the information without the correct format")
     public void submitProfileUpdateIncorrect() {
         WebElement name = driver.findElement(By.id("name"));
         WebElement email = driver.findElement(By.id("email"));
@@ -497,7 +503,10 @@ public class StepsDefs extends TestApplication{
         new_pwd_conf.sendKeys("teste3");
         driver.findElement(By.id("update_btn")).click();
     }
-    
+
+    /**
+     * Profile -> 4
+     */
     @And("have the chance to correct my update submission.")
     public void canCorrectFormUpdate(){
         new WebDriverWait(driver,10L).until(
@@ -511,24 +520,146 @@ public class StepsDefs extends TestApplication{
     /*
         The 3 steps below are not yet supported by the system
     */
-    
+
+    /**
+     * Profile -> 2
+     */
     @When("I'm on another user profile page")
     public void accessUserProfileInfo() {
-        // to do ...
+        // TODO
     }
-    
-    @Then("I should see the information he/she made available")
+
+    /**
+     * Profile -> 2
+     */
+    @Then("I should see the information he\\/she made available")
     public void seeUserProfileInfo() {
-        // to do ...
+        // TODO
     }
-    
+
+    /**
+     * Profile -> 2
+     */
     @And("be able to start a conversation.")
     public void startConversation() {
-        // to do ...
+        // TODO
     }
-    
-    /* ==============================  ============================== */
-    
+
+    /* ============================== SEARCHUSER TEST ============================== */
+
+    /*
+    @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+
+    /**
+     * SearchUser -> all
+     */
+    @When("I access the search tab")
+    public void accessTheSearchTab() {
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
+        WebElement search_tab = driver.findElement(By.id("search"));
+        search_tab.click();
+
+        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
+    }
+
+    /**
+     * SearchUser -> all
+     */
+    @And("choose the option of search for freelancers or employers")
+    public void chooseUserSearch() {
+        driver.findElement(By.id("searchByUsers")).click();
+
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) ->  d.findElement(By.id("searchUserName")).isDisplayed() &&
+                              d.findElement(By.id("searchUserInterestedAreas")).isEnabled() &&
+                              d.findElement(By.id("searchUserType")).isDisplayed() &&
+                              d.findElement(By.id("allUsers")).isEnabled());
+    }
+
+    /**
+     * SearchUser -> 2
+     */
+    @And("I type in one or more keywords like the name of a technology field")
+    public void insertUserSearchFilters() {
+        new Select(driver.findElement(By.id("searchUserType"))).selectByVisibleText("Freelancer");
+    }
+
+    /**
+     * SearchUser -> all
+     */
+    @And("I click the search button")
+    public void clickSearchButton() {
+        driver.findElement(By.id("userSearchBtn")).click();
+    }
+
+    /**
+     * SearchUser -> 1
+     */
+    @Then("I should see a list freelancers or employers")
+    public void userPresentedAfterSearch() {
+        // because this stories uses "that I am logged in," where a registration of a new user
+        //  happens at least one user has exits
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> driver.findElements(By.className("userSearchResult")).size() >= 1);
+        driver.quit();
+    }
+
+    /**
+     * SearchUser -> 2
+     */
+    @Then("I should see a list freelancers or employers related to that\\/those keyword\\(s).")
+    public void userPresentedAfterSearchFiltered() {
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> driver.findElements(By.className("userSearchResult")).size() >= 1);
+
+        for (WebElement name : driver.findElements(By.className("userSearchType"))) {
+            assertEquals("Freelancer", name.getText());
+        }
+        driver.quit();
+    }
+
+    /**
+     * SearchUser -> 3
+     */
+    @And("the results are presented")
+    public void resultsAppearAfterUserSearch() {
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> driver.findElements(By.className("userSearchResult")).size() >= 1);
+    }
+
+    /**
+     * SearchUser -> 3
+     */
+    @And("I click on member")
+    public void clickOnUserSearchResult() {
+        assertFalse(driver.findElement(By.id("userModal")).isDisplayed());
+        driver.findElements(By.className("userSearchResult")).get(0).click();
+    }
+
+    /**
+     * SearchUser -> 3
+     */
+    @Then("I should see all information related to him\\/her including possible job offers\\/proposals")
+    public void userSearchInfoModal() {
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> driver.findElement(By.id("userModal")).isDisplayed());
+    }
+
+    /**
+     * SearchUser ->
+     */
+    @And("I should be able to contact the member.")
+    public void ableToContactTheMember() {
+        WebElement contact_btn = driver.findElement(By.id("contact_btn"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> contact_btn.isDisplayed());
+        driver.quit();
+    }
+
+    /* ============================== TEST ============================== */
+
     // add new steps here...
-    
+
 }

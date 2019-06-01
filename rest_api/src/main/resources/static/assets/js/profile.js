@@ -1,7 +1,13 @@
 
 var base_api_url = "http://" + window.location.host;
 
-var profile = {};
+var profile = {
+    type: "",
+    username: "",
+    name: "",
+    email: "",
+    interestedAreas: ""
+};
 
 window.onload = function() {
     profile["type"] = localStorage.getItem("type");
@@ -72,7 +78,7 @@ $("#update_btn").click(function(event) {
             // warning toast
         }
     }
-    
+
     if(JSON.stringify(interestedAreas.sort()) != JSON.stringify(profile.interestedAreas.sort())) {
         data["interestedAreas"]=interestedAreas;
     }
@@ -85,7 +91,7 @@ $("#update_btn").click(function(event) {
             // warning toast
         }
     }
-    
+
     console.log(profile);
     console.log(data);
 
