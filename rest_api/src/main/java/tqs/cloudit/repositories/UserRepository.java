@@ -29,6 +29,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value= "select count(*) from user where email = ?1", nativeQuery=true)
     public int emailExists(String email);
 
-    @Query(value= "select type from user where username=?1", nativeQuery=true)
+    @Query(value= "select type from user where username = ?1", nativeQuery=true)
     public String getType(String name);
 }

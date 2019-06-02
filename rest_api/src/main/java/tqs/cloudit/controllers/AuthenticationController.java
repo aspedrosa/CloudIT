@@ -64,4 +64,5 @@ public class AuthenticationController {
     public ResponseEntity hire(@PathVariable long id) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
+    
 }

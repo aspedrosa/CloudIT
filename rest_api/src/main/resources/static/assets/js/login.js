@@ -35,7 +35,7 @@ function sign_in() {
                     <strong>Error!</strong> Invalid Credentials.\
                 </div>');
                 alert(JSON.stringify(data));
-        }else{
+            }else{
                 localStorage.setItem("username", username);
                 localStorage.setItem("type", data.data.type);
                 window.location.href= base_api_url+"/welcomePage";

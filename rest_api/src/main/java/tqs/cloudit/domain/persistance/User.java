@@ -3,7 +3,9 @@ package tqs.cloudit.domain.persistance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +37,7 @@ public class User {
     
     private String type;
     
-    @OneToMany(mappedBy="creator")
+    @OneToMany(mappedBy="creator", fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<JobOffer> myOffers = new HashSet();
     
@@ -43,7 +45,7 @@ public class User {
     @JsonIgnore
     private Set<JobOffer> acceptedOffers = new HashSet();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
         name = "UserArea", 
         joinColumns = @JoinColumn(name = "userId"), 
@@ -125,9 +127,14 @@ public class User {
     public Set<Area> getInterestedAreas() {
         return interestedAreas;
     }
-
-    public void setInterestedAreas(Set<Area> interestedAreas) {
-        this.interestedAreas = interestedAreas;
+    
+    public void setInterestedAreas(Set<String> interestedAreas) {
+        this.interestedAreas.clear();
+        if(interestedAreas!=null){
+            for(String area : interestedAreas){
+                this.interestedAreas.add(new Area(area));
+            }
+        }
     }
 
     public Set<JobOffer> getMyOffers() {

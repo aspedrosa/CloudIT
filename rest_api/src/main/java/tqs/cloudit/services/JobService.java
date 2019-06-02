@@ -52,18 +52,55 @@ public class JobService {
             response.put("message", "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
             return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
         }
-        
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
         User aux = userRepository.getInfo(creator);
         jo.setCreator(aux);
         aux.addNewOffer(jo);
         jobRepository.save(jo);
-        
         JSONObject response = new JSONObject();
         response.put("message", "Job offer registered with success.");
         return new ResponseEntity(response,HttpStatus.OK);
     }
-
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            JSONObject response = new JSONObject();
+            response.put("message", "No job found with that id.");
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        }
+        JSONObject response = new JSONObject();
+        response.put("message", "Job offer found with success.");
+        response.put("data", jobs);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            JSONObject response = new JSONObject();
+            response.put("message", "No job found with that id.");
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        }
+        JSONObject response = new JSONObject();
+        response.put("message", "Job offer found with success.");
+        response.put("data", jobs);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDateOnlyArea(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            JSONObject response = new JSONObject();
+            response.put("message", "No job found with that id.");
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        }
+        JSONObject response = new JSONObject();
+        response.put("message", "Job offer found with success.");
+        response.put("data", jobs);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+    
     public ResponseEntity getSpecificOffer(long id) {
         tqs.cloudit.domain.persistance.JobOffer jo = jobRepository.getJobOffer(id);
         if(jo==null){
