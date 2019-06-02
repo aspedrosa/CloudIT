@@ -26,6 +26,7 @@ function sign_in() {
             "Authorization": "Basic " + btoa(username + ":" + password),
             'X-Requested-With': 'XMLHttpRequest'
         },
+        xhrFields: { withCredentials: true },   
         crossDomain:true,
         success: function(data, status, xhr) {
             console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
@@ -35,9 +36,8 @@ function sign_in() {
                 </div>');
                 alert(JSON.stringify(data));
             }else{
-                localStorage.setItem("type", data.data.type);
                 localStorage.setItem("username", username);
-                localStorage.setItem("token", btoa(username + ":" + password));
+                localStorage.setItem("type", data.data.type);
                 window.location.href= base_api_url+"/welcomePage";
             }
         },

@@ -1,7 +1,8 @@
 var base_api_url = "http://" + window.location.host;
 function getOffers() {
     var self=this;
-    self.myOffers=ko.observableArray([])
+    self.myOffersColumn1=ko.observableArray([])
+    self.myOffersColumn2=ko.observableArray([])
     self.acceptedOffers=ko.observableArray([])
     
     self.refresh = function(){
@@ -15,9 +16,18 @@ function getOffers() {
                     alert(JSON.stringify(data));
                 }else{
                     console.log(data)
-                    self.myOffers.removeAll()
+                    self.myOffersColumn1.removeAll()
+                    self.myOffersColumn2.removeAll()
                     for(let index in data.data){
-                        self.myOffers.push(data.data[index]);
+                        if(localStorage.getItem("type")==="Freelancer"){
+                            self.myOffersColumn1.push(data.data[index]);
+                        }else{
+                            if(index%2===0){
+                                self.myOffersColumn1.push(data.data[index]);
+                            }else{
+                                self.myOffersColumn2.push(data.data[index]);
+                            }
+                        }
                     }
                 }
             },
@@ -148,4 +158,9 @@ $(document).ready(function(e){
             $('.search-panel span#search_concept').text(concept);
             $('.input-group #search_param').val(param);
     });
+    
+    if(localStorage.getItem("type")==="Employer"){
+        $("#acceptedOffers").css("display", "none");
+        $("#myOffers2").css("display", "block");
+    }
 });

@@ -65,7 +65,7 @@ function getOffers() {
                 console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
             }
         });
-    };
+    }
 };
 
 var offers = new getOffers()

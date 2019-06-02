@@ -6,7 +6,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
-import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -309,6 +308,15 @@ public class StepsDefs extends TestApplication{
 
     /* ============================== EMPLOYERPOSTJOB TEST ============================== */
 
+    /**
+     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
+     * - Employer asserts that it's possible to create a job offer.
+     * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
+     *  - Employer creates a job offer, both correctly and without necessary fields.
+     */
     @Given("that I am logged in,")
     public void openWebsiteAndLogin() {
         driver.get("http://localhost:8080/loginPage");
@@ -336,10 +344,13 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @Given("I have accessed to MyJobs page,")
     public void accessedMyJobs() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,14L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
         driver.findElement(By.id("jobs")).click();
     }
@@ -347,8 +358,11 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
-    @When("I choose the option to post a job offer")
+    @When("I choose the option to post a job (offer|advertisement)")
     public void chooseOptionPostOffer() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
@@ -358,6 +372,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @Then("I should see a form to be filled.")
     public void shouldSeeForm() {
@@ -374,6 +391,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I execute the previous steps")
     public void executePreviousSteps() {
@@ -388,6 +408,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I fill in and submit the form,")
     public void fillAndSubmit() {
@@ -407,6 +430,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Then("I should see a message informing me about the success\\/failure of the operation")
     public void shouldSeeMessageInformingSuccessFailure() {
@@ -422,6 +448,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Then("\\(if successful) I should see a new post added to my profile.")
     public void ifSuccessfulShouldSeeNewPostAddedToProfile() {
