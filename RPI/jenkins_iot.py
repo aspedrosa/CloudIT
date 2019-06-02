@@ -13,10 +13,10 @@ status_led_map = {"blue":GREEN_LED, "red":RED_LED, "":YELLOW_LED}
 # Returns the status name for the latest build of the project
 # with the name equal to the argument job_name
 def get_jenkins_job_status(job_name):
-    result = requests.get(url='http://192.168.160.63:8080/api/json?tree=jobs[name,color]',
+    result = requests.get(url='http://192.168.160.63:8081/job/ci_cd/api/json?tree=jobs[name,color]',
                           auth=requests.auth.HTTPBasicAuth(
                                'admin',
-                               '112b4d1426be54522d80aa8f101656f3ce')).json()
+                               '11a78467350acfdde52e62a38d8ec22996')).json()
     for job in result["jobs"]:
         if job_name == job["name"]:
             return job["color"]
@@ -37,6 +37,7 @@ def main():
     
     while 1:
         color = get_jenkins_job_status(job_name)
+        print("COLOR: "+color)
         if current_build_status != color or current_build_status == None: 
             if color in status_led_map:
                 GPIO.output(status_led_map[color], GPIO.HIGH)
