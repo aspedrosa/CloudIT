@@ -10,7 +10,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -63,6 +65,9 @@ public class StepsDefs extends TestApplication{
     
     @Autowired
     private AuthenticationService authenticationService;
+    
+    @Autowired
+    private JobService jobService;
     
     /* ============================== SIGNIN TEST ============================== */
 
@@ -264,9 +269,8 @@ public class StepsDefs extends TestApplication{
     public void canCorrectForm(){
         new WebDriverWait(driver,10L).until(
                 (WebDriver d) -> d.findElement(By.id("name")).isDisplayed());
-        assertTrue(driver.findElements(By.id("name")).size() > 0);
-        assertTrue(driver.findElements(By.id("email")).size() > 0);
-        assertTrue(driver.findElements(By.id("pwd")).size() > 0);
+        assertFalse(driver.findElement(By.id("name")).getAttribute("value").isEmpty());
+        assertFalse(driver.findElement(By.id("email")).getAttribute("value").isEmpty());
         driver.quit();
     }
     
@@ -332,7 +336,7 @@ public class StepsDefs extends TestApplication{
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
      */
-    @Given("I have access to MyJobs page,")
+    @And("I have access to MyJobs page,")
     public void accessedMyJobs() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
@@ -418,7 +422,7 @@ public class StepsDefs extends TestApplication{
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
      */
-    @Then("\\(if successful) I should see a new post added to my profile.")
+    @And("\\(if successful) I should see a new post added to my profile.")
     public void ifSuccessfulShouldSeeNewPostAddedToProfile() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
@@ -475,9 +479,11 @@ public class StepsDefs extends TestApplication{
     
     @Then("I should see all changes instantly.")
     public void seeProfileInfoUpdated() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) ->   d.findElement(By.id("name")).getAttribute("value").equals("Teste 2")
-                                && d.findElement(By.id("email")).getAttribute("value").equals("teste2@mail.com"));
+        new WebDriverWait(driver,10L)
+                .ignoring(StaleElementReferenceException.class)
+                .until((ExpectedCondition<Boolean>) 
+                    (WebDriver d) -> d.findElement(By.id("name")).isDisplayed());
+        assertTrue(driver.findElement(By.id("name")).getAttribute("value").equals("Teste 2"));
         driver.quit();
     }
     
@@ -488,7 +494,7 @@ public class StepsDefs extends TestApplication{
         WebElement cur_pwd = driver.findElement(By.id("cur_pwd"));
         WebElement new_pwd = driver.findElement(By.id("new_pwd"));
         WebElement new_pwd_conf = driver.findElement(By.id("new_pwd_conf"));
-        name.sendKeys("Teste 2");
+        name.sendKeys("Teste 3");
         email.clear();
         email.sendKeys("teste3@mail.com");
         cur_pwd.clear();
@@ -517,7 +523,7 @@ public class StepsDefs extends TestApplication{
         // to do ...
     }
     
-    @Then("I should see the information he/she made available")
+    @Then("I should see the information he\\/she made available")
     public void seeUserProfileInfo() {
         // to do ...
     }
@@ -525,7 +531,9 @@ public class StepsDefs extends TestApplication{
     @And("be able to start a conversation.")
     public void startConversation() {
         // to do ...
+        driver.quit();
     }
+    
     
     /* ============================== EDIT POSTS TEST ============================== */
     
@@ -539,37 +547,118 @@ public class StepsDefs extends TestApplication{
     
     @And("I have one or more posts published,")
     public void havePostsPublished() {
-        // to do...
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
+        driver.findElement(By.id("createJobButton")).click();
+        
+        WebElement title = driver.findElement(By.id("offerTitle"));
+        WebElement description = driver.findElement(By.id("offerDescription"));
+        WebElement area = driver.findElement(By.id("offerArea"));
+        WebElement amount = driver.findElement(By.id("offerAmount"));
+        WebElement date = driver.findElement(By.id("offerDate"));
+        title.sendKeys("t1");
+        description.sendKeys("t1");
+        area.sendKeys("t1");
+        amount.sendKeys("1");
+        date.sendKeys("1010-11-11");
+        driver.findElement(By.id("submitOfferButton")).click();
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> !d.findElement(By.id("createModal")).isDisplayed());
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
     }
     
     @When("I choose the option to edit a job")
     public void chooseEditOption() {
-        // to do...
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
+        //driver.findElement(By.linkText("t1")).click();
+        new WebDriverWait(driver,10L)
+                .ignoring(ElementClickInterceptedException.class)
+                .until(d -> {
+                    d.findElement(By.linkText("t1")).click();
+                    return true;
+                });
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
+        driver.findElement(By.id("edit_save_btn")).click();
     }
     
     @Then("I should see a form prefilled with the current data.")
     public void seePrefilledForm() {
-        // to do...
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("modalTitle")).isDisplayed());
+        assertTrue(driver.findElement(By.id("modalTitle")).getAttribute("value").equals("t1"));
+        assertTrue(driver.findElement(By.id("modalDescription")).getAttribute("value").equals("t1"));
+        assertTrue(driver.findElement(By.id("modalArea")).getAttribute("value").equals("t1"));
+        assertTrue(driver.findElement(By.id("modalAmount")).getAttribute("value").equals("1"));
+        assertTrue(driver.findElement(By.id("modalDate")).getAttribute("value").equals("1010-11-11"));
+        driver.quit();
     }
     
     @When("I execute the previous edit steps")
     public void executePreviousEditSteps() {
-        // to do...
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
+        driver.findElement(By.id("jobs")).click();
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
+        driver.findElement(By.id("createJobButton")).click();
+        
+        WebElement title = driver.findElement(By.id("offerTitle"));
+        WebElement description = driver.findElement(By.id("offerDescription"));
+        WebElement area = driver.findElement(By.id("offerArea"));
+        WebElement amount = driver.findElement(By.id("offerAmount"));
+        WebElement date = driver.findElement(By.id("offerDate"));
+        title.sendKeys("t1");
+        description.sendKeys("t1");
+        area.sendKeys("t1");
+        amount.sendKeys("1");
+        date.sendKeys("1010-11-11");
+        driver.findElement(By.id("submitOfferButton")).click();
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
+        //driver.findElement(By.linkText("t1")).click();
+        new WebDriverWait(driver,10L)
+                .ignoring(ElementClickInterceptedException.class)
+                .until(d -> {
+                    d.findElement(By.linkText("t1")).click();
+                    return true;
+                });
+        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
+        driver.findElement(By.id("edit_save_btn")).click();
     }
     
     @And("I edit and submit the form,")
     public void editAndSubmitForm() {
-        
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("modalTitle")).isDisplayed());
+        WebElement title = driver.findElement(By.id("modalTitle"));
+        title.sendKeys("t1_edited");
+        driver.findElement(By.id("edit_save_btn")).click();
     }
     
     @Then("I should see a message informing me about the success/failure of the operation")
     public void operationInfoMessage() {
-        // to do...
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
+        assertTrue(driver.findElement(By.id("edit_save_btn")).getText().equals("Edit"));
+        // to be continued...
     }
     
-    @And("(if successful) I should see the updates on my posts.")
+    @And("\\(if successful) I should see the updates on my posts.")
     public void seePostsUpdated() {
-        // to do...
+        driver.findElement(By.id("modalClose")).click();
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> !d.findElement(By.id("modalClose")).isDisplayed());
+        driver.quit();
     }
     
     /* ==============================  ============================== */

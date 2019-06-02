@@ -75,6 +75,13 @@ public class JobService {
         
         User aux = old_jobOffer.getCreator();
         aux.removeOffer(old_jobOffer);
+        
+        old_jobOffer.setTitle(jobOffer.getTitle());
+        old_jobOffer.setDescription(jobOffer.getDescription());
+        old_jobOffer.setArea(jobOffer.getArea());
+        old_jobOffer.setAmount(jobOffer.getAmount());
+        old_jobOffer.setDate(jobOffer.getDate());
+        
         aux.addNewOffer(old_jobOffer);
         jobRepository.save(old_jobOffer);
         

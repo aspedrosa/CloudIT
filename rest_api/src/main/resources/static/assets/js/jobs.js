@@ -103,7 +103,7 @@ function createOffer(){
             if(status!=="success"){
                 alert(JSON.stringify(data));
             }else{
-                offers.refresh()
+                offers.refresh();
                 $('#createModal').modal('hide');
             }
         },
@@ -154,7 +154,7 @@ function enableEdit_orSave() {
 
         $.ajax({
             url: base_api_url+"/joboffer/edit/" + currentModalId,
-            type: "POST",
+            type: "PUT",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
@@ -167,15 +167,15 @@ function enableEdit_orSave() {
                     console.log(data);
 
                     offers.refresh();
-
+                    //$('#offerModal').modal('hide');
+                    
                     $("#modalTitleH3").text(title);
                     $("#titleEdit").prop('hidden', true);
                     $("#modalDescription").prop('disabled', true);
                     $("#modalArea").prop('disabled', true);
                     $("#modalDate").prop('disabled', true);
                     $("#modalAmount").prop('disabled', true);
-
-                    console.log("Update saved.");
+                    
                 }
             },
             error: function(data, status, xhr) {
