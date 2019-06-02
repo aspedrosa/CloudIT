@@ -57,25 +57,64 @@
             </div>
             <div class="col-md-8">
                 <div data-bind="if: searchBy() == 'jobs'">
-                    <div class="input-group">
-                        <div class="input-group-btn search-panel">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right: 1px;">
-                                <span id="search_concept">Filter by</span> <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#contains">Contains</a></li>
-                                <li><a href="#its_equal">It's equal</a></li>
-                                <li><a href="#greather_than">Greather than ></a></li>
-                                <li><a href="#less_than">Less than < </a></li>
-                                <li class="divider"></li>
-                                <li><a href="#all">Anything</a></li>
-                            </ul>
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <div class="input-group">
+                            <input type="hidden" name="search_param" value="all" id="search_param">
+                            <input type="text" id="query" class="form-control" name="x" placeholder="Search term...">
+                            <span class="input-group-btn" data-bind="click: search">
+                                <button class="btn btn-default" type="button" style="margin-right: 30px;" id="search_btn"><span class="glyphicon glyphicon-search" ></span></button>
+                            </span>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" style="margin-right: 1px;" onclick="changeFilterMenu()">
+                                <span class="glyphicon glyphicon-cog" style="margin-right: 10px"></span><span id="filters_btn">Filter</span>
+                                </button>
+                            </span>
                         </div>
-                        <input type="hidden" name="search_param" value="all" id="search_param" />
-                        <input type="text" class="form-control" name="x" placeholder="Search term...">
-                        <span class="input-group-btn" >
-                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" ></span></button>
-                        </span>
+                    </div>
+                    <div class="row" id="filters_menu" style="display: none">
+                        <div class="col-xs-8 col-xs-offset-2" style="background-color: #f9f9f9; margin-top: 10px; padding-top: 10px; border-top: 1px solid lightgray">
+                            <div class="col-xs-6">
+                                <label class="filter_menu_title">Search Text In:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="isTitle" checked>
+                                    <label class="form-check-label" for="isTitle">
+                                        Offer Title and Description
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="isArea" checked>
+                                    <label class="form-check-label" for="isArea">
+                                        Offer Area
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="filter_menu_title">Ammount</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="fromAmount">From:</label>
+                                        <input style="width: 130px" type="number" class="form-control" id="fromAmount" placeholder="">
+                                    </div>
+                                    <div class="form-group col-xs-offset-1">
+                                        <label for="toAmount">To:</label>
+                                        <input style="width: 130px" type="number" class="form-control" id="toAmount" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px">
+                                <label class="filter_menu_title">Date:</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="fromDate">From</label>
+                                        <input type="date" class="form-control" id="fromDate">
+                                    </div>
+                                    <div class="form-group col-xs-offset-1">
+                                        <label for="toDate">To:</label>
+                                        <input type="date" class="form-control" id="toDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div data-bind="if: searchBy() == 'users'">
@@ -181,7 +220,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
                                     </div>
                                 </div>
 
@@ -279,53 +318,11 @@
                                         <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="sidebar col-md-4 col-sm-4">
-                    <div class="widget clearfix">
-                        <h4 class="widget-title">Subscribe</h4>
-                        <div class="newsletter-widget">
-                            <p>You can opt out of our newsletters at any time. See our privacy policy.</p>
-                            <form class="form-inline" role="search">
-                                <div class="form-1">
-                                    <input type="text" class="form-control" placeholder="Enter email here..">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="widget clearfix">
-                        <h4 class="widget-title">ADVERTISING</h4>
-                        <div class="category-widget">
-                            <img src="assets/img/ad.gif" alt="" class="img-responsive img-thumbnail">
-                        </div>
-                    </div>
-
-                    <div class="widget clearfix">
-                        <h4 class="widget-title">Blog Categories</h4>
-                        <div class="category-widget">
-                            <ul>
-                                <li><a href="#">SEO Tips and Tricks</a></li>
-                                <li><a href="#">e-Commerce SEO</a></li>
-                                <li><a href="#">SEO Tools and Modules</a></li>
-                                <li><a href="#">Google Updates for Algoritms</a></li>
-                                <li><a href="#">SEO for CMS Systems</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-
-
-
-
-            
         </div>
     </section>
 

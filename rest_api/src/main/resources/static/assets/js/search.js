@@ -28,6 +28,45 @@ function AppViewModel() {
         });
     }
 
+    self.search = function() {
+        var query = $("#query").val();
+        var isTitle = $("#isTitle").is(":checked");
+        var isArea = $("#isArea").is(":checked");
+        var fromAmount = $("#fromAmount").val();
+        if (fromAmount == "") fromAmount = -1.0;
+        var toAmount = $("#toAmount").val();
+        if (toAmount == "") toAmount = -1.0;
+        var fromDate = $("#fromDate").val();
+        var toDate = $("#toDate").val();
+        $.ajax({
+            url: base_api_url+"/joboffer/advancedSearch",
+            type: "POST",
+            data: JSON.stringify({"query": query, "title":isTitle, "area":isArea, 
+                   "fromAmount":fromAmount, "toAmount":toAmount, 
+                   "fromDate":fromDate, "toDate":toDate}),
+            dataType: "json",
+            contentType: "application/json",
+            crossDomain:true,
+            success: function(data, status, xhr) {
+                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
+                if(status!=="success"){
+                    alert(JSON.stringify(data));
+                }else{
+                    console.log(data)
+                    self.jobOffers.removeAll()
+                    for(let index in data.data){
+                        console.log(data.data[index]);
+                        self.jobOffers.push(data.data[index]);
+                    }
+                }
+            },
+            error: function(data, status, xhr) {
+                alert(JSON.stringify(data));
+                console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+            }
+        });
+    };
+
     //jobs of the clicked user on user search
     self.userModalJobs = ko.observableArray([]);
     //user type of the clicked user on user search
@@ -70,7 +109,7 @@ function AppViewModel() {
             }
         });
     }
-};
+}
 
 var appViewModel = new AppViewModel();
 appViewModel.refresh();
@@ -100,6 +139,14 @@ function fillSearchUserModalTable(name, userType, email, jobs) {
     jobs.forEach(function (job, _) {
         appViewModel.userModalJobs.push(job);
     })
+}
+
+function changeFilterMenu() {
+    console.log();
+    if ($("#filters_menu").css("display") === "none")
+        $("#filters_menu").css("display", "block");
+    else
+        $("#filters_menu").css("display", "none");
 }
 
 $(document).ready(function(e){    

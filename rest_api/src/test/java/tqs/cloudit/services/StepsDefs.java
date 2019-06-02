@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -279,7 +277,12 @@ public class StepsDefs {
      */
     @When("I click on the about tab")
     public void clickAbout() {
-        driver.findElement(By.id("about")).click();
+        new WebDriverWait(driver, 10L)
+            .ignoring(StaleElementReferenceException.class)
+            .until(driver -> {
+                driver.findElement(By.id("about")).click();
+                return true;
+            });
     }
 
     /**
@@ -287,8 +290,11 @@ public class StepsDefs {
      */
     @Then("I should see the about page.")
     public void checkAboutPage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
-            (WebDriver d) -> d.findElement(By.id("about_page_content")).isDisplayed());
+        new WebDriverWait(driver, 10L)
+            .ignoring(NoSuchElementException.class)
+            .until(driver ->
+                driver.findElement(By.id("about_page_content")).isDisplayed()
+            );
         driver.quit();
     }
 
@@ -516,7 +522,7 @@ public class StepsDefs {
         assertTrue(driver.findElements(By.id("cur_pwd")).size() > 0);
         driver.quit();
     }
-    
+
     /*
         The 3 steps below are not yet supported by the system
     */
@@ -545,24 +551,121 @@ public class StepsDefs {
         // TODO
     }
 
+    /* ============================== SEARCHOFFER TEST ============================== */
+
+    /**
+     * SearchOffer -> all
+     * SearchUser -> all
+     */
+    @When("I access the search tab")
+    public void accessTheSearchTab() {
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
+        WebElement search_tab = driver.findElement(By.id("search"));
+        search_tab.click();
+        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
+    }
+
+    /**
+     * SearchOffer -> all
+     */
+    @And("choose the option of job proposals for freelancers")
+    public void chooseJobProposals() {
+        driver.findElement(By.id("searchByJobs")).click();
+    }
+
+    /**
+     * SearchOffer -> all
+     */
+    @And("I type in one or more keywords like the name of a programming language")
+    public void searchKeywords() {
+        WebElement query = driver.findElement(By.id("query"));
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> query.isDisplayed());
+        query.clear();
+        query.sendKeys("java");
+        driver.findElement(By.id("search_btn")).click();
+    }
+
+    /**
+     * SearchOffer -> 1
+     */
+    @Then("I should see a list job proposals related to that keyword.")
+    public void viewJobProposals() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+
+    /**
+     * SearchOffer -> 2
+     */
+    @And("I choose a filtering option")
+    public void chooseFilteringOption() {
+        driver.findElement(By.id("filters_btn")).click();
+        driver.findElement(By.id("fromAmount")).clear();
+        driver.findElement(By.id("fromAmount")).sendKeys("10");
+        driver.findElement(By.id("toAmount")).clear();
+        driver.findElement(By.id("toAmount")).sendKeys("1000");
+    }
+
+    /**
+     * SearchOffer -> 2
+     */
+    @Then("I should see a list of job proposals filtered according to the chosen rule.")
+    public void viewJobProposals2() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+
+    /**
+     * SearchOffer -> 3
+     */
+    @And("the results of the search are presented")
+    public void viewJobProposals3() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+
+    /**
+     * SearchOffer -> 3
+     */
+    @And("I click on one job")
+    public void clickJobOffer() {
+        driver.findElements(By.className("blog-box")).get(0).click();
+    }
+
+    /**
+     * SearchOffer -> 3
+     */
+    @Then("I should see all information related to that job")
+    public void seeInformationRelatedToJob() {
+        WebElement offer_modal = driver.findElement(By.id("m1"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> offer_modal.isDisplayed());
+    }
+
+    /**
+     * SearchOffer -> 3
+     */
+    @And("I should be able to contact the proposal's author.")
+    public void contactAuthorProposal() {
+        WebElement contact_btn = driver.findElement(By.id("contact_btn"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> contact_btn.isDisplayed());
+    }
+    
     /* ============================== SEARCHUSER TEST ============================== */
 
     /*
     @Given("that I am logged in,") -> EmployerPostJob Steps
     */
 
-    /**
-     * SearchUser -> all
-     */
-    @When("I access the search tab")
-    public void accessTheSearchTab() {
-        new WebDriverWait(driver,10L).until(
-            (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
-        WebElement search_tab = driver.findElement(By.id("search"));
-        search_tab.click();
-
-        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
-    }
+    /*
+    @When("I access the search tab") -> SearchOffer Steps
+    */
 
     /**
      * SearchUser -> all

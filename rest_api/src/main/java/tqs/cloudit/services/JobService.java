@@ -43,7 +43,6 @@ public class JobService {
         if(!jobOffer.allDefined()){
             return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
         }
-        
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
         User aux = userRepository.getInfo(creator);
         jo.setCreator(aux);
@@ -52,7 +51,31 @@ public class JobService {
         
         return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job offer registered with success.");
     }
-
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+    }
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+    }
+    
+    public ResponseEntity getJobOffersFromTextAmountAndDateOnlyArea(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+    }
+    
     public ResponseEntity getSpecificOffer(long id) {
         tqs.cloudit.domain.persistance.JobOffer jo = jobRepository.getJobOffer(id);
         if(jo==null){
