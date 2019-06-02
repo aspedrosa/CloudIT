@@ -288,7 +288,7 @@ public class StepsDefs {
     @Then("I should see the about page.")
     public void checkAboutPage() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
-            (WebDriver d) -> d.findElement(By.id("about_page_content")) != null);
+            (WebDriver d) -> d.findElement(By.id("about_page_content")).isDisplayed());
         driver.quit();
     }
 

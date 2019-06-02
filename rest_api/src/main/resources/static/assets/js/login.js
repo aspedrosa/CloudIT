@@ -11,7 +11,7 @@ function sign_in_tab() {
     var form = document.getElementById("signin_signup_form");
     document.getElementById("sign_up_link").classList.remove("active");
     document.getElementById("sign_in_link").classList.add("active");
-    form.innerHTML = '<div class="form-group" style="text-align: left;"> <label for="username">Username:</label> <input type="username" class="form-control" id="username"> </div> <div class="form-group" style="text-align: left;"> <label for="pwd">Password:</label> <input type="password" class="form-control" id="pwd"> </div> <button style="width: 100%; background-color: #3793f7; border: 0px" type="button" onclick="sign_in()" class="btn btn-secondary" id="submit_burron">Sign In</button>'; 
+    form.innerHTML = '<div class="form-group" style="text-align: left;"> <label for="username">Username:</label> <input type="username" class="form-control" id="username"> </div> <div class="form-group" style="text-align: left;"> <label for="pwd">Password:</label> <input type="password" class="form-control" id="pwd"> </div> <button style="width: 100%; background-color: #3793f7; border: 0px" type="button" onclick="sign_in()" class="btn btn-secondary" id="submit_button">Sign In</button>';
 }
 
 function sign_in() {

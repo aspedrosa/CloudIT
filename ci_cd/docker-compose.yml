@@ -55,3 +55,5 @@ volumes:
 
   postgresql:
   postgresql_data:
+
+  mysql_data:
