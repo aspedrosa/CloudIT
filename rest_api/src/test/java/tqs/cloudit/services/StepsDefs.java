@@ -247,19 +247,18 @@ public class StepsDefs extends TestApplication{
      */
     @Then("I should be notified about the errors or missing fields")
     public void checkErrorRegisterMessage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        new WebDriverWait(driver,10L)
+            .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> { 
-                            try 
-                            { 
-                                driver.switchTo().alert(); 
-                                driver.switchTo().alert().accept();
-                                return true; 
-                            }   // try 
-                            catch (NoAlertPresentException Ex) 
-                            { 
-                                return false; 
-                            }   // catch 
-                        });
+                    try {
+                        driver.switchTo().alert().accept();
+                        return true;
+                    }
+                    catch (NoAlertPresentException Ex) {
+                        return false;
+                    }
+                }
+            );
     }
     
     /**
