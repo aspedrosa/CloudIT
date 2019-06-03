@@ -5,7 +5,7 @@ Feature: Freelancer can post a personalized job proposal
 
     Scenario: Freelancer asserts that it's possible to create a job offer.
         Given that I am logged in,
-        And I have accessed to MyJobs page,
+        And I have access to MyJobs page,
         When I choose the option to post a job advertisement
         Then I should see a form to be filled.
 

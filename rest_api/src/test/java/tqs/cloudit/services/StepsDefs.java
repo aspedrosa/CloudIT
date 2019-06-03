@@ -249,17 +249,17 @@ public class StepsDefs extends TestApplication{
     public void checkErrorRegisterMessage() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> { 
-                                        try 
-                                        { 
-                                            driver.switchTo().alert(); 
-                                            driver.switchTo().alert().accept();
-                                            return true; 
-                                        }   // try 
-                                        catch (NoAlertPresentException Ex) 
-                                        { 
-                                            return false; 
-                                        }   // catch 
-                                    });
+                            try 
+                            { 
+                                driver.switchTo().alert(); 
+                                driver.switchTo().alert().accept();
+                                return true; 
+                            }   // try 
+                            catch (NoAlertPresentException Ex) 
+                            { 
+                                return false; 
+                            }   // catch 
+                        });
     }
     
     /**
@@ -349,7 +349,7 @@ public class StepsDefs extends TestApplication{
      * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
      *  - Freelancer asserts that it's possible to create a job offer.
      */
-    @And("I have access to MyJobs page,")
+    @Given("I have access to MyJobs page,")
     public void accessedMyJobs() {
         new WebDriverWait(driver,14L)
                 .ignoring(StaleElementReferenceException.class)
@@ -427,6 +427,9 @@ public class StepsDefs extends TestApplication{
         area.sendKeys("t1");
         amount.sendKeys("1");
         date.sendKeys("1010-11-11");
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> System.currentTimeMillis()-then > 1000);
         driver.findElement(By.id("submitOfferButton")).click();
     }
 
@@ -470,8 +473,10 @@ public class StepsDefs extends TestApplication{
     
     @When("I'm on the profile page")
     public void enterProfilePage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
-                (WebDriver d) -> d.findElement(By.id("profile")).isDisplayed());
+        new WebDriverWait(driver,10L)
+                .ignoring(StaleElementReferenceException.class)
+                .until((ExpectedCondition<Boolean>) 
+                    (WebDriver d) -> d.findElement(By.id("profile")).isDisplayed());
         driver.findElement(By.id("profile")).click();
         assertTrue(driver.findElement(By.id("profile_form")).isDisplayed());
         assertEquals(driver.findElement(By.id("profile_form_title")).getText(), "Profile");
@@ -549,10 +554,11 @@ public class StepsDefs extends TestApplication{
     
     @When("I access the search tab")
     public void accessTheSearchTab() {
-        new WebDriverWait(driver,10L).until(
-                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
-        WebElement search_tab = driver.findElement(By.id("search"));
-        search_tab.click();
+        new WebDriverWait(driver,10L)
+                .ignoring(StaleElementReferenceException.class)
+                .until((ExpectedCondition<Boolean>) 
+                    (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
+        driver.findElement(By.id("search")).click();
         jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
     }
     
@@ -651,10 +657,11 @@ public class StepsDefs extends TestApplication{
         @And("I have access to MyJobs page,") - EmployerPostJob Steps
     */
     
-    @And("I have one or more posts published,")
+    @Given("I have one or more posts published,")
     public void havePostsPublished() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
+        //new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        //        (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
+        assertTrue(driver.findElement(By.id("createJobButton")).isDisplayed());
         driver.findElement(By.id("createJobButton")).click();
         
         WebElement title = driver.findElement(By.id("offerTitle"));
@@ -667,13 +674,14 @@ public class StepsDefs extends TestApplication{
         area.sendKeys("t1");
         amount.sendKeys("1");
         date.sendKeys("1010-11-11");
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> System.currentTimeMillis()-then > 1000);
         driver.findElement(By.id("submitOfferButton")).click();
-        
-        //new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-        //        (WebDriver d) -> !d.findElement(By.id("createModal")).isDisplayed());
         
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
+        //assertTrue(driver.findElement(By.linkText("t1")).isDisplayed());
     }
     
     @When("I choose the option to edit a job")
@@ -685,9 +693,11 @@ public class StepsDefs extends TestApplication{
                     return true;
                 });
         
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
-        driver.findElement(By.id("edit_save_btn")).click();
+        new WebDriverWait(driver,10L)
+                .until(d -> {
+                    d.findElement(By.id("edit_save_btn")).click();
+                    return true;
+                });
     }
     
     @Then("I should see a form prefilled with the current data.")
@@ -719,17 +729,20 @@ public class StepsDefs extends TestApplication{
         WebElement area = driver.findElement(By.id("offerArea"));
         WebElement amount = driver.findElement(By.id("offerAmount"));
         WebElement date = driver.findElement(By.id("offerDate"));
-        title.sendKeys("t1");
-        description.sendKeys("t1");
-        area.sendKeys("t1");
-        amount.sendKeys("1");
-        date.sendKeys("1010-11-11");
+        title.sendKeys("t2");
+        description.sendKeys("t2");
+        area.sendKeys("t2");
+        amount.sendKeys("2");
+        date.sendKeys("1020-12-12");
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+                (WebDriver d) -> System.currentTimeMillis()-then > 1000);
         driver.findElement(By.id("submitOfferButton")).click();
         
         new WebDriverWait(driver,10L)
                 .ignoring(ElementClickInterceptedException.class)
                 .until(d -> {
-                    d.findElement(By.linkText("t1")).click();
+                    d.findElement(By.linkText("t2")).click();
                     return true;
                 });
         
