@@ -77,4 +77,10 @@ public class JobOffer {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "JobOffer{" + "title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + '}';
+    }
+    
 }

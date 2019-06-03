@@ -1,4 +1,3 @@
-
 var base_api_url = "http://" + window.location.host;
 
 var profile = {
@@ -18,10 +17,6 @@ window.onload = function() {
     $.ajax({
         url: base_api_url + "/profile",
         type: "GET",
-        headers: {
-            "Authorization": "Basic " + localStorage.getItem("token"),
-            'X-Requested-With': 'XMLHttpRequest'
-        },
         crossDomain:true,
         success: function(data, status, xhr) {
             if(status!=="success"){
@@ -104,10 +99,6 @@ $("#update_btn").click(function(event) {
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            headers: {
-                "Authorization": "Basic " + localStorage.getItem("token"),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
             crossDomain:true,
             success: function(data, status, xhr) {
                 if(status!=="success"){

@@ -52,6 +52,28 @@ public class JobService {
         return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job offer registered with success.");
     }
     
+    public ResponseEntity editOffer(Long id, JobOffer jobOffer) {
+        if(!jobOffer.allDefined()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Update invalid. When updating a job offer you need to provide the offer title, description, working area, amount and date(to be delivered).");
+        }
+        
+        tqs.cloudit.domain.persistance.JobOffer old_jobOffer = this.jobRepository.getJobOffer(id);
+        
+        User aux = old_jobOffer.getCreator();
+        aux.removeOffer(old_jobOffer);
+        
+        old_jobOffer.setTitle(jobOffer.getTitle());
+        old_jobOffer.setDescription(jobOffer.getDescription());
+        old_jobOffer.setArea(jobOffer.getArea());
+        old_jobOffer.setAmount(jobOffer.getAmount());
+        old_jobOffer.setDate(jobOffer.getDate());
+        
+        aux.addNewOffer(old_jobOffer);
+        jobRepository.save(old_jobOffer);
+        
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job offer edited with success.");
+    }
+
     public ResponseEntity getJobOffersFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
@@ -86,7 +108,7 @@ public class JobService {
 
     public ResponseEntity getUserOffers(String name) {
         Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getMyOffers();
-        
+
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Information fetched with success.", offers);
     }
 

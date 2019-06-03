@@ -26,7 +26,7 @@ function AppViewModel() {
                 console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
             }
         });
-    }
+    };
 
     self.search = function() {
         var query = $("#query").val();
@@ -142,7 +142,6 @@ function fillSearchUserModalTable(name, userType, email, jobs) {
 }
 
 function changeFilterMenu() {
-    console.log();
     if ($("#filters_menu").css("display") === "none")
         $("#filters_menu").css("display", "block");
     else

@@ -2,8 +2,7 @@ package tqs.cloudit.services;
 
 import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,7 @@ public class AuthenticationService {
     private AreaRepository areaRepository;
     
     private BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
-    private Logger l = LoggerFactory.getLogger(AuthenticationService.class); 
-    
+
     public ResponseEntity register(User user) {
         if(!user.allDefined()){
             return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. When registering you need to provide username, password, name, email, type of user and optionally interest areas.");
@@ -59,8 +57,13 @@ public class AuthenticationService {
         
         return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Registered with success");
     }
-    
-    public String getType(String name) {
-        return this.userRepository.getType(name);
+
+    public ResponseEntity login(String name) {
+        String type = userRepository.getType(name);
+
+        JSONObject aux = new JSONObject();
+        aux.put("type", type);
+
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Logged in with success", aux);
     }
 }

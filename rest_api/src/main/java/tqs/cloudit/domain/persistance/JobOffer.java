@@ -152,8 +152,35 @@ public class JobOffer {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final JobOffer other = (JobOffer) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "JobOffer{" + "id=" + id + ", title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", creator=" + creator + ", worker=" + worker + '}';
     }
+    
+    
     
 }
