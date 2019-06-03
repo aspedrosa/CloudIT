@@ -40,7 +40,10 @@ public class StepsDefs {
 
     static {
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
+        options.addArguments("--whitelisted-ips");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disabled-extensions");
 
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver(options);
@@ -725,7 +728,14 @@ public class StepsDefs {
      */
     @And("I click on one job")
     public void clickJobOffer() {
-        driver.findElements(By.className("blog-box")).get(0).click();
+        new WebDriverWait(driver, 10L)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                d -> {
+                    d.findElements(By.className("blog-box")).get(0).click();
+                    return true;
+                }
+            );
     }
 
     /**
