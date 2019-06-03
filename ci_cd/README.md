@@ -4,7 +4,6 @@
 2. Install Extra Plugins
    - SonarQube Scanner
    - Slack Notification Plugin
-   - Cobertura Plugin
 
 3. Setup Sonnar + Jenkins
    - On Sonarqube go to My Account -> Secutiry and generate a new token
@@ -31,3 +30,21 @@
     }
    }
    ```
+
+5. Build the pipeline agent image and **call it pipeline_agent**
+    `docker build -t pipeline_agent pipeline_agent`
+
+6. Setup the Jenkins Pipeline
+    - On our project we used a multi-branch pipeline so we could test our builds
+    for different branchs and pull requests.
+    - On section "Branch Sources" we used Github and for behaviors we had
+    "Discover branches" with strategy "Exclude branches that are also filed with PRs" and
+    "Discover pull requests from origin" with strategy "Merging the pull request with the
+    current target branch revision".
+    <img src="images/branch_sources.png">
+
+    - If your Jenkinsfile is not on the root folder of the project, like ours,
+    on section "Build Configuration" select "by Jenkinsfile" and insert the
+    relative path for the Jenkinsfile accordingly to the repository root.
+    <img src="images/build_configuration.png">
+

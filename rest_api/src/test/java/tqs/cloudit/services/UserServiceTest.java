@@ -1,6 +1,10 @@
 package tqs.cloudit.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.json.simple.JSONObject;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -178,5 +182,75 @@ public class UserServiceTest {
         ResponseEntity badResponse = new ResponseEntity(response, HttpStatus.NOT_ACCEPTABLE);
         assertEquals(badResponse, result);
     }
-    
+
+    /**
+     * Since the repository is in charge of filtering the user by the received name
+     *  and user type, it is the responsibility of the User service to filter
+     *  user by their interested areas, what is tested on this test
+     */
+    @Test
+    public void testSearchProfile() {
+        Set<String> user1Areas = new HashSet<>();
+        user1Areas.add("Area1");
+        user1Areas.add("Area2");
+        user1Areas.add("Area3");
+
+        Set<String> user2Areas = new HashSet<>();
+        user2Areas.add("Area1");
+        user2Areas.add("Area2");
+
+        user1.setInterestedAreas(user1Areas);
+        user2.setInterestedAreas(user2Areas);
+
+        List<tqs.cloudit.domain.persistance.User> users = new ArrayList<>();
+        users.add(new tqs.cloudit.domain.persistance.User(user1));
+        users.add(new tqs.cloudit.domain.persistance.User(user2));
+
+        Mockito.when(userRepository.userSearch(null, null)).thenReturn(users);
+
+        Set<String> requestedAreas = new HashSet<>();
+        requestedAreas.add("Area1");
+        requestedAreas.add("Area3");
+        List<tqs.cloudit.domain.responses.User> response = service.searchUser(null, requestedAreas, null);
+
+        //only Joao has Area1 and Area3 as interested areas
+        assertEquals(1, response.size());
+        assertEquals("Joao", response.get(0).getName());
+
+        requestedAreas.remove("Area3");
+        response = service.searchUser(null, requestedAreas, null);
+        //both have Area1 as interested area
+        assertEquals(2, response.size());
+        if (response.get(0).getName().equals("Joao")) {
+            assertEquals("Filipe", response.get(1).getName());
+        }
+        else {
+            assertEquals("Joao", response.get(1).getName());
+        }
+
+        requestedAreas.remove("Area1");
+        response = service.searchUser(null, null, null);
+        //no areas should give all users
+        assertEquals(2, response.size());
+        if (response.get(0).getName().equals("Joao")) {
+            assertEquals("Filipe", response.get(1).getName());
+        }
+        else {
+            assertEquals("Joao", response.get(1).getName());
+        }
+
+        response = service.searchUser(null, null, null);
+        //null areas should give all users
+        assertEquals(2, response.size());
+        if (response.get(0).getName().equals("Joao")) {
+            assertEquals("Filipe", response.get(1).getName());
+        }
+        else {
+            assertEquals("Joao", response.get(1).getName());
+        }
+
+        //reset interested areas so conflict doesn't exist with other tests
+        user1.setInterestedAreas(null);
+        user2.setInterestedAreas(null);
+    }
 }

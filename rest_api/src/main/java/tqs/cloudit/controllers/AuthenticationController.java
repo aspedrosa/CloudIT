@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.services.AuthenticationService;
+import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  * Paths related to authentication of users for using the API
@@ -34,8 +35,7 @@ public class AuthenticationController {
      *    <li>compare passwords</li>
      * </ul>
      *
-     * @param cred
-     * @return 
+     * @return
      */
     @GetMapping("/login")
     public ResponseEntity login(Principal principal) {

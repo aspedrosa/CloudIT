@@ -1,7 +1,9 @@
 FROM maven:3.6.1-jdk-8
 
-#https://unix.stackexchange.com/questions/239757/package-firefox-is-not-available/537147
-RUN apt-get update && apt-get install iceweasel -y
+RUN apt-get update
+
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install ./google-chrome-stable_current_amd64.deb -y
 
 #TODO verify key with finger print in https://docs.docker.com/v17.12/install/linux/docker-ce/debian/#install-docker-ce-1
 RUN apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y && \

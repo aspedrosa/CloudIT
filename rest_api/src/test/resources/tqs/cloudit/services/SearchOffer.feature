@@ -1,4 +1,4 @@
-Feature: User can search offers in platform.
+Feature: User can search offers in platform
     As an authenticated freelancer looking for a job opportunity
     I want to easily use the platform's search tab to find a filtered list of job proposals
     So that I can contact employers that I find appropriate for me.
@@ -21,7 +21,7 @@ Feature: User can search offers in platform.
         When I access the search tab
         And choose the option of job proposals for freelancers
         And I type in one or more keywords like the name of a programming language
-        And the results are presented
+        And the results of the search are presented
         And I click on one job
         Then I should see all information related to that job
         And I should be able to contact the proposal's author.

@@ -720,17 +720,6 @@ OTHERS
     height: 40px;
 }
 
-.form-control {
-    box-shadow: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-}
-
-.form-control:focus {
-    border-color: #3ac5c8;
-}
-
-
-
 .form-1 .btn-primary {
     width: 10%;
     padding: 10px 10px;
@@ -770,11 +759,6 @@ MISC
     padding-left: 10px;
 }
 
-
-.form-control {
-    box-shadow: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-}
 
 .contactv2 {
     margin-bottom: 42px;
@@ -974,9 +958,6 @@ COLORS
 .service-box:hover,
 .feature-list hr,
 .navbar-default .navbar-nav > .active > a,
-.form-control:focus {
-    border-color: #3ac5c8;
-}
 
 .NotGeneric-CallToAction,
 .tp-caption.NotGeneric-CallToAction,
@@ -1354,3 +1335,25 @@ RESPONSIVE
         font-size: 24px;
     }
 }
+
+
+.mtb-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.area-card {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+    padding: 5px;
+}
+
+.userSearchResult {}
+
+.userSearchType {}

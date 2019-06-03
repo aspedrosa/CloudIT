@@ -1,9 +1,12 @@
 package tqs.cloudit.domain.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,7 +40,7 @@ public class User {
     
     private String type;
     
-    @OneToMany(mappedBy="creator", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="creator", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<JobOffer> myOffers = new HashSet();
     
