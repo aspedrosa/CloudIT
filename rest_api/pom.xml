@@ -134,6 +134,14 @@
         
         <cucumber.version>4.2.5</cucumber.version>
         <selenium.version>3.141.59</selenium.version>
+
+        <sonar.exclusions>
+            **/SpringBootWebApplication.java,
+            **/domain/persistance/*.java
+            **/domain/responses/*.java
+            **/domain/rest/*.java
+            **/controllers/WebSiteController.java,
+        </sonar.exclusions>
     </properties>
 
     <build>

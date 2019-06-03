@@ -346,6 +346,10 @@ public class StepsDefs {
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed()
             );
 
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+
         driver.findElement(By.id("jobs")).click();
     }
 
@@ -396,6 +400,10 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed()
             );
+
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
 
         driver.findElement(By.id("jobs")).click();
 
@@ -492,6 +500,10 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("profile")).isDisplayed()
             );
+
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
 
         driver.findElement(By.id("profile")).click();
 
@@ -638,6 +650,10 @@ public class StepsDefs {
                 (WebDriver d) -> d.findElement(By.id("search")).isDisplayed()
             );
 
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+
         driver.findElement(By.id("search")).click();
 
         jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
@@ -648,6 +664,13 @@ public class StepsDefs {
      */
     @And("choose the option of job proposals for freelancers")
     public void chooseJobProposals() {
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) -> d.findElement(By.id("searchByJobs")).isDisplayed()
+            );
+
         driver.findElement(By.id("searchByJobs")).click();
     }
 
@@ -903,7 +926,11 @@ public class StepsDefs {
         //        (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
         assertTrue(driver.findElement(By.id("createJobButton")).isDisplayed());
         driver.findElement(By.id("createJobButton")).click();
-        
+
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+
         WebElement title = driver.findElement(By.id("offerTitle"));
         WebElement description = driver.findElement(By.id("offerDescription"));
         WebElement area = driver.findElement(By.id("offerArea"));
@@ -913,12 +940,15 @@ public class StepsDefs {
         description.sendKeys("t1");
         area.sendKeys("t1");
         amount.sendKeys("1");
-        date.sendKeys("1010-11-11");
-        Long then = System.currentTimeMillis();
-        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
-                (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+        date.sendKeys("10-10-1111");
+
         driver.findElement(By.id("submitOfferButton")).click();
-        
+
+        //wait for modal animation
+        Long previous = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-previous > 1000);
+
         new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
         //assertTrue(driver.findElement(By.linkText("t1")).isDisplayed());
@@ -937,6 +967,7 @@ public class StepsDefs {
                 });
         
         new WebDriverWait(driver,300L)
+                .ignoring(ElementNotVisibleException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
                     return true;
@@ -954,7 +985,7 @@ public class StepsDefs {
         assertTrue(driver.findElement(By.id("modalDescription")).getAttribute("value").equals("t1"));
         assertTrue(driver.findElement(By.id("modalArea")).getAttribute("value").equals("t1"));
         assertTrue(driver.findElement(By.id("modalAmount")).getAttribute("value").equals("1"));
-        assertTrue(driver.findElement(By.id("modalDate")).getAttribute("value").equals("1010-11-11"));
+        assertTrue(driver.findElement(By.id("modalDate")).getAttribute("value").equals("1111-10-10"));
     }
 
     /**
@@ -966,12 +997,22 @@ public class StepsDefs {
                 .ignoring(StaleElementReferenceException.class)
                 .until((ExpectedCondition<Boolean>) 
                     (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
+
+        Long before = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-before > 1000);
+
         driver.findElement(By.id("jobs")).click();
         
         new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
+
         driver.findElement(By.id("createJobButton")).click();
-        
+
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+
         WebElement title = driver.findElement(By.id("offerTitle"));
         WebElement description = driver.findElement(By.id("offerDescription"));
         WebElement area = driver.findElement(By.id("offerArea"));
@@ -982,9 +1023,9 @@ public class StepsDefs {
         area.sendKeys("t2");
         amount.sendKeys("2");
         date.sendKeys("1020-12-12");
-        Long then = System.currentTimeMillis();
+        Long previous = System.currentTimeMillis();
         new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
-                (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+                (WebDriver d) -> System.currentTimeMillis()-previous > 1000);
         driver.findElement(By.id("submitOfferButton")).click();
         
         new WebDriverWait(driver,300L)
@@ -995,6 +1036,7 @@ public class StepsDefs {
                 });
         
         new WebDriverWait(driver,300L)
+                .ignoring(ElementNotVisibleException.class)
                 .ignoring(ElementClickInterceptedException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
