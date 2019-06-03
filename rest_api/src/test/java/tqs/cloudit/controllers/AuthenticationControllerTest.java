@@ -1,6 +1,8 @@
 package tqs.cloudit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import org.json.simple.JSONObject;
@@ -61,7 +63,7 @@ public class AuthenticationControllerTest {
         user1.setPassword("123");
         user1.setName("Joao");
         user1.setEmail("emaidojoao@mail.com");
-        user1.setType("freelancer");
+        user1.setType("Freelancer");
         user2 = new User();
         user2.setPassword("123");
         user2.setName("Joao");
@@ -94,7 +96,13 @@ public class AuthenticationControllerTest {
     @Test
     public void testLoginWithCredentials() throws Exception {
         System.out.println("loginWithCredentials");
-        Mockito.when(service.register(Mockito.any())).thenReturn(goodResponse);
+        
+        Map aux = new HashMap<String,String>();
+        aux.put("type", "Freelancer");
+        JSONObject response = new JSONObject();
+        response.put("message", "Logged in with success");
+        response.put("data", aux);
+        Mockito.when(service.login(Mockito.any())).thenReturn(new ResponseEntity(response, HttpStatus.OK));
         mvc.perform(get("/login").with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

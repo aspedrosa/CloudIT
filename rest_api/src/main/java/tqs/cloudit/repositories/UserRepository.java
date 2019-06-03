@@ -1,7 +1,6 @@
 package tqs.cloudit.repositories;
 
 import java.util.List;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import tqs.cloudit.domain.persistance.User;
@@ -32,5 +31,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query(value= "select type from user where username = ?1", nativeQuery=true)
     public String getType(String name);
-    
 }

@@ -7,7 +7,9 @@ package tqs.cloudit.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +77,14 @@ public class AuthenticationService {
         response.put("message", "Registered with success");
         return new ResponseEntity(response,HttpStatus.OK);
     }
-    
-    public String getType(String name) {
-        return this.userRepository.getType(name);
+
+    public ResponseEntity login(String name) {
+        String type = userRepository.getType(name);
+        Map aux = new HashMap<String,String>();
+        aux.put("type", type);
+        JSONObject response = new JSONObject();
+        response.put("message", "Logged in with success");
+        response.put("data", aux);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

@@ -20,6 +20,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.domain.rest.User;
 
 /**
@@ -57,7 +58,7 @@ public class StepsDefs extends TestApplication{
 
     public StepsDefs() {
         FirefoxOptions options = new FirefoxOptions();
-        options.setHeadless(true);
+        //options.setHeadless(true);
 
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver(options);
@@ -308,6 +309,15 @@ public class StepsDefs extends TestApplication{
 
     /* ============================== EMPLOYERPOSTJOB TEST ============================== */
 
+    /**
+     * Employers can post a personalized job proposal. (EmployerPostJob.feature)
+     * - Employer asserts that it's possible to create a job offer.
+     * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
+     *  - Employer creates a job offer, both correctly and without necessary fields.
+     */
     @Given("that I am logged in,")
     public void openWebsiteAndLogin() {
         driver.get("http://localhost:8080/loginPage");
@@ -335,19 +345,27 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @And("I have access to MyJobs page,")
     public void accessedMyJobs() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
+        new WebDriverWait(driver,14L)
+                .ignoring(StaleElementReferenceException.class)
+                .until((ExpectedCondition<Boolean>) 
+                    (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
         driver.findElement(By.id("jobs")).click();
     }
 
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
-    @When("I choose the option to post a job offer")
+    @When("I choose the option to post a job (offer|advertisement)")
     public void chooseOptionPostOffer() {
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.id("createJobButton")).isDisplayed());
@@ -357,6 +375,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer asserts that it's possible to create a job offer.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Freelancer asserts that it's possible to create a job offer.
      */
     @Then("I should see a form to be filled.")
     public void shouldSeeForm() {
@@ -373,6 +394,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I execute the previous steps")
     public void executePreviousSteps() {
@@ -387,6 +411,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @When("I fill in and submit the form,")
     public void fillAndSubmit() {
@@ -406,6 +433,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @Then("I should see a message informing me about the success\\/failure of the operation")
     public void shouldSeeMessageInformingSuccessFailure() {
@@ -421,6 +451,9 @@ public class StepsDefs extends TestApplication{
     /**
      * Employers can post a personalized job proposal. (EmployerPostJob.feature)
      * - Employer creates a job offer, both correctly and without necessary fields.
+     * 
+     * Freelancer can post a personalized job proposal. (FreelancerPostJob.feature)
+     *  - Employer creates a job offer, both correctly and without necessary fields.
      */
     @And("\\(if successful) I should see a new post added to my profile.")
     public void ifSuccessfulShouldSeeNewPostAddedToProfile() {
@@ -440,7 +473,7 @@ public class StepsDefs extends TestApplication{
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("profile")).isDisplayed());
         driver.findElement(By.id("profile")).click();
-        assertTrue(driver.findElements(By.id("profile_form")).size() > 0);
+        assertTrue(driver.findElement(By.id("profile_form")).isDisplayed());
         assertEquals(driver.findElement(By.id("profile_form_title")).getText(), "Profile");
     }
     
@@ -514,6 +547,79 @@ public class StepsDefs extends TestApplication{
         driver.quit();
     }
     
+    @When("I access the search tab")
+    public void accessTheSearchTab() {
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed());
+        WebElement search_tab = driver.findElement(By.id("search"));
+        search_tab.click();
+        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
+    }
+    
+    @And("choose the option of job proposals for freelancers")
+    public void chooseJobProposals() {
+    }
+    
+    @And("I type in one or more keywords like the name of a programming language")
+    public void searchKeywords() {
+        WebElement query = driver.findElement(By.id("query"));
+        new WebDriverWait(driver,10L).until(
+                (WebDriver d) -> query.isDisplayed());
+        query.clear();
+        query.sendKeys("java");
+        driver.findElement(By.id("search_btn")).click();
+    }
+    
+    @Then("I should see a list job proposals related to that keyword.")
+    public void viewJobProposals() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("I choose a filtering option")
+    public void chooseFilteringOption() {
+        driver.findElement(By.id("filters_btn")).click();
+        driver.findElement(By.id("fromAmount")).clear();
+        driver.findElement(By.id("fromAmount")).sendKeys("10");
+        driver.findElement(By.id("toAmount")).clear();
+        driver.findElement(By.id("toAmount")).sendKeys("1000");
+    }
+    
+    @Then("I should see a list of job proposals filtered according to the chosen rule.")
+    public void viewJobProposals2() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("the results are presented")
+    public void viewJobProposals3() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> first_offer.isDisplayed());
+    }
+    
+    @And("I click on one job")
+    public void clickJobOffer() {
+        WebElement first_offer = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='To:'])[2]/following::div[6]"));
+        first_offer.click();
+    }
+    
+    @Then("I should see all information related to that job")
+    public void seeInformationRelatedToJob() {
+        WebElement offer_modal = driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Blog Categories'])[1]/following::div[5]"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> offer_modal.isDisplayed());
+    }
+    
+    @And("I should be able to contact the proposal's author.")
+    public void contactAuthorProposal() {
+        WebElement contact_btn = driver.findElement(By.id("contact_btn"));
+        new WebDriverWait(driver,10L).until(
+            (WebDriver d) -> contact_btn.isDisplayed());
+    }
+    
     /*
         The 3 steps below are not yet supported by the system
     */
@@ -563,8 +669,8 @@ public class StepsDefs extends TestApplication{
         date.sendKeys("1010-11-11");
         driver.findElement(By.id("submitOfferButton")).click();
         
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> !d.findElement(By.id("createModal")).isDisplayed());
+        //new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
+        //        (WebDriver d) -> !d.findElement(By.id("createModal")).isDisplayed());
         
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
                 (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
@@ -572,9 +678,6 @@ public class StepsDefs extends TestApplication{
     
     @When("I choose the option to edit a job")
     public void chooseEditOption() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
-        //driver.findElement(By.linkText("t1")).click();
         new WebDriverWait(driver,10L)
                 .ignoring(ElementClickInterceptedException.class)
                 .until(d -> {
@@ -601,8 +704,10 @@ public class StepsDefs extends TestApplication{
     
     @When("I execute the previous edit steps")
     public void executePreviousEditSteps() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
+        new WebDriverWait(driver,10L)
+                .ignoring(StaleElementReferenceException.class)
+                .until((ExpectedCondition<Boolean>) 
+                    (WebDriver d) -> d.findElement(By.id("jobs")).isDisplayed());
         driver.findElement(By.id("jobs")).click();
         
         new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
@@ -621,9 +726,6 @@ public class StepsDefs extends TestApplication{
         date.sendKeys("1010-11-11");
         driver.findElement(By.id("submitOfferButton")).click();
         
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.linkText("t1")).isDisplayed());
-        //driver.findElement(By.linkText("t1")).click();
         new WebDriverWait(driver,10L)
                 .ignoring(ElementClickInterceptedException.class)
                 .until(d -> {
@@ -631,9 +733,12 @@ public class StepsDefs extends TestApplication{
                     return true;
                 });
         
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
-        driver.findElement(By.id("edit_save_btn")).click();
+        new WebDriverWait(driver,10L)
+                .ignoring(ElementClickInterceptedException.class)
+                .until(d -> {
+                    d.findElement(By.id("edit_save_btn")).click();
+                    return true;
+                });
     }
     
     @And("I edit and submit the form,")
@@ -647,8 +752,6 @@ public class StepsDefs extends TestApplication{
     
     @Then("I should see a message informing me about the success/failure of the operation")
     public void operationInfoMessage() {
-        new WebDriverWait(driver,10L).until((ExpectedCondition<Boolean>) 
-                (WebDriver d) -> d.findElement(By.id("edit_save_btn")).isDisplayed());
         assertTrue(driver.findElement(By.id("edit_save_btn")).getText().equals("Edit"));
         // to be continued...
     }
