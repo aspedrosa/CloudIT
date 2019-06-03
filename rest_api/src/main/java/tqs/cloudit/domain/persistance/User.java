@@ -72,6 +72,10 @@ public class User {
         this.myOffers.add(jo);
     }
     
+    public void removeOffer(JobOffer jo){
+        this.myOffers.remove(jo);
+    }
+    
     public void addAcceptedOffer(JobOffer jo){
         this.acceptedOffers.add(jo);
     }
@@ -152,7 +156,5 @@ public class User {
     public void setAcceptedOffers(Set<JobOffer> acceptedOffers) {
         this.acceptedOffers = acceptedOffers;
     }
-
-    
     
 }

@@ -64,7 +64,7 @@
                     </div>
                     <div data-bind="foreach: { data: myOffersColumn2, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#createModal" data-bind="click: function(job){showModal(job)}">
                             <div class="col-md-12">
                                 <button data-bind="click: function(job){deleteOffer(job)}" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px;"><span aria-hidden="true">&times;</span></button>
                                 <div class="row">
@@ -90,7 +90,7 @@
                     </div>
                     <div data-bind="foreach: { data: acceptedOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                        <div class="blog-box clearfix row" id="post_box" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
                             <div class="col-md-12">
                                 <button type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px; visibility: hidden"><span aria-hidden="true">&times;</span></button>
                                 <div class="row">
@@ -114,10 +114,9 @@
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" id="modalTitle"></h3>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" id="modalTitleH3"></h3>
+                                <button type="button" class="close" data-dismiss="modal" id="modalClose">&times;</button>
                             </div>
-
                             <div class="modal-body">
                                 <div class="container-fluid">
                                     <div class="row">
@@ -125,21 +124,25 @@
                                             <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
                                         </div>
                                         <div class="col-md-8" style="font-size: 16px; margin-top: 10px">
+                                            <div class="row" id="titleEdit" hidden>
+                                                <div class="col-md-3"><p>Title:</p></div>
+                                                <div class="col-md-9"><input id="modalTitle" class="form-control"></div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-3"><p>Description:</p></div>
-                                                <div class="col-md-9"><p id="modalDescription"></p></div>
+                                                <div class="col-md-9"><input id="modalDescription" class="form-control" disabled></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"><p>Area:</p></div>
-                                                <div class="col-md-9"><p id="modalArea"></p></div>
+                                                <div class="col-md-9"><input id="modalArea" class="form-control" disabled></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"><p>Deliver Date:</p></div>
-                                                <div class="col-md-9"><p id="modalDate"></p></div>
+                                                <div class="col-md-9"><input id="modalDate" class="form-control" disabled type="date"></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"><p>Amount:</p></div>
-                                                <div class="col-md-9"><p id="modalAmount"></p></div>
+                                                <div class="col-md-9"><input id="modalAmount" class="form-control" disabled type="number"></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12"><p>Creator:</p></div>
@@ -147,39 +150,39 @@
                                                     <div class="row">
                                                         <div class="col-md-1"></div>
                                                         <div class="col-md-3"><p>Name:</p></div>
-                                                        <div class="col-md-8"><p id="modalCreatorName"></p></div>
+                                                        <div class="col-md-8"><input id="modalCreatorName" class="form-control" disabled></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-1"></div>
                                                         <div class="col-md-3"><p>Username:</p></div>
-                                                        <div class="col-md-8"><p id="modalCreatorUsername"></p></div>
+                                                        <div class="col-md-8"><input id="modalCreatorUsername" class="form-control" disabled></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-1"></div>
                                                         <div class="col-md-3"><p>Email:</p></div>
-                                                        <div class="col-md-8"><p id="modalCreatorEmail"></p></div>
+                                                        <div class="col-md-8"><input id="modalCreatorEmail" class="form-control" disabled></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Contact</button>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onClick="enableEdit_orSave()" id="edit_save_btn">Edit</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="contact_btn">Contact</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
-                
+
+
                 <!-- Create Offer Modal -->
                 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" id="modalTitle"></h3>
+                                <h3 class="modal-title"></h3>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
 
@@ -213,9 +216,6 @@
                         </div>
                     </div>
                 </div>
-                
-                
-                
             </div>
         </div>
     </section>

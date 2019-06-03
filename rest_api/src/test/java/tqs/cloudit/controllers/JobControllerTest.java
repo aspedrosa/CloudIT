@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +51,6 @@ public class JobControllerTest {
     
     @MockBean
     private JobService service;
-    
     
     /**
      * Test of getAll method, of class JobController.
@@ -141,4 +141,20 @@ public class JobControllerTest {
         return this.mapper
             .writeValueAsString(object).getBytes();
     } 
+
+    /**
+     * Test of editById method, of class JobController.
+     */
+    @Test
+    public void testEditById() throws Exception {
+        System.out.println("editByIdSuccessful");
+        Long id = 1L;
+        JobOffer jo = new JobOffer("title test","descr test","area test",100,"1111-11-11");
+        Mockito.when(service.editOffer(Mockito.eq(id),Mockito.any())).thenReturn(emptyResponse);
+        mvc.perform(put("/joboffer/edit/" + id).content(toJson(jo)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            //.andExpect(cookie().exists("JSESSIONID"))
+            .andExpect(jsonPath("$.message", is("Information passes with success.")));
+    }
 }
