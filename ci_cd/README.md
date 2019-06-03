@@ -4,7 +4,6 @@
 2. Install Extra Plugins
    - SonarQube Scanner
    - Slack Notification Plugin
-   - Cobertura Plugin
 
 3. Setup Sonnar + Jenkins
    - On Sonarqube go to My Account -> Secutiry and generate a new token

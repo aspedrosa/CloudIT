@@ -3,20 +3,14 @@ pipeline {
     agent {
         docker {
             image 'pipeline_agent'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -v /dev/shm:/dev/shm'
         }
     }
     stages {
         stage('Test') {
             steps {
                 dir('rest_api') {
-                    sh "mvn -U test cobertura:cobertura -Dcobertura.report.format=xml"
-                }
-            }
-            post {
-                always {
-                    junit '**/target/*-reports/TEST-*.xml'
-                    step([$class: 'CoberturaPublisher', coberturaReportFile: '**/target/site/cobertura/coverage.xml'])
+                    sh "mvn -U test"
                 }
             }
         }
