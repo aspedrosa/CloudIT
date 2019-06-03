@@ -1,6 +1,10 @@
 var base_api_url = "http://" + window.location.host;
 
-var profile = {};
+var profile = {
+    name: "",
+    email: "",
+    interestedAreas: ""
+};
 
 window.onload = function() {
     profile["type"] = localStorage.getItem("type");
