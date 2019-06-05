@@ -6,6 +6,9 @@ package tqs.cloudit.utils;
  */
 
 public class Constants {
+
+    private Constants() {}
+
     public static final String NOT_IMPLEMENTED_YET = "Not implemented yet!";
 
     public static final String INFO_FETCHED_SUCCESS = "Information fetched with success.";
