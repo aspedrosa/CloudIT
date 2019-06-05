@@ -1,12 +1,11 @@
 package tqs.cloudit.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Util to beautify areas, so they obey the same format, title case
  */
 public class AreaBeautifier {
+
+    private AreaBeautifier() {}
 
     /**
      * With this variable the delimiter of where the words

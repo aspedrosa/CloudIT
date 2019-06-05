@@ -67,8 +67,7 @@ public class JobController {
                                                                          advancedSearch.getFromDate(),
                                                                          advancedSearch.getToDate());
         if (advancedSearch.isArea())
-            return jobService.getJobOffersFromTextAmountAndDateOnlyArea(advancedSearch.getQuery(), 
-                                                                        advancedSearch.getQuery(), 
+            return jobService.getJobOffersFromTextAmountAndDateOnlyArea(advancedSearch.getQuery(),
                                                                         advancedSearch.getFromAmount(),
                                                                         advancedSearch.getToAmount(), 
                                                                         advancedSearch.getFromDate(),
