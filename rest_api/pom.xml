@@ -13,6 +13,12 @@
     </parent>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
@@ -29,6 +35,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-messaging</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,6 +130,12 @@
             <artifactId>selenium-support</artifactId>
             <version>${selenium.version}</version>
             <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <version>2.27</version>
             <type>jar</type>
         </dependency>
     </dependencies>

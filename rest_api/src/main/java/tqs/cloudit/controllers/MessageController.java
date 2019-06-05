@@ -1,43 +1,37 @@
 package tqs.cloudit.controllers;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.security.Principal;
+import org.json.simple.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
+import tqs.cloudit.domain.persistance.Message;
+import tqs.cloudit.services.MessageService;
 
-/**
- * Paths related to the build in message system between
- *  freelancers and employers
- *
- * @author aspedrosa
- */
-@RestController
-@CrossOrigin
-@RequestMapping("/messages")
+@Controller
 public class MessageController {
-    /**
-     * Returns all messages sent to the user
-     * 
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with all the messages 
-     * sent to the user
-     */
-    @GetMapping
-    public ResponseEntity getAll() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    
+    @Autowired
+    private MessageService messageService;
+    
+    @MessageMapping("/message")
+    public void message(Message message, Principal user) throws Exception {
+        messageService.writeMessageByUsername(message, user.getName());
     }
     
-    /**
-     * Return the messages sent to the user by the user identified by the id
-     * 
-     * @param id ID of the user with whom the message exchange should be returned
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful message if all went good and all the messages
-     */
-    @GetMapping("/id/{id}")
-    public ResponseEntity getById(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    @MessageMapping("/allMessages")
+    public void getAll(Message message, Principal user) throws Exception {
+        messageService.getAllMessagesFromConversation(user.getName(), message.getDestination());
     }
+    
+    @MessageMapping("/contacts")
+    public void contacts(Principal user) throws Exception {
+        messageService.getContactsFromUser(user.getName());
+    }
+    
+    @MessageMapping("/update")
+    public void update(JSONArray input, Principal user) throws Exception {
+        messageService.updateMessage(input);
+    }
+
 }

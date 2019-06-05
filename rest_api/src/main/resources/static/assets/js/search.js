@@ -146,7 +146,7 @@ function fillSearchUserModalTable(name, userType, email, jobs) {
     $("#userModalTitle").text(name);
     $("#userModalEmail").text(email);
 
-    appViewModel.userModalUserType(userType.toLowerCase());
+    appViewModel.userModalUserType(userType);
     appViewModel.userModalJobs.removeAll();
     jobs.forEach(function (job, _) {
         appViewModel.userModalJobs.push(job);

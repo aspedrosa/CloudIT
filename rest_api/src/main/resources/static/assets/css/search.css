@@ -552,10 +552,6 @@ OTHERS
     margin: 0 auto;
 }
 
-.blog-alt .media-box {
-    margin-bottom: 20px;
-}
-
 .img-thumbnail {
     border-radius: 0;
     padding: 5px;
@@ -575,28 +571,6 @@ OTHERS
     opacity: 0.8;
     filter: alpha(opacity=80);
     /* For IE8 and earlier */
-}
-
-.blog-desc ul {
-    padding: 0;
-    margin: 0 0 0 -5px;
-}
-
-.blog-desc p {
-    margin-bottom: 10px;
-}
-
-.blog-desc h3 {
-    padding: 8px 0 10px;
-    margin: 0;
-    line-height: 1.3;
-    font-weight: bold;
-    font-size: 28px;
-}
-
-.blog-desc h3 a {
-    color: #232323;
-    font-weight: bold;
 }
 
 .blog-meta a {

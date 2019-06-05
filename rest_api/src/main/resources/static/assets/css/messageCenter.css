@@ -1,59 +1,10 @@
-.minh-70 {
-    min-height: 70vh;
-}
-
-.minh-80 {
-    min-height: 80vh;
-}
-
-.maxh-60 {
-    max-height: 60vh;
-}
-
-.maxh-80 {
-    max-height: 80vh;
-}
-
-.mt-55 {
-    margin-top: 55px;
-}
-
 ::-webkit-scrollbar {
     display: none;
-}
-
-.main {
-    width: 80vw; 
-    margin: auto;
-}
-
-.chat-room {
-    border-collapse: collapse;
-    border-spacing: 0;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    position: relative;
-}
-
-.chat-room aside {
-    display: table-cell;
-    float: none;
-    height: 100%;
-    padding: 0;
-    vertical-align: top;
 }
 
 .chat-room .kiri-side {
     /* width: 20%; */
     background: #e5e8ef;
-    border-radius: 4px 0 0 4px;
-    -webkit-border-radius: 4px 0 0 4px;
-}
-.chat-room .tengah-side {
-    /* width: 80%; */
-    background: #fff;
-    border-right: 1px solid #e5e8ef;
 }
 
 .chat-room .kiri-side .user-head {
@@ -91,20 +42,12 @@
 
 .chat-room-head .search-btn {
     width: 20px;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
     box-shadow: none;
     padding:0 5px 0 35px;
-    margin-top: 2px;
-    border: none;
-    color: #6a6a6a;
+    border: none
 }
 
 .chat-room-head .search-btn:focus {
-    width: 180px;
     box-shadow: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
@@ -113,7 +56,6 @@
     transition: all .3s ease;
     /*background: #01a6b2;*/
     font-weight: 300;
-    color: #6a6a6a;
 }
 
 .chat-room-head .search-btn:focus::-moz-placeholder {
@@ -121,19 +63,16 @@
 }
 
 .chat-room-body {
+    height: 200px ;
     overflow-y: scroll;
 }
 
 .chat-room-footer {
     width: 100%;
-    float: left;
     border-bottom: 1px solid #eaebee;
-
     background: #f6f6f6;
     padding: 15px;
-    height: 70px;
     width: 100%;
-    bottom: 0;
     border-top: 1px solid #eaebee;
 }
 
@@ -180,128 +119,6 @@ ul.chat-list {
     list-style: none;
 }
 
-ul.chat-user  {
-    margin-bottom: 200px;
-}
-
-ul.chat-user li {
-    border-bottom: none;
-}
-
-ul.chat-user li a:hover{
-    background: none;
-    color: #6a6a6a;
-}
-
-.chat-room .tengah-side footer {
-    background: #f6f6f6;
-    padding: 15px;
-    height: 70px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    border-top: 1px solid #eaebee;
-}
-
-.chat-room .left-side footer a.chat-dropdown {
-    background: #96979a;
-    border-radius: 2px;
-    color: #fff;
-    font-size: 10px;
-    margin-top: 10px;
-    padding: 3px 5px;
-}
-
-.room-desk {
-    display: inline-block;
-    margin-bottom: 30px;
-    width: 100%;
-    padding: 15px;
-}
-
-.room-desk h4 {
-    text-transform: uppercase;
-    font-weight: 300;
-    font-size: 16px;
-    margin: 5px 0 0 0;
-}
-
-.room-box {
-    border: 1px solid #f7f8fa;
-    background: #f7f8fa;
-    padding: 10px;
-    display: inline-block;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.room-box h5 {
-    margin: 0 0 5px 0;
-    font-weight: 300;
-    font-size: 16px;
-}
-.room-box h5 a {
-    color: #00a9b4;
-}
-
-.chat-tools {
-    float: right;
-    padding: 3px;
-    width: 40px;
-    height: 35px;
-    line-height: 30px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    text-align: center;
-    margin-top: 6px;
-    margin-left: 10px;
-}
-
-.chat-tools i {
-    font-size: 16px !important;
-    float: none !important;
-    margin-right: 0 !important;
-    color: #fff;
-}
-
-.btn-key {
-    background: #1abc9c;
-}
-
-.btn-key:hover {
-    background: #16a085;
-}
-
-.invite-row {
-    background: #E5E8EF;
-    padding: 6px 10px;
-    display: inline-block;
-    width: 100%;
-}
-
-.invite-row h4 {
-    font-size: 16px;
-    font-weight: 300;
-}
-
-ul.chat-available-user {
-    padding: 10px;
-    list-style: none;
-}
-
-ul.chat-available-user li {
-    margin-bottom: 15px;
-}
-
-ul.chat-available-user li a {
-    color: #6a6a6a;
-    text-decoration: none;
-}
-ul.chat-available-user li i {
-    padding-right: 5px;
-    font-size: 10px;
-}
-
 .group-rom {
     width: 100%;
     float: left;
@@ -313,16 +130,6 @@ ul.chat-available-user li i {
 .group-rom .third-part {
     float: left;
     padding: 15px;
-}
-
-.group-rom .first-part {
-    width: 25%;
-}
-
-.group-rom .first-part.odd {
-    background: #f7f8fa;
-    color: #6a6a6a;
-    font-weight: 600;
 }
 
 .group-rom .second-part{
@@ -339,27 +146,52 @@ ul.chat-available-user li i {
     color: #d4d3d3;
 }
 
-
-a.guest-on {
-    color: #6a6a6a;
-    margin-top: 8px;
-    display: inline-block;
-}
-
-a.guest-on i {
-    background: #40cabe;
-    color: #fff;
-    padding: 4px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    margin-right: 5px;
-}
-
 .chat-txt {
     float: left;
     margin-right: 5px;
 }
 
-.lobby {
-    padding: 0 !important;
+
+
+
+.dropbtn {
+    background-color: #2980b9;
+    color: white;
+    border-color: #2980b9;
+}
+
+.dropup {
+    position: relative;
+    display: inline-block;
+}
+
+.dropup-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    bottom: 38px;
+    right: 146px;
+    z-index: 1;
+    margin-right: 0;
+}
+
+.dropup-content p {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropup-content p:hover {
+    background-color: #ccc;
+}
+
+.dropup:hover .dropup-content {
+    display: block;
+}
+
+.dropup:hover .dropbtn {
+    background-color: #3498DB;
+    border-color: #3498DB;
 }
