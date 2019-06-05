@@ -1,6 +1,7 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -42,6 +43,11 @@ public class MessageController {
         JSONObject output = new JSONObject();
         output.put("contacts", messageRepository.getContacts(user.getName()));
         simpMessagingTemplate.convertAndSend("/secured/queue/"+user.getName(), output);
+    }
+    
+    @MessageMapping("/update")
+    public void update(JSONArray input, Principal user) throws Exception {
+        messageRepository.updateMessage((Long)input.get(0), (String)input.get(1));
     }
 
 }

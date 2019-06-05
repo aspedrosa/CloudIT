@@ -34,12 +34,11 @@
                     <h3>Lobby</h3> <!-- style="height:30px !important" -->
                     <h6 id="date"></h6>
                 </div>
-                <ul class="chat-list chat-room-body" style="height:100%" data-bind="foreach: { data: contacts, as: 'contact' }">
+                <ul class="chat-list chat-room-body" style="height:100%" data-bind="foreach: { data: contacts, as: 'contact' }" >
                     <li>
                         <a data-bind="click: function(){loadMessages(contact)}">
                             <i class="fa fa-user"></i>
                             <span data-bind="text: contact[0]"></span>
-                            <i class="fa fa-times"></i>
                         </a>
                     </li>
                     

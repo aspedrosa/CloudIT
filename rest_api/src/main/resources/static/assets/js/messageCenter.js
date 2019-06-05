@@ -16,6 +16,7 @@ window.onload = function(){
     });
     
     ko.applyBindings(viewModel);
+    activateContact()
 }
 
 $(window).resize(resizeMessages);
@@ -43,4 +44,15 @@ async function loadMessages(contact){
     $("#msgDestination").text(contact[0])
     await new Promise(resolve => setTimeout(resolve, 300));
     $('#class-room-msgs').scrollTop($('#class-room-msgs')[0].scrollHeight);
+}
+
+function activateContact(){
+    setTimeout(function(){
+        var url = new URL(window.location.href);
+        var addName = url.searchParams.get("addName");
+        var addUsername = url.searchParams.get("addUsername");
+        if(addName!==null && addUsername!==null){
+            loadMessages([addUsername, addName])
+        }
+    }, 500);
 }
