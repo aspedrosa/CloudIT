@@ -3,6 +3,7 @@ var base_api_url = "http://" + window.location.host;
 function viewModel() {
     var self=this;
     self.messages=ko.observableArray([])
+    self.myOffers=ko.observableArray([])
     self.contacts=ko.observableArray([])
     
     self.origin=localStorage.getItem("username")
@@ -18,6 +19,29 @@ function viewModel() {
             }
             self.messages.push(msgs[m]);
         }
+    }
+
+    self.refreshOffers = function(){
+        $.ajax({
+        url: base_api_url+"/joboffer/self",
+        type: "GET",
+        crossDomain:true,
+        success: function(data, status, xhr) {
+            if(status!=="success"){
+                alert(JSON.stringify(data));
+            }else{
+                //console.log(data)
+                self.myOffers.removeAll();
+                for(let index in data.data){
+                    self.myOffers.push(data.data[index]);
+                }
+            }
+        },
+        error: function(data, status, xhr) {
+            alert(JSON.stringify(data));
+            console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+        }
+        });  
     }
     
     self.refreshContacts = function(contacts){
@@ -56,7 +80,7 @@ function viewModel() {
     }
     
 };
-var viewModel = new viewModel()
+var viewModel = new viewModel();
 
 
 $(document).ready(function(){
@@ -118,6 +142,10 @@ $(document).ready(function(){
         
         getAllMessages=function (destin){
             stompClient.send("/secured/allMessages", {}, JSON.stringify({"destination":destin}));
+        }
+
+        updateAutomaticMessage=function (id, msg){
+            stompClient.send("/secured/updateMessage", {}, JSON.stringify([id,msg]));
         }
         
         getContacts=function (){
