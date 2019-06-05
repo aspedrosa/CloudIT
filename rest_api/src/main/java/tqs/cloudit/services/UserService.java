@@ -35,25 +35,25 @@ public class UserService {
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "User information found.", user);
     }
     public ResponseEntity updateUserInfo(User user) {
-        tqs.cloudit.domain.persistance.User old_user = this.userRepository.getInfo(user.getUsername());
+        tqs.cloudit.domain.persistance.User oldUser = this.userRepository.getInfo(user.getUsername());
         boolean changes = false;
         
-        if(user.getName() != null && !user.getName().equals(old_user.getName())) {
-            old_user.setName(user.getName());
+        if(user.getName() != null && !user.getName().equals(oldUser.getName())) {
+            oldUser.setName(user.getName());
             changes = true;
         }
-        if(user.getEmail() != null && !user.getEmail().equals(old_user.getEmail())) {
+        if(user.getEmail() != null && !user.getEmail().equals(oldUser.getEmail())) {
             if(userRepository.emailExists(user.getEmail()) > 0){
                 return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Unable to update profile. Your email must be unique. This email is already registered in the platform.");
             }
-            old_user.setEmail(user.getEmail());
+            oldUser.setEmail(user.getEmail());
             changes = true;
         }
-        if(user.getPassword() != null && user.getNewPassword() != null && !bcpe.matches(user.getNewPassword(), old_user.getPassword())) {
-            if(!bcpe.matches(user.getPassword(), old_user.getPassword())) {
+        if(user.getPassword() != null && user.getNewPassword() != null && !bcpe.matches(user.getNewPassword(), oldUser.getPassword())) {
+            if(!bcpe.matches(user.getPassword(), oldUser.getPassword())) {
                 return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Unable to update profile. In order to change password you need to type in the current one correctly.");
             }
-            old_user.setPassword(this.bcpe.encode(user.getNewPassword()));
+            oldUser.setPassword(this.bcpe.encode(user.getNewPassword()));
             changes = true;
         }
         Set<String> interestedAreasStr = user.getInterestedAreas();
@@ -65,15 +65,15 @@ public class UserService {
                     this.areaRepository.save(new Area(s));
                 }
             }
-            if(!interestedAreasSet.equals(old_user.getInterestedAreas())) {
-                old_user.setInterestedAreas(interestedAreasStr);
+            if(!interestedAreasSet.equals(oldUser.getInterestedAreas())) {
+                oldUser.setInterestedAreas(interestedAreasStr);
                 changes = true;
             }
         }
 
         String message;
         if(changes) {
-            this.userRepository.save(old_user);
+            this.userRepository.save(oldUser);
             message = "User update successful.";
         } else {
             message = "No changes to the current user information were detected.";
