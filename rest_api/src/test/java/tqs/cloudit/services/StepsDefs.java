@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.domain.rest.Job;
 import tqs.cloudit.domain.rest.User;
 
 /**
@@ -635,10 +635,10 @@ public class StepsDefs {
         // TODO
     }
 
-    /* ============================== SEARCHOFFER TEST ============================== */
+    /* ============================== SEARCHPROPOSAL TEST ============================== */
 
     /**
-     * SearchOffer -> all
+     * SearchProposal -> all
      * SearchUser -> all
      */
     @When("I access the search tab")
@@ -656,11 +656,13 @@ public class StepsDefs {
 
         driver.findElement(By.id("search")).click();
 
-        jobService.registerOffer(currentUsername, new JobOffer("title_test", "description_test", "java", 100, "2019-01-01"));
+        jobService.registerOffer(currentUsername, new Job("title_test", "description_test", "java", 100, "2019-01-01", "Proposal"));
+        jobService.registerOffer(currentUsername, new Job("title_test", "description_test", "java", 100, "2019-01-01", "Offer"));
+        
     }
 
     /**
-     * SearchOffer -> all
+     * SearchProposal -> all
      */
     @And("choose the option of job proposals for freelancers")
     public void chooseJobProposals() {
@@ -675,7 +677,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> all
+     * SearchProposal -> all
      */
     @And("I type in one or more keywords like the name of a programming language")
     public void searchKeywords() {
@@ -696,7 +698,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 1
+     * SearchProposal -> 1
      */
     @Then("I should see a list job proposals related to that keyword.")
     public void viewJobProposals() {
@@ -713,7 +715,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 2
+     * SearchProposal -> 2
      */
     @And("I choose a filtering option")
     public void chooseFilteringOption() {
@@ -725,14 +727,14 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 2
+     * SearchProposal -> 2
      */
     @Then("I should see a list of job proposals filtered according to the chosen rule.")
     public void viewJobProposals2() {
         new WebDriverWait(driver, 300L).until(
             d -> {
                 List<WebElement> offers = d.findElements(By.className("blog-box"));
-                if (offers.size() == 0)
+                if (offers.isEmpty())
                     return false;
                 return offers.get(0).isDisplayed();
             }
@@ -740,7 +742,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 3
+     * SearchProposal -> 3
      */
     @And("the results of the search are presented")
     public void viewJobProposals3() {
@@ -755,7 +757,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 3
+     * SearchProposal -> 3
      */
     @And("I click on one job")
     public void clickJobOffer() {
@@ -770,7 +772,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 3
+     * SearchProposal -> 3
      */
     @Then("I should see all information related to that job")
     public void seeInformationRelatedToJob() {
@@ -782,7 +784,7 @@ public class StepsDefs {
     }
 
     /**
-     * SearchOffer -> 3
+     * SearchProposal -> 3
      */
     @And("I should be able to contact the proposal's author.")
     public void contactAuthorProposal() {
@@ -792,6 +794,95 @@ public class StepsDefs {
                 (WebDriver d) -> driver.findElement(By.id("contact_btn")).isDisplayed()
             );
     }
+    
+    /* ============================== SEARCHOFFER TEST ============================== */
+    
+    /*
+    @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+
+    /*
+    @When("I access the search tab") -> SearchOffer Steps
+    */
+
+    /**
+     * SearchOffer -> all
+     */
+    @And("choose the option of job offers for employers")
+    public void chooseJobOffers() {
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) -> d.findElement(By.id("searchByJobs")).isDisplayed()
+            );
+
+        driver.findElement(By.id("searchByJobs")).click();
+    }
+    
+    /*
+     @And("I type in one or more keywords like the name of a programming language")
+     */
+    
+    /**
+     * SearchOffer -> 1
+     */
+    @Then("I should see a list job offers related to that keyword.")
+    public void viewJobOffers() {
+        new WebDriverWait(driver, 300L)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                d -> {
+                    List<WebElement> offers = d.findElements(By.className("blog-box"));
+                    if (offers.isEmpty())
+                        return false;
+                    return offers.get(0).isDisplayed();
+                }
+            );
+    }
+    
+    /*
+     * SearchOffer -> 2
+     */
+    @Then("I should see a list of job offers filtered according to the chosen rule.")
+    public void viewJobOffers2() {
+        new WebDriverWait(driver, 300L).until(
+            d -> {
+                List<WebElement> offers = d.findElements(By.className("blog-box"));
+                if (offers.isEmpty())
+                    return false;
+                return offers.get(0).isDisplayed();
+            }
+        );
+    }
+    
+    /*
+     * SearchOffer -> 3
+     */
+    @And("the results of the offer search are presented")
+    public void viewJobOffers3() {
+        new WebDriverWait(driver, 300L).until(
+            d -> {
+                List<WebElement> offers = d.findElements(By.className("blog-box"));
+                if (offers.isEmpty())
+                    return false;
+                return offers.get(0).isDisplayed();
+            }
+        );
+    }
+    
+    /*
+     * SearchOffer -> 3
+     */
+    @And("I should be able to contact the freelancer in order to hire him\\/her.")
+    public void contactAuthorOffer() {
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .until(
+                (WebDriver d) -> driver.findElement(By.id("contact_btn")).isDisplayed()
+            );
+    }
+            
     
     /* ============================== SEARCHUSER TEST ============================== */
 
@@ -813,10 +904,7 @@ public class StepsDefs {
         new WebDriverWait(driver,300L)
             .ignoring(NoSuchElementException.class)
             .until(
-                (WebDriver d) ->  d.findElement(By.id("searchUserName")).isDisplayed() &&
-                                  d.findElement(By.id("searchUserInterestedAreas")).isEnabled() &&
-                                  d.findElement(By.id("searchUserType")).isDisplayed() &&
-                                  d.findElement(By.id("allUsers")).isEnabled()
+                (WebDriver d) ->  d.findElement(By.id("searchUserName")).isDisplayed()
             );
     }
 
@@ -825,6 +913,7 @@ public class StepsDefs {
      */
     @And("I type in one or more keywords like the name of a technology field")
     public void insertUserSearchFilters() {
+        driver.findElement(By.id("filters_btn")).click();
         new Select(driver.findElement(By.id("searchUserType"))).selectByVisibleText("Freelancer");
     }
 
@@ -833,7 +922,13 @@ public class StepsDefs {
      */
     @And("I click the search button")
     public void clickSearchButton() {
-        driver.findElement(By.id("userSearchBtn")).click();
+        new WebDriverWait(driver,300L)
+            .until(
+                (WebDriver d) -> {
+                    driver.findElement(By.id("search_btn")).click();
+                    return true;
+                }
+        );
     }
 
     /**

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.domain.rest.Job;
 import tqs.cloudit.services.JobService;
 
 /**
@@ -73,7 +73,7 @@ public class JobControllerTest {
     public void testRegister() throws Exception {
         System.out.println("register");
         Mockito.when(service.registerOffer(Mockito.eq("joao"),Mockito.any())).thenReturn(emptyResponse);
-        mvc.perform(post("/joboffer").content(toJson(new JobOffer())).with(user("joao").password("1235"))
+        mvc.perform(post("/joboffer").content(toJson(new Job())).with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             //.andExpect(cookie().exists("JSESSIONID"))
@@ -149,7 +149,7 @@ public class JobControllerTest {
     public void testEditById() throws Exception {
         System.out.println("editByIdSuccessful");
         Long id = 1L;
-        JobOffer jo = new JobOffer("title test","descr test","area test",100,"1111-11-11");
+        Job jo = new Job("title test","descr test","area test",100,"1111-11-11", "Offer");
         Mockito.when(service.editOffer(Mockito.eq(id),Mockito.any())).thenReturn(emptyResponse);
         mvc.perform(put("/joboffer/edit/" + id).content(toJson(jo)).with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))

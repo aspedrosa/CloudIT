@@ -42,11 +42,11 @@ public class User {
     
     @OneToMany(mappedBy="creator", fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<JobOffer> myOffers = new HashSet();
+    private Set<Job> myOffers = new HashSet();
     
     @OneToMany(mappedBy="worker")
     @JsonIgnore
-    private Set<JobOffer> acceptedOffers = new HashSet();
+    private Set<Job> acceptedOffers = new HashSet();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -71,15 +71,15 @@ public class User {
 
     public User() {}
     
-    public void addNewOffer(JobOffer jo){
+    public void addNewOffer(Job jo){
         this.myOffers.add(jo);
     }
     
-    public void removeOffer(JobOffer jo){
+    public void removeOffer(Job jo){
         this.myOffers.remove(jo);
     }
     
-    public void addAcceptedOffer(JobOffer jo){
+    public void addAcceptedOffer(Job jo){
         this.acceptedOffers.add(jo);
     }
 
@@ -144,19 +144,19 @@ public class User {
         }
     }
 
-    public Set<JobOffer> getMyOffers() {
+    public Set<Job> getMyOffers() {
         return myOffers;
     }
 
-    public void setMyOffers(Set<JobOffer> myOffers) {
+    public void setMyOffers(Set<Job> myOffers) {
         this.myOffers = myOffers;
     }
 
-    public Set<JobOffer> getAcceptedOffers() {
+    public Set<Job> getAcceptedOffers() {
         return this.acceptedOffers;
     }
 
-    public void setAcceptedOffers(Set<JobOffer> acceptedOffers) {
+    public void setAcceptedOffers(Set<Job> acceptedOffers) {
         this.acceptedOffers = acceptedOffers;
     }
     
