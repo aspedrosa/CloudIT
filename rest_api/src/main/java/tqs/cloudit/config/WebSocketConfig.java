@@ -8,17 +8,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/secured/user/queue/specific-user");
-        config.setApplicationDestinationPrefixes("/spring-security-mvc-socket");
-        config.setUserDestinationPrefix("/secured/user");
+        config.enableSimpleBroker("/secured/queue");
+        config.setApplicationDestinationPrefixes("/secured");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/secured/messageCenter").withSockJS();
     }
+
 }

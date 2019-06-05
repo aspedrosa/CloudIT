@@ -38,113 +38,76 @@
     </nav>
 
     <!-- Body -->
-    <main role="main" class="main" style="min-height: 90vh; margin-top:55px; width: 100%">
-        <!-- start:chat room -->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="chat-room">
-                <div class="row">
-                    <!-- start:aside kiri chat room -->
-                    <aside class="kiri-side col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                        <div class="user-head">
-                            <i class="fa fa-comments-o"></i>
-                            <h3>Message Center</h3> <!-- style="height:30px !important" -->
+    <div class="container-fluid" style="margin-top: 50px; padding:0;">
+        <div class="chat-room">
+            
+            <div class="kiri-side col-lg-2 col-md-2 col-sm-2 col-xs2" style="padding:0;height:93vh;">
+                <div class="user-head">
+                    <i class="fa fa-comments-o"></i>
+                    <h3>Lobby</h3> <!-- style="height:30px !important" -->
+                </div>
+                <ul class="chat-list chat-room-body">
+                    <li>
+                        <a>
+                            <i class="fa fa-user"></i>
+                            <span>Jonathan Smith</span>
+                            <i class="fa fa-times pull-right"></i>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+
+            
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 " style="padding:0; height:93vh;" id="chat-room-msg-center">
+                <div class="chat-room-head">
+                    <h3>Jhon Doe</h3>
+                    <form action="#" class="pull-right position">
+                        <div class="form-control fa fa-search">
+                            <input type="text" placeholder="Search" class="search-btn">
                         </div>
-                        <ul class="chat-list chat-room-body minh-80 maxh-60">
-                            <li class="">
-                                <a class="lobby" href="">
-                                    <h4>
-                                        <i class="fa fa-list"></i>
-                                        <span>Lobby</span>
-                                    </h4>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#chat_room.html">
-                                    <i class="fa fa-user"></i>
-                                    <span>Jonathan Smith</span>
-                                    <i class="fa fa-times pull-right"></i>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="#chat_room.html">
-                                    <i class="fa fa-user"></i>
-                                    <span>Jhon Doe</span>
-                                    <i class="fa fa-times pull-right"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#chat_room.html">
-                                    <i class="fa fa-user"></i>
-                                    <span>Cendy Andrianto</span>
-                                    <i class="fa fa-times pull-right"></i>
-                                </a>
-                            </li>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                        </ul>
-                    </aside>
-        
-                    <!-- start:aside tengah chat room -->
-                    <aside class="tengah-side col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                        <div class="chat-room-head">
-                            <h3>Jhon Doe</h3>
-                            <form action="#" class="pull-right position">
-                                <div class="form-control fa fa-search">
-                                    <input type="text" placeholder="Search" class="search-btn">
-                                </div>
-                            </form>
+                    </form>
+                </div>
+                <div class="chat-room-body" id="class-room-msgs">
+                    <div class="group-rom">
+                        <div class="second-part odd">Hello Cendy are you there?</div>
+                        <div class="third-part">12:30</div>
+                    </div>
+                    <div class="group-rom">
+                        <div class="second-part">Yoman Smith. Please proceed</div>
+                        <div class="third-part">12:31</div>
+                    </div>
+                    <div class="group-rom">
+                        <div class="second-part odd">I want to share a file using chatroom</div>
+                        <div class="third-part">12:32</div>
+                    </div>
+                    <div class="group-rom">
+                        <div class="second-part">oh sure. please send</div>
+                        <div class="third-part">12:32</div>
+                    </div>
+                    <div class="group-rom">
+                        <div class="second-part">Fantastic job, love it :)</div>
+                        <div class="third-part">12:32</div>
+                    </div>
+                    <div class="group-rom">
+                        <div class="second-part odd">Thanks</div>
+                        <div class="third-part">12:33</div>
+                    </div>
+                    
+                </div>
+                <div class="chat-room-footer" style="position: absolute; bottom:0;">
+                    <div class="row">
+                        <div class="chat-txt col-lg-10 col-md-9 col-sm-7">
+                            <input type="text" class="form-control">
                         </div>
-                        <div class="chat-room-body minh-80 maxh-80">
-                            <div class="group-rom">
-                                <div class="second-part odd">Hello Cendy are you there?</div>
-                                <div class="third-part">12:30</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part">Yoman Smith. Please proceed</div>
-                                <div class="third-part">12:31</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part odd">I want to share a file using chatroom</div>
-                                <div class="third-part">12:32</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part">oh sure. please send</div>
-                                <div class="third-part">12:32</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part odd"><a href="##">search_scb_dialog.jpg</a> <span class="text-muted">46.8KB</span> <p>
-                                    <img src="http://bootemplates.com/themes/kentut/assets/img/avatar/avatar-2.jpg" alt="" class="img-responsive"></p></div>
-                                <div class="third-part">12:32</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part">Fantastic job, love it :)</div>
-                                <div class="third-part">12:32</div>
-                            </div>
-                            <div class="group-rom">
-                                <div class="second-part odd">Thanks</div>
-                                <div class="third-part">12:33</div>
-                            </div>
+                        <div class="btn-group row col-lg-2 col-md-2 col-sm-1">
+                            <button class="btn btn-primary" data-original-title="send" title="send">Send</button>
                         </div>
-                        <div class="chat-room-footer ">
-                            <div class="row">
-                                <div class="chat-txt col-lg-10 col-md-9 col-sm-7">
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="btn-group row col-lg-2 col-md-2 col-sm-1">
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <!-- <button type="button" class="btn btn-white" data-original-title="" title=""><i class="fa fa-meh-o"></i></button> -->
-                                        <button type="button" class="btn btn-white" data-original-title="attach" title="attach"><i class=" fa fa-paperclip"></i></button>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <button class="btn btn-primary" data-original-title="send" title="send">Send</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer class="footer-distributed">

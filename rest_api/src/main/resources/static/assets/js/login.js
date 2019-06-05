@@ -38,6 +38,17 @@ function sign_in() {
                 localStorage.setItem("type", data.data.type);
                 localStorage.setItem("username", username);
                 localStorage.setItem("token", btoa(username + ":" + password));
+                
+                var socket = new SockJS(base_api_url+'/secured/messageCenter');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                    console.log('Connected: ' + frame);
+                    stompClient.subscribe('/secured/queue/'+username, function (greeting) {
+                        console.log(JSON.parse(greeting.body));
+                        $.notify("From: "+JSON.parse(greeting.body).from+"\nMessage: "+JSON.parse(greeting.body).message.substring(0, 10), "info");
+                    });
+                });
+                
                 window.location.href= base_api_url+"/welcomePage";
             }
         },
