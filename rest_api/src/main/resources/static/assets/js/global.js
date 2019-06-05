@@ -16,7 +16,7 @@ $(document).ready(function(){
         $('#navBarList').ready(function(){
             $('#navBarList a').each(function() {
                 if(localStorage.getItem("username")===null || localStorage.getItem("username")===null || document.cookie===null){
-                    if(secureEndpoints.includes($(this).attr("href"))){
+                    if(secureEndpoints.includes($(this).attr("href")) || $(this).attr("href")=="/loginPage"){
                         $(this).css("display", "none");
                     }
                 }
@@ -30,5 +30,18 @@ $(document).ready(function(){
     //LOAD FOOTER
     $('#footerID').load('assets/components/footer.html');
     
-    
+    console.log(localStorage);
 })
+
+function logout() {
+    localStorage.clear();
+    $.ajax({
+        url: base_api_url+"/logout",
+        type: "GET",
+        contentType: "application/json",
+        crossDomain:true,
+        error: function(data, status, xhr) {
+            alert(JSON.stringify(data));
+        } 
+    });
+}

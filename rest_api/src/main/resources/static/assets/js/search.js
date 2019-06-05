@@ -127,6 +127,18 @@ function showModal(job){
     $("#modalCreatorEmail").text(job.creator.email);
 }
 
+function showOfferModal(job){
+    //$("#m1o").modal();
+    $("#offerModalTitle").text(job.title);
+    $("#offerModalArea").text(job.area);
+    $("#offerModalAmount").text(job.amount);
+    $("#offerModalDescription").text(job.description);
+    $("#offerModalDate").text(job.date);
+    $("#offerModalCreatorName").text(job.creator.name);
+    $("#offerModalCreatorUsername").text(job.creator.username);
+    $("#offerModalCreatorEmail").text(job.creator.email);
+}
+
 /**
  * Updates information on variables for the clicked user
  */
@@ -158,3 +170,4 @@ $(document).ready(function(e){
             $('.input-group #search_param').val(param);
     });
 });
+

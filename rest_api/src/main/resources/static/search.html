@@ -251,11 +251,11 @@
 
                         <!-- Modal -->
                         <div id="userModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h3 class="modal-title" id="userModalTitle"></h3>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="row modal-body">
                                         <div class="media-box col-md-4">
@@ -263,12 +263,12 @@
                                         </div>
                                         <div class="col-md-8" id="modalContent" style="font-size: 18px; margin-top: 10px">
                                             <div class="row">
-                                                <span class="col-md-2">Email: </span>
-                                                <span class="col-md-10" id="userModalEmail"></span>
+                                                <span class="col-md-3">Email: </span>
+                                                <span class="col-md-9" id="userModalEmail"></span>
                                             </div>
                                             <div class="row">
-                                                <span class="col-md-2">User type: </span>
-                                                <span class="col-md-10" data-bind="text: userModalUserType"></span>
+                                                <span class="col-md-3">User Type: </span>
+                                                <span class="col-md-9" data-bind="text: userModalUserType"></span>
                                             </div>
                                             <div data-bind="if: userModalJobs().length == 0">
                                                 <div data-bind="if: userModalUserType() == 'freelancer'">
@@ -283,19 +283,17 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
-                                                            <th>Description</th>
                                                             <th>Date</th>
-                                                            <th>Area</th>
                                                             <th>Amount</th>
+                                                            <th>Link</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody data-bind="foreach: {data: userModalJobs, as: 'job'}">
                                                         <tr>
                                                             <td data-bind="text: job.title"></td>
-                                                            <td data-bind="text: job.description"></td>
                                                             <td data-bind="text: job.date"></td>
-                                                            <td data-bind="text: job.area"></td>
                                                             <td data-bind="text: job.amount"></td>
+                                                            <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job)" style="color:#0077b5;">Check Out</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -309,6 +307,68 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Offer Modal -->
+                    <div id="m1o" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="offerModalTitle"></h3>
+                                    <button type="button" class="close" data-dismiss="modal" id="modalClose">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                            </div>
+                                            <div class="col-md-8" style="font-size: 16px; margin-top: 10px">
+                                                <div class="row">
+                                                    <div class="col-md-3"><p>Description:</p></div>
+                                                    <div class="col-md-9"><p id="offerModalDescription"></p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3"><p>Area:</p></div>
+                                                    <div class="col-md-9"><p id="offerModalArea" ></p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3"><p>Deliver Date:</p></div>
+                                                    <div class="col-md-9"><p id="offerModalDate" ></p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3"><p>Amount:</p></div>
+                                                    <div class="col-md-9"><p id="offerModalAmount" ></p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12"><p>Creator:</p></div>
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-3"><p>Name:</p></div>
+                                                            <div class="col-md-8"><p id="offerModalCreatorName" ></p></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-3"><p>Username:</p></div>
+                                                            <div class="col-md-8"><p id="offerModalCreatorUsername" ></p></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-3"><p>Email:</p></div>
+                                                            <div class="col-md-8"><p id="offerModalCreatorEmail" ></p></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
