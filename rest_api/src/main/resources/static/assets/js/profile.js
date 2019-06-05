@@ -1,7 +1,12 @@
-
 var base_api_url = "http://" + window.location.host;
 
-var profile = {};
+var profile = {
+    type: "",
+    username: "",
+    name: "",
+    email: "",
+    interestedAreas: ""
+};
 
 window.onload = function() {
     profile["type"] = localStorage.getItem("type");
@@ -12,10 +17,6 @@ window.onload = function() {
     $.ajax({
         url: base_api_url + "/profile",
         type: "GET",
-        headers: {
-            "Authorization": "Basic " + localStorage.getItem("token"),
-            'X-Requested-With': 'XMLHttpRequest'
-        },
         crossDomain:true,
         success: function(data, status, xhr) {
             if(status!=="success"){
@@ -72,7 +73,7 @@ $("#update_btn").click(function(event) {
             // warning toast
         }
     }
-    
+
     if(JSON.stringify(interestedAreas.sort()) != JSON.stringify(profile.interestedAreas.sort())) {
         data["interestedAreas"]=interestedAreas;
     }
@@ -85,7 +86,7 @@ $("#update_btn").click(function(event) {
             // warning toast
         }
     }
-    
+
     console.log(profile);
     console.log(data);
 
@@ -98,10 +99,6 @@ $("#update_btn").click(function(event) {
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            headers: {
-                "Authorization": "Basic " + localStorage.getItem("token"),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
             crossDomain:true,
             success: function(data, status, xhr) {
                 if(status!=="success"){

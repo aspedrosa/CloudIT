@@ -53,7 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/joboffer").permitAll()
             .anyRequest().permitAll()
             .and().httpBasic()
-            .and().rememberMe()
             .and().logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
             .and().csrf().disable();
     }

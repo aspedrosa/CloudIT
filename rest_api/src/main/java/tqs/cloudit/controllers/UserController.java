@@ -1,7 +1,9 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
-import org.json.simple.JSONObject;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
 import tqs.cloudit.domain.rest.User;
+import tqs.cloudit.domain.rest.UserSearch;
 import tqs.cloudit.services.UserService;
+import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  * All request paths associated with users (employers and freelancers)
@@ -26,11 +30,11 @@ public class UserController {
     
     @Autowired
     public UserService userService;
-    
+
     /*
         User Profile
     */
-    
+
     /**
      * Return the profile data of the user identified by the id
      * 
@@ -51,7 +55,81 @@ public class UserController {
      */
     @PutMapping(path="/profile", consumes="application/json", produces="application/json")
     public ResponseEntity updateProfile(@RequestBody User user) {
+
+
+        if (user.getInterestedAreas() != null) {
+            for (String area : user.getInterestedAreas()) {
+                if (area.length() > 30) {
+                    return ResponseBuilder.buildWithMessage(
+                        HttpStatus.BAD_REQUEST,
+                        "Areas must not have more than 30 characters"
+                    );
+                }
+            }
+        }
+
         return this.userService.updateUserInfo(user);
+    }
+
+    /**
+     * Get all users on the platform filtered by parameters
+     *
+     * @param userSearch where the parameters to filter the user are sent
+     * @return users that matched the filters
+     */
+    @PostMapping(path="/profile/search", produces="application/json", consumes="application/json")
+    public ResponseEntity searchProfile(@RequestBody UserSearch userSearch) {
+        String name = userSearch.getName();
+        String userType = userSearch.getUserType();
+        Set<String> areas = userSearch.getAreas();
+
+        if (userType != null) {
+            userType = userType.trim().toLowerCase();
+            if (!userType.equals("freelancer") && !userType.equals("employer")) {
+                return ResponseBuilder.buildWithMessage(
+                    HttpStatus.BAD_REQUEST,
+                    "userType field can only be \"freelancer\" or \"employer\""
+                );
+            }
+        }
+
+        if (areas != null) {
+            if (areas.size() == 0) {
+                areas = null;
+            }
+            else {
+                for (String area : areas) {
+                    if (area.length() > 30) {
+                        return ResponseBuilder.buildWithMessage(
+                            HttpStatus.BAD_REQUEST,
+                            "Areas must have less than 30 characters"
+                        );
+                    }
+                }
+            }
+        }
+
+        if (name != null) {
+            name = name.trim();
+            if (name.length() == 0) {
+                name = null;
+            }
+        }
+
+        List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, areas, userType);
+
+        if (matchedUsers.size() > 0) {
+            return ResponseBuilder.buildWithMessageAndData(
+                HttpStatus.ACCEPTED,
+                "Users found",
+                matchedUsers
+            );
+        }
+
+        return ResponseBuilder.buildWithMessage(
+            HttpStatus.NOT_FOUND,
+            "No users found for the given parameters"
+        );
     }
     
     /*

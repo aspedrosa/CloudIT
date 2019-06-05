@@ -1,20 +1,20 @@
 var base_api_url = "http://" + window.location.host;
 
-function getOffers() {
+function AppViewModel() {
     var self=this;
-    self.jobOffers=ko.observableArray([])
-    
+    self.jobOffers=ko.observableArray([]);
+    self.users=ko.observableArray([]);
+    self.searchBy = ko.observable("users");
+
     self.refresh = function(){
         $.ajax({
             url: base_api_url+"/joboffer",
             type: "GET",
             crossDomain:true,
             success: function(data, status, xhr) {
-                console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
                 if(status!=="success"){
                     alert(JSON.stringify(data));
                 }else{
-                    console.log(data)
                     self.jobOffers.removeAll()
                     for(let index in data.data){
                         self.jobOffers.push(data.data[index]);
@@ -26,8 +26,8 @@ function getOffers() {
                 console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
             }
         });
-    }
-    
+    };
+
     self.search = function() {
         var query = $("#query").val();
         var isTitle = $("#isTitle").is(":checked");
@@ -66,12 +66,55 @@ function getOffers() {
             }
         });
     };
-};
 
-var offers = new getOffers()
-offers.refresh()
+    //jobs of the clicked user on user search
+    self.userModalJobs = ko.observableArray([]);
+    //user type of the clicked user on user search
+    self.userModalUserType = ko.observable("");
+    self.searchUsers = function() {
+        let name =  $("#searchUserName").val().trim();
+        let interestedAreas =  $("#searchUserInterestedAreas").tagsinput("items");
+        let userType =  $("#searchUserType").val();
 
-ko.applyBindings(offers);
+        let requestParams = {};
+
+        if (name.length > 0) {
+            requestParams["name"] = name;
+        }
+        if (interestedAreas.length > 0) {
+            requestParams["areas"] = interestedAreas;
+        }
+        if (userType != "null") {
+            requestParams["userType"] = userType;
+        }
+
+        $.ajax({
+            url: base_api_url + "/profile/search",
+            type: "POST",
+            data: JSON.stringify(requestParams),
+            dataType: "json",
+            contentType: "application/json",
+            crossDomain: true,
+            success: function (data, status, xhr) {
+                self.users.removeAll();
+                for (let index in data.data) {
+                    self.users.push(data.data[index]);
+                }
+            },
+            error: function(data, status, xhr) {
+                console.log(data.responseText);
+                console.log(status);
+
+                alert(data.responseJSON.message);
+            }
+        });
+    }
+}
+
+var appViewModel = new AppViewModel();
+appViewModel.refresh();
+
+ko.applyBindings(appViewModel);
 
 function showModal(job){
     $("#modalTitle").text(job.title);
@@ -84,8 +127,21 @@ function showModal(job){
     $("#modalCreatorEmail").text(job.creator.email);
 }
 
+/**
+ * Updates information on variables for the clicked user
+ */
+function fillSearchUserModalTable(name, userType, email, jobs) {
+    $("#userModalTitle").text(name);
+    $("#userModalEmail").text(email);
+
+    appViewModel.userModalUserType(userType.toLowerCase());
+    appViewModel.userModalJobs.removeAll();
+    jobs.forEach(function (job, _) {
+        appViewModel.userModalJobs.push(job);
+    })
+}
+
 function changeFilterMenu() {
-    console.log();
     if ($("#filters_menu").css("display") === "none")
         $("#filters_menu").css("display", "block");
     else

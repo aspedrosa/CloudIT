@@ -9,18 +9,19 @@
     <title>About Us</title>
     
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/2bade98dbe.js"></script>
 
     <!-- Core CSS -->
     <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/header.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
     <!-- Navbar -->
+    <div id="navBarID"></div>
+    <!--
     <nav class="navbar navbar-inverse navbar-fixed-top header-distributed" >
         <div class="container-fluid">
             <div class="navbar-header">
@@ -29,23 +30,14 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a id="about" href="/aboutPage">About Us</a></li>
             </ul>
-            <!-- <form class="navbar-form navbar-left" action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form> -->
             <ul class="nav navbar-nav navbar-right">
                 <li><a id="signup" href="/loginPage"><span class="fa fa-user"></span> Sign Up</a></li>
             </ul>
         </div>
     </nav>
+    -->
 
-    <main role="main" id="about_page_content" class="container" style="margin-top: 100px">
+    <main role="main" class="container" id="about_page_content">
         <!-- Intro -->
         <div class="row">
             <div class="text-center col-md-6"> 
@@ -70,53 +62,17 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer-distributed">
-        <div class="footer-left">
-            <h3>Cloud<span>IT</span></h3>
-            <p class="footer-links">
-                <span>Freelancers</span> ·
-                <span>Enterprises</span> ·
-                <span>Projects</span> ·
-                <span>IT Solutions</span>
-                <!-- <a href="/welcome">Home</a> ·
-                <a href="/search">IT Search</a> ·
-                <a href="/profile">Profile</a> ·
-                <a href="/messages">Messages</a> ·
-                <a href="/about">About</a> -->
-            </p>
-            <p class="footer-company-name">CloudIT &copy; 2019</p>
-        </div>
-        <div class="footer-center">
-            <div>
-                <i class="fa fa-map-marker"></i>
-                <p><span>Campus Universitário de Santiago, </span>3810-193 Aveiro</p>
-            </div>
-            <div>
-                <i class="fa fa-phone"></i>
-                <p>+351 234 567 890</p>
-            </div>
-            <div>
-                <i class="fa fa-envelope"></i>
-                <p><a href="mailto:support@company.com">cloudit_support@cloudit.com</a></p>
-            </div>
-        </div>
-        <div class="footer-right">
-            <p class="footer-company-about">
-                <span>About Us</span>
-                Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
-            </p>
-            <div class="footer-icons">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
-                <a href="#"><i class="fa fa-github"></i></a>
-            </div>
-        </div>
-    </footer>
+    <div id="footerID"></div>
 
     <!-- core JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js" type = "text/javascript"></script>
     <script src="assets/js/login.js"></script>
+    <script src="assets/js/global.js"></script>
 </body>
 </html>

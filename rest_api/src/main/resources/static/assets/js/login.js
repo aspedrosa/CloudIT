@@ -11,7 +11,7 @@ function sign_in_tab() {
     var form = document.getElementById("signin_signup_form");
     document.getElementById("sign_up_link").classList.remove("active");
     document.getElementById("sign_in_link").classList.add("active");
-    form.innerHTML = '<div class="form-group" style="text-align: left;"> <label for="username">Username:</label> <input type="username" class="form-control" id="username"> </div> <div class="form-group" style="text-align: left;"> <label for="pwd">Password:</label> <input type="password" class="form-control" id="pwd"> </div> <button style="width: 100%; background-color: #3793f7; border: 0px" type="button" onclick="sign_in()" class="btn btn-secondary" id="submit_burron">Sign In</button>'; 
+    form.innerHTML = '<div class="form-group" style="text-align: left;"> <label for="username">Username:</label> <input type="username" class="form-control" id="username"> </div> <div class="form-group" style="text-align: left;"> <label for="pwd">Password:</label> <input type="password" class="form-control" id="pwd"> </div> <button style="width: 100%; background-color: #3793f7; border: 0px" type="button" onclick="sign_in()" class="btn btn-secondary" id="submit_button">Sign In</button>';
 }
 
 function sign_in() {
@@ -26,6 +26,7 @@ function sign_in() {
             "Authorization": "Basic " + btoa(username + ":" + password),
             'X-Requested-With': 'XMLHttpRequest'
         },
+        xhrFields: { withCredentials: true },   
         crossDomain:true,
         success: function(data, status, xhr) {
             console.log("success: "+data + ", "+status+", "+JSON.stringify(xhr));
@@ -35,20 +36,8 @@ function sign_in() {
                 </div>');
                 alert(JSON.stringify(data));
             }else{
-                localStorage.setItem("type", data.data.type);
                 localStorage.setItem("username", username);
-                localStorage.setItem("token", btoa(username + ":" + password));
-                
-                var socket = new SockJS(base_api_url+'/secured/messageCenter');
-                stompClient = Stomp.over(socket);
-                stompClient.connect({}, function (frame) {
-                    console.log('Connected: ' + frame);
-                    stompClient.subscribe('/secured/queue/'+username, function (greeting) {
-                        console.log(JSON.parse(greeting.body));
-                        $.notify("From: "+JSON.parse(greeting.body).from+"\nMessage: "+JSON.parse(greeting.body).message.substring(0, 10), "info");
-                    });
-                });
-                
+                localStorage.setItem("type", data.data.type);
                 window.location.href= base_api_url+"/welcomePage";
             }
         },

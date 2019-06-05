@@ -112,12 +112,13 @@
             <type>jar</type>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-firefox-driver</artifactId>
+            <artifactId>selenium-chrome-driver</artifactId>
             <version>3.141.59</version>
         </dependency>
+
         <dependency>
              <groupId>io.github.bonigarcia</groupId>
              <artifactId>webdrivermanager</artifactId>
@@ -149,6 +150,14 @@
         
         <cucumber.version>4.2.5</cucumber.version>
         <selenium.version>3.141.59</selenium.version>
+
+        <sonar.exclusions>
+            **/SpringBootWebApplication.java,
+            **/domain/persistance/*.java
+            **/domain/responses/*.java
+            **/domain/rest/*.java
+            **/controllers/WebSiteController.java,
+        </sonar.exclusions>
     </properties>
 
     <build>

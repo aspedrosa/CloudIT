@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tqs.cloudit.services;
 
 import java.util.ArrayList;
@@ -18,6 +13,7 @@ import tqs.cloudit.domain.persistance.User;
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.UserRepository;
+import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  *
@@ -40,110 +36,96 @@ public class JobService {
             offers.add(jo);
         }
         
-        JSONObject response = new JSONObject();
-        response.put("message", "Information fetched with success.");
-        response.put("data", offers);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Information fetched with success.", offers);
     }
 
     public ResponseEntity registerOffer(String creator, JobOffer jobOffer) {
         if(!jobOffer.allDefined()){
-            JSONObject response = new JSONObject();
-            response.put("message", "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
-            return new ResponseEntity(response,HttpStatus.NOT_ACCEPTABLE);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Registration invalid. When registering you need to provide the offer title, description, working area, amount and date(to be delivered).");
         }
         tqs.cloudit.domain.persistance.JobOffer jo =  new tqs.cloudit.domain.persistance.JobOffer(jobOffer);
         User aux = userRepository.getInfo(creator);
         jo.setCreator(aux);
         aux.addNewOffer(jo);
         jobRepository.save(jo);
-        JSONObject response = new JSONObject();
-        response.put("message", "Job offer registered with success.");
-        return new ResponseEntity(response,HttpStatus.OK);
+        
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job offer registered with success.");
     }
     
+    public ResponseEntity editOffer(Long id, JobOffer jobOffer) {
+        if(!jobOffer.allDefined()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Update invalid. When updating a job offer you need to provide the offer title, description, working area, amount and date(to be delivered).");
+        }
+        
+        tqs.cloudit.domain.persistance.JobOffer old_jobOffer = this.jobRepository.getJobOffer(id);
+        
+        User aux = old_jobOffer.getCreator();
+        aux.removeOffer(old_jobOffer);
+        
+        old_jobOffer.setTitle(jobOffer.getTitle());
+        old_jobOffer.setDescription(jobOffer.getDescription());
+        old_jobOffer.setArea(jobOffer.getArea());
+        old_jobOffer.setAmount(jobOffer.getAmount());
+        old_jobOffer.setDate(jobOffer.getDate());
+        
+        aux.addNewOffer(old_jobOffer);
+        jobRepository.save(old_jobOffer);
+        
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job offer edited with success.");
+    }
+
     public ResponseEntity getJobOffersFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            JSONObject response = new JSONObject();
-            response.put("message", "No job found with that id.");
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
         }
-        JSONObject response = new JSONObject();
-        response.put("message", "Job offer found with success.");
-        response.put("data", jobs);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
     }
     
     public ResponseEntity getJobOffersFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            JSONObject response = new JSONObject();
-            response.put("message", "No job found with that id.");
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
         }
-        JSONObject response = new JSONObject();
-        response.put("message", "Job offer found with success.");
-        response.put("data", jobs);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
     }
     
     public ResponseEntity getJobOffersFromTextAmountAndDateOnlyArea(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.JobOffer> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            JSONObject response = new JSONObject();
-            response.put("message", "No job found with that id.");
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
         }
-        JSONObject response = new JSONObject();
-        response.put("message", "Job offer found with success.");
-        response.put("data", jobs);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
     }
     
     public ResponseEntity getSpecificOffer(long id) {
         tqs.cloudit.domain.persistance.JobOffer jo = jobRepository.getJobOffer(id);
         if(jo==null){
-            JSONObject response = new JSONObject();
-            response.put("message", "No job found with that id.");
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
         }
-        JSONObject response = new JSONObject();
-        response.put("message", "Job offer found with success.");
-        response.put("data", jo);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jo);
     }
 
     public ResponseEntity getUserOffers(String name) {
         Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getMyOffers();
-        
-        JSONObject response = new JSONObject();
-        response.put("message", "Information fetched with success.");
-        response.put("data", offers);
-        return new ResponseEntity(response,HttpStatus.OK);
+
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Information fetched with success.", offers);
     }
 
     public ResponseEntity deleteSpecificOffer(long id) {
         if(jobRepository.existsById(id)){
             jobRepository.deleteById(id);
             
-            JSONObject response = new JSONObject();
-            response.put("message", "Job removed with success.");
-            return new ResponseEntity(response,HttpStatus.OK);
+            return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Job removed with success.");
         }
         
-        JSONObject response = new JSONObject();
-        response.put("message", "Job id doesn't exist.");
-        return new ResponseEntity(response,HttpStatus.NOT_FOUND);
-        
+        return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "Job id doesn't exist.");
+
     }
     
     public ResponseEntity getUserOffersAccepted(String name) {
         Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getAcceptedOffers();
         
-        JSONObject response = new JSONObject();
-        response.put("message", "Information fetched with success.");
-        response.put("data", offers);
-        return new ResponseEntity(response,HttpStatus.OK);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Information fetched with success.", offers);
     }
 }

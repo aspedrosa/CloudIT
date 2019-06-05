@@ -1,4 +1,4 @@
-Feature: User can sign in on the platform.
+Feature: User can sign in on the platform
     As a person interested in taking advantage of CloudIT's features.
     I want to be able to login to my account.
     So that I can start searching for opportunities in the application field.

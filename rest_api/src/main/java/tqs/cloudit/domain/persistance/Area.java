@@ -1,6 +1,8 @@
 package tqs.cloudit.domain.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import tqs.cloudit.utils.AreaBeautifier;
+
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -33,7 +35,7 @@ public class Area {
     }
     
     public Area(String area) {
-        this.area = area;
+        this.area = AreaBeautifier.beautify(area);
     }
 
     public String getArea() {
@@ -41,7 +43,7 @@ public class Area {
     }
 
     public void setArea(String area) {
-        this.area = area;
+        this.area = AreaBeautifier.beautify(area);
     }
 
     public Set<User> getUsers() {
@@ -71,10 +73,8 @@ public class Area {
             return false;
         }
         final Area other = (Area) obj;
-        if (!Objects.equals(this.area, other.area)) {
-            return false;
-        }
-        return true;
+
+        return this.area.equalsIgnoreCase(other.area);
     }
 
     
