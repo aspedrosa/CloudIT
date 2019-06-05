@@ -32,7 +32,15 @@ function sendMsg(){
     var msgDestin = $("#msgDestination").text()
     if(msg!==""){
         sendMessage(msg, msgDestin, true)
-        new Promise(resolve => setTimeout(resolve, 1000));
-        getAllMessages(msgDestin)
     }
+    
+    $('#class-room-msgs').scrollTop($('#class-room-msgs')[0].scrollHeight);
+}
+
+async function loadMessages(contact){
+    getAllMessages(contact[0])
+    $("#msgDestinName").text(contact[1])
+    $("#msgDestination").text(contact[0])
+    await new Promise(resolve => setTimeout(resolve, 300));
+    $('#class-room-msgs').scrollTop($('#class-room-msgs')[0].scrollHeight);
 }

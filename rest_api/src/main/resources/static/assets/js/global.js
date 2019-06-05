@@ -3,14 +3,34 @@ var base_api_url = "http://" + window.location.host;
 function viewModel() {
     var self=this;
     self.messages=ko.observableArray([])
+    self.contacts=ko.observableArray([])
+    
+    self.origin=localStorage.getItem("username")
     
     self.refreshMessages = function(msgs){
         self.messages.removeAll();
-        console.log("aqui")
-        console.log(msgs)
+
         for(let m in msgs){
+            if(msgs[m].origin===self.origin){
+                msgs[m]["class"]=0
+            }else{
+                msgs[m]["class"]=1
+            }
             self.messages.push(msgs[m]);
         }
+    }
+    
+    self.refreshContacts = function(contacts){
+        self.contacts.removeAll();
+
+        for(let c in contacts){
+            self.contacts.push(contacts[c]);
+        }
+    }
+    
+    self.addMsg =  function(msg){
+        msg["class"]=0
+        self.messages.push(msg);
     }
     
 };
@@ -32,15 +52,15 @@ $(document).ready(function(){
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
+            getContacts()
             stompClient.subscribe('/secured/queue/'+localStorage.getItem("username"), function (greeting) {
                 var body = JSON.parse(greeting.body)
                 console.log(body);
                 if("message" in body){
                     $.notify("From: "+body.origin+"\nMessage: "+body.message.substring(0, 10)+"...", "info");
-                }else{
+                }else if("messages" in body){
                     var allMsgs=body.messages
                     var processedMsgs=[]
-                    var index=0;
                     for(let m in allMsgs){
                         let time=allMsgs[m].date;
                         
@@ -49,22 +69,34 @@ $(document).ready(function(){
                         mt = n.getMinutes()
                         allMsgs[m].date = hr + ":" + mt;
                         
-                        allMsgs[m].index=index%2;
-                        index+=1;
-                        
                         processedMsgs.push(allMsgs[m])
                         viewModel.refreshMessages(processedMsgs)
                     }
+                }else if("contacts" in body){
+                    viewModel.refreshContacts(body["contacts"])
                 }
             });
         });
         
-        sendMessage=function sendMessage(msg,destin){
-            stompClient.send("/secured/message", {}, JSON.stringify({'message': msg, "destination":destin}));
+        sendMessage=function (msg,destin){
+            var m = {'message': msg, "destination":destin};
+            stompClient.send("/secured/message", {}, JSON.stringify(m));
+            m["origin"]=localStorage.getItem("username");
+            
+            n =  new Date();
+            hr = n.getHours();
+            mt = n.getMinutes()
+            m.date = hr + ":" + mt;
+            
+            viewModel.addMsg(m);
         }
         
-        getAllMessages=function getAllMessages(destin){
+        getAllMessages=function (destin){
             stompClient.send("/secured/allMessages", {}, JSON.stringify({"destination":destin}));
+        }
+        
+        getContacts=function (){
+            stompClient.send("/secured/contacts", {});
         }
     }
     

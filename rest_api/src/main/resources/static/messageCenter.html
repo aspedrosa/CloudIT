@@ -29,16 +29,16 @@
         <div class="chat-room row">
             
             <div class="kiri-side col-lg-2 col-md-2 col-sm-2 col-xs-12" style="padding:0 ;height:92vh;">
-                <div class="user-head" style="min-height: 100px">
+                <div class="user-head" style="height: 100px">
                     <i class="fa fa-comments"></i>
                     <h3>Lobby</h3> <!-- style="height:30px !important" -->
                     <h6 id="date"></h6>
                 </div>
-                <ul class="chat-list chat-room-body">
+                <ul class="chat-list chat-room-body" style="height:100%" data-bind="foreach: { data: contacts, as: 'contact' }">
                     <li>
-                        <a onclick="getAllMessages($('#allMessagesDestin').text())">
+                        <a data-bind="click: function(){loadMessages(contact)}">
                             <i class="fa fa-user"></i>
-                            <span id="allMessagesDestin">joao</span>
+                            <span data-bind="text: contact[0]"></span>
                             <i class="fa fa-times"></i>
                         </a>
                     </li>
@@ -47,15 +47,17 @@
             </div>
 
             
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 " style="padding:0; height:92vh;min-height: 100px" id="chat-room-msg-center">
-                <div class="chat-room-head">
-                    <h3 id="msgDestinName">Joao</h3>
-                    <h5 id="msgDestination">joao</h5>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 " style="padding:0; height:92vh" id="chat-room-msg-center">
+                <div class="chat-room-head"  style="height: 100px">
+                    <h3 id="msgDestinName"></h3>
+                    <h5 id="msgDestination"></h5>
                 </div>
-                <div class="chat-room-body" id="class-room-msgs" data-bind="foreach: { data: messages, as: 'msg' }">
-                    <div class="group-rom">
-                        <div class="second-part odd" data-bind="text: msg.message"></div>
-                        <div class="third-part" data-bind="text: msg.date"></div>
+                <div class="chat-room-body" id="class-room-msgs">
+                    <div data-bind="foreach: { data: messages, as: 'msg' }">
+                        <div class="group-rom">
+                            <div class="second-part odd" data-bind="text: msg.message, css: {'odd' : msg.class===0}"></div>
+                            <div class="third-part" data-bind="text: msg.date"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="chat-room-footer" style="position: absolute; bottom:0;">
@@ -83,7 +85,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
     <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js" type = "text/javascript"></script>
-    <script src="assets/js/messageCenter.js"></script>
     <script src="assets/js/global.js"></script>
+    <script src="assets/js/messageCenter.js"></script>
+    
 </body>
 </html>
