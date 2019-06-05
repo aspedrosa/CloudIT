@@ -3,18 +3,42 @@ var base_api_url = "http://" + window.location.host;
 function viewModel() {
     var self=this;
     self.messages=ko.observableArray([])
-    
+    self.myOffers=ko.observableArray([])
+  
     self.refreshMessages = function(msgs){
         self.messages.removeAll();
-        console.log("aqui")
-        console.log(msgs)
+        //console.log("aqui")
+        //console.log(msgs)
         for(let m in msgs){
             self.messages.push(msgs[m]);
         }
     }
+
+    self.refreshOffers = function(){
+        $.ajax({
+        url: base_api_url+"/joboffer/self",
+        type: "GET",
+        crossDomain:true,
+        success: function(data, status, xhr) {
+            if(status!=="success"){
+                alert(JSON.stringify(data));
+            }else{
+                //console.log(data)
+                self.myOffers.removeAll();
+                for(let index in data.data){
+                    self.myOffers.push(data.data[index]);
+                }
+            }
+        },
+        error: function(data, status, xhr) {
+            alert(JSON.stringify(data));
+            console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+        }
+        });  
+    }
     
 };
-var viewModel = new viewModel()
+var viewModel = new viewModel();
 
 
 $(document).ready(function(){
