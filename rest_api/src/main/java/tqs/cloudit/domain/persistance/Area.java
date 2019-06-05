@@ -25,7 +25,7 @@ public class Area {
     private long id;
     
     @Column(unique=true)
-    private String area;
+    private String area; //NOSONAR
     
     @ManyToMany(mappedBy="interestedAreas")
     @JsonIgnore

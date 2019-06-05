@@ -29,7 +29,6 @@ public class UserService {
     private BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
     
     public ResponseEntity getUserInfoFromUsername(String username, boolean withPassword) {
-        JSONObject response = new JSONObject();
         tqs.cloudit.domain.persistance.User user = this.userRepository.getInfo(username);
         if (!withPassword) {
             user.setPassword("");
@@ -51,7 +50,6 @@ public class UserService {
             old_user.setEmail(user.getEmail());
             changes = true;
         }
-        //System.out.println("Passwords: user.getPassword()='"+user.getPassword()+"', user.getNewPassword()='"+user.getNewPassword()+"', old_user.getPassword()='"+old_user.getPassword()+"'");
         if(user.getPassword() != null && user.getNewPassword() != null && !bcpe.matches(user.getNewPassword(), old_user.getPassword())) {
             if(!bcpe.matches(user.getPassword(), old_user.getPassword())) {
                 return ResponseBuilder.buildWithMessage(HttpStatus.NOT_ACCEPTABLE, "Unable to update profile. In order to change password you need to type in the current one correctly.");
