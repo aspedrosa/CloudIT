@@ -1,5 +1,6 @@
 package tqs.cloudit.services;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -39,7 +40,7 @@ public class MessageService {
         simpMessagingTemplate.convertAndSend("/secured/queue/"+destinationUser, message);
     }
     
-    public void updateMessage() {
-        
+    public void updateMessage(JSONArray input) {
+        messageRepository.updateMessage((Long)input.get(0), (String)input.get(1));
     }
 }

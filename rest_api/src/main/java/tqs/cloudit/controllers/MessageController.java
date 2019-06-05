@@ -1,11 +1,7 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
-<<<<<<< HEAD
-=======
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
->>>>>>> b288ae142e7253f6dc385b403bdc3c4af9c88d88
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -35,7 +31,7 @@ public class MessageController {
     
     @MessageMapping("/update")
     public void update(JSONArray input, Principal user) throws Exception {
-        messageRepository.updateMessage((Long)input.get(0), (String)input.get(1));
+        messageService.updateMessage(input);
     }
 
 }

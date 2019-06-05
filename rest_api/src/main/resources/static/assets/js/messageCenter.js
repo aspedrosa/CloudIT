@@ -11,7 +11,6 @@ window.onload = function(){
   
   var msg = document.getElementById("msgText");
 
-<<<<<<< HEAD
     msg.addEventListener("keyup", function(event) {
       if (event.keyCode === 13) {
         sendMsg()
@@ -20,16 +19,6 @@ window.onload = function(){
     
     ko.applyBindings(viewModel);
     activateContact()
-=======
-  msg.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-      sendMsg()
-    }
-  });
-  
-  viewModel.refreshOffers();
-  ko.applyBindings(viewModel);
->>>>>>> ed206c92cf148289dc82c669bd91a023586daeb9
 }
 
 $(window).resize(resizeMessages);
