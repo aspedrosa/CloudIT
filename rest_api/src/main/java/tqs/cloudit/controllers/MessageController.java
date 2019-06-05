@@ -36,5 +36,12 @@ public class MessageController {
         output.put("messages", messageRepository.getMessages(user.getName(), message.getDestination()));
         simpMessagingTemplate.convertAndSend("/secured/queue/"+user.getName(), output);
     }
+    
+    @MessageMapping("/contacts")
+    public void contacts(Principal user) throws Exception {
+        JSONObject output = new JSONObject();
+        output.put("contacts", messageRepository.getContacts(user.getName()));
+        simpMessagingTemplate.convertAndSend("/secured/queue/"+user.getName(), output);
+    }
 
 }
