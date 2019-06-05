@@ -11,6 +11,16 @@ window.onload = function(){
   
   var msg = document.getElementById("msgText");
 
+<<<<<<< HEAD
+    msg.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        sendMsg()
+      }
+    });
+    
+    ko.applyBindings(viewModel);
+    activateContact()
+=======
   msg.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
       sendMsg()
@@ -19,6 +29,7 @@ window.onload = function(){
   
   viewModel.refreshOffers();
   ko.applyBindings(viewModel);
+>>>>>>> ed206c92cf148289dc82c669bd91a023586daeb9
 }
 
 $(window).resize(resizeMessages);
@@ -45,6 +56,19 @@ async function loadMessages(contact){
     await new Promise(resolve => setTimeout(resolve, 300));
     $('#class-room-msgs').scrollTop($('#class-room-msgs')[0].scrollHeight);
 }
+
+
+function activateContact(){
+    setTimeout(function(){
+        var url = new URL(window.location.href);
+        var addName = url.searchParams.get("addName");
+        var addUsername = url.searchParams.get("addUsername");
+        if(addName!==null && addUsername!==null){
+            loadMessages([addUsername, addName])
+        }
+    }, 500);
+}
+
 
 function sendMsgWithOffer(offer) {
   //console.log(offer);
@@ -78,3 +102,4 @@ function denyOfferMsg(id, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:red'> Denied</h3>";
   updateAutomaticMessage(id, fMsg);
 }
+

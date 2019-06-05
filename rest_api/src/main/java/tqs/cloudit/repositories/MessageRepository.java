@@ -12,5 +12,8 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
     
     @Query(value= "select distinct destination, name from message join user on destination=username where origin=?1", nativeQuery=true)
     public List<List<String>> getContacts(String user);
+
+    @Query(value= "update message set message=?2 where id=?1", nativeQuery=true)
+    public void updateMessage(Long get, String get0);
     
 }

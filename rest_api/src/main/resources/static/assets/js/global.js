@@ -46,14 +46,36 @@ function viewModel() {
     
     self.refreshContacts = function(contacts){
         self.contacts.removeAll();
-
         for(let c in contacts){
             self.contacts.push(contacts[c]);
         }
+        
+        var url = new URL(window.location.href);
+        var addName = url.searchParams.get("addName");
+        var addUsername = url.searchParams.get("addUsername");
+        if(addName!==null && addUsername!==null){
+            let control=true
+            for(let u in self.contacts.peek()){
+                if(self.contacts.peek()[u][0]===addUsername){
+                    control=false
+                }
+            }
+            if(control){
+                self.contacts.push([addUsername, addName]);
+            }
+        }
+    }
+    
+    self.addContact =  function(contact){
+        self.contacts.push(contact);
     }
     
     self.addMsg =  function(msg){
-        msg["class"]=0
+        if(msgs[m].origin===self.origin){
+            msg["class"]=0
+        }else{
+            msg["class"]=1
+        }
         self.messages.push(msg);
     }
     
@@ -64,6 +86,8 @@ var viewModel = new viewModel();
 $(document).ready(function(){
     var secureEndpoints = ["/profilePage", "/messagesPage", "/jobsPage", "/welcomePage"]
     let path = window.location.pathname;
+    
+    connected=false;
     
     //CHECK IF SIGNED IN
     if(localStorage.getItem("username")===null || localStorage.getItem("username")===null || document.cookie===null){
@@ -77,6 +101,7 @@ $(document).ready(function(){
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             getContacts()
+            connected=true
             stompClient.subscribe('/secured/queue/'+localStorage.getItem("username"), function (greeting) {
                 var body = JSON.parse(greeting.body)
                 console.log(body);
