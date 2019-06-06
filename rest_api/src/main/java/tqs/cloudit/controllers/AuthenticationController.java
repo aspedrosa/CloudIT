@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.services.AuthenticationService;
+import tqs.cloudit.utils.Constants;
 
 /**
  * Paths related to authentication of users for using the API
@@ -41,6 +42,14 @@ public class AuthenticationController {
         return authServ.login(principal.getName());
     }
 
+    /**
+     * Deauthenticates a user by removing session cookies
+     */
+    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
+    public ResponseEntity logout() {
+        throw new UnsupportedOperationException(Constants.NOT_IMPLEMENTED_YET);
+    }
+
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity register(@RequestBody User user) {
         return this.authServ.register(user);
@@ -48,12 +57,12 @@ public class AuthenticationController {
     
     @PostMapping(path = "/company", consumes = "application/json", produces = "application/json")
     public ResponseEntity associateCompany() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(Constants.NOT_IMPLEMENTED_YET);
     }
     
     @PostMapping(path = "/hire/id/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity hire(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(Constants.NOT_IMPLEMENTED_YET);
     }
     
 }

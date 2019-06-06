@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
  */
 public class ResponseBuilder {
 
+    private ResponseBuilder() {}
+
     private static JSONObject jsonWithMessage(String message) {
         JSONObject response = new JSONObject();
 

@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import tqs.cloudit.domain.persistance.JobOffer;
+import tqs.cloudit.domain.persistance.Job;
 import tqs.cloudit.domain.persistance.Message;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.MessageRepository;
@@ -63,7 +63,7 @@ public class MessageService {
         System.out.println(input.toJSONString());
         if(((String)input.get(2)).equals("accept")){
             Long aux = new Long((int)input.get(3));
-            JobOffer jo = jobRepository.getJobOffer(aux);
+            Job jo = jobRepository.getJobOffer(aux);
             jo.setWorker(userRepository.getInfo((String)input.get(4)));
             jobRepository.save(jo);
         }

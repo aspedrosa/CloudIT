@@ -1,7 +1,6 @@
 package tqs.cloudit.controllers;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -83,18 +81,15 @@ public class UserController {
         String userType = userSearch.getUserType();
         Set<String> areas = userSearch.getAreas();
 
-        if (userType != null) {
-            userType = userType.trim().toLowerCase();
-            if (!userType.equals("freelancer") && !userType.equals("employer")) {
-                return ResponseBuilder.buildWithMessage(
-                    HttpStatus.BAD_REQUEST,
-                    "userType field can only be \"freelancer\" or \"employer\""
-                );
-            }
+        if (userType != null && !userType.equalsIgnoreCase("freelancer") && !userType.equalsIgnoreCase("employer")) {
+            return ResponseBuilder.buildWithMessage(
+                HttpStatus.BAD_REQUEST,
+                "userType field can only be \"freelancer\" or \"employer\""
+            );
         }
 
         if (areas != null) {
-            if (areas.size() == 0) {
+            if (areas.isEmpty()) {
                 areas = null;
             }
             else {
@@ -118,7 +113,7 @@ public class UserController {
 
         List<tqs.cloudit.domain.responses.User> matchedUsers = this.userService.searchUser(name, areas, userType);
 
-        if (matchedUsers.size() > 0) {
+        if (!matchedUsers.isEmpty()) {
             return ResponseBuilder.buildWithMessageAndData(
                 HttpStatus.ACCEPTED,
                 "Users found",
@@ -132,83 +127,4 @@ public class UserController {
         );
     }
     
-    /*
-        Freelancer
-    */
-    
-    /**
-     * Returns all freelancers registered
-     * 
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with the information
-     *  of the existing freelancers
-     */
-    @GetMapping("/freelancer")
-    public ResponseEntity getAllFreelancers() {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    /**
-     * Return the freelancer associated with the received id
-     * 
-     * @param id ID of the Freelancer that the user wants to know more
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and the information of the
-     *  freelancer
-     */
-    @GetMapping("/freelancer/id/{id}")
-    public ResponseEntity getFreelancerById(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    /**
-     * Return all freelancers of a specific area  
-     *
-     * @param area name of the area that should filter the results
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with the information
-     *  of the freelancers of the specific area
-     */
-    @GetMapping("/freelancer/area/{area}")
-    public ResponseEntity getFreelancersByArea(@PathVariable String area) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-    
-    /**
-     *  THIS ENDPOINT DOES NOT EXIST. REPACE THIS TEST ENDPOINT WITH A /profile one, [get, put, delete].
-     */
-    @GetMapping("/freelancer/info")
-    public ResponseEntity getFreelancerInfo(Principal p) {
-        return ResponseEntity.ok(userService.getUserInfoFromUsername(p.getName(), false));
-        //throw new UnsupportedOperationException("Not implemented yet!");
-    }
-    
-    /*
-        Employer
-    */
-    
-    /**
-     * Returns all employers registered
-     * 
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and a list with the information
-     *  of the existing employers
-     */
-    @GetMapping("/employer")
-    public ResponseEntity getAllEmployers() {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    /**
-     * Return the employer associated with the received id
-     * 
-     * @param id ID of the employer that the user wants to know more
-     * @return HTTP response with a descriptive message of what went wrong OR
-     *  a successful massage if all went good and the information of the
-     *  employer
-     */
-    @GetMapping("/employer/id/{id}")
-    public ResponseEntity getEmployerById(@PathVariable long id) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
 }

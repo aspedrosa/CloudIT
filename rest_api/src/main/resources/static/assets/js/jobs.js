@@ -91,6 +91,7 @@ function createOffer(){
     var area = document.getElementById("offerArea").value;
     var amount = document.getElementById("offerAmount").value;
     var date = document.getElementById("offerDate").value;
+    var type = "Offer";
     
     let data={};
     if(title!==""){
@@ -108,6 +109,7 @@ function createOffer(){
     if(date!==""){
         data["date"]=date;
     }
+    data["type"] = "Offer";
     
     $.ajax({
         url: base_api_url+"/joboffer",
@@ -165,6 +167,7 @@ function enableEdit_orSave() {
         data["area"]=area;
         data["amount"]=amount;
         data["date"]=date;
+        data["type"]="Offer";
 
         console.log("Data to be sent:");
         console.log(data);

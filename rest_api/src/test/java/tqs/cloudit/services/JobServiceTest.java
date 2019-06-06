@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import tqs.cloudit.domain.persistance.User;
-import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.domain.rest.Job;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.UserRepository;
 
@@ -40,16 +40,17 @@ public class JobServiceTest {
     
     
     private static ResponseEntity emptyResponse, incompleteResponse, completeResponse, fullResponse, editCompleteResponse, editIncompleteResponse;
-    private static JobOffer jo;
+    private static Job jo;
     private static User user1;
     
     static{
-        jo = new JobOffer();
+        jo = new Job();
         jo.setTitle("titulo");
         jo.setDescription("descript");
         jo.setAmount(10);
         jo.setDate("hoje");
         jo.setArea("Web");
+        jo.setType("Proposal");
         
         JSONObject response1 = new JSONObject();
         response1.put("message", "Information fetched with success.");
@@ -58,8 +59,8 @@ public class JobServiceTest {
         
         JSONObject response4 = new JSONObject();
         response4.put("message", "Information fetched with success.");
-        HashSet<tqs.cloudit.domain.persistance.JobOffer> aux = new HashSet();
-        aux.add(new tqs.cloudit.domain.persistance.JobOffer(jo));
+        HashSet<tqs.cloudit.domain.persistance.Job> aux = new HashSet();
+        aux.add(new tqs.cloudit.domain.persistance.Job(jo));
         response4.put("data", aux);
         fullResponse = new ResponseEntity(response4, HttpStatus.OK);
         
@@ -85,7 +86,7 @@ public class JobServiceTest {
         user1.setName("Joao");
         user1.setEmail("emaidojoao@mail.com");
         user1.setType("Freelancer");
-        user1.addNewOffer( new tqs.cloudit.domain.persistance.JobOffer(jo));
+        user1.addNewOffer(new tqs.cloudit.domain.persistance.Job(jo));
     }
     
     @InjectMocks
@@ -103,10 +104,10 @@ public class JobServiceTest {
     @Test
     public void testGetOffersEmpty() {
         System.out.println("getOffers");
-        Mockito.when(jobRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+        Mockito.when(jobRepository.getOffers()).thenReturn(Collections.EMPTY_LIST);
         ResponseEntity result = service.getOffers();
         assertEquals(emptyResponse, result);
-        Mockito.verify(jobRepository).findAll();
+        Mockito.verify(jobRepository).getOffers();
     }
 
     /**
@@ -127,7 +128,7 @@ public class JobServiceTest {
     @Test
     public void testRegisterOfferIncomplete() {
         System.out.println("registerOfferIncomplete");
-        ResponseEntity result = service.registerOffer("teste", new JobOffer());
+        ResponseEntity result = service.registerOffer("teste", new Job());
         assertEquals(incompleteResponse, result);
     }
 
@@ -137,7 +138,7 @@ public class JobServiceTest {
     @Test
     public void testGetSpecificOfferExists() {
         System.out.println("getSpecificOfferExists");
-        tqs.cloudit.domain.persistance.JobOffer myJo = new tqs.cloudit.domain.persistance.JobOffer(jo);
+        tqs.cloudit.domain.persistance.Job myJo = new tqs.cloudit.domain.persistance.Job(jo);
         Mockito.when(jobRepository.getJobOffer(5l)).thenReturn(myJo);
         ResponseEntity result = service.getSpecificOffer(5l);
         
@@ -211,7 +212,7 @@ public class JobServiceTest {
     public void testEditOfferComplete() {
         System.out.println("editOfferComplete");
         Long id = 1L;
-        tqs.cloudit.domain.persistance.JobOffer old_jobOffer = new tqs.cloudit.domain.persistance.JobOffer(jo);
+        tqs.cloudit.domain.persistance.Job old_jobOffer = new tqs.cloudit.domain.persistance.Job(jo);
         old_jobOffer.setId(id);
         old_jobOffer.setCreator(user1);
         Mockito.when(jobRepository.getJobOffer(id)).thenReturn(old_jobOffer);
@@ -233,12 +234,13 @@ public class JobServiceTest {
     public void testEditOfferIncomplete() {
         System.out.println("editOfferIncomplete");
         
-        JobOffer jo2 = new JobOffer();
+        Job jo2 = new Job();
         jo2.setTitle("");
         jo2.setDescription("");
         jo2.setAmount(null);
         jo2.setDate("");
         jo2.setArea("");
+        jo2.setType("");
         
         Long id = 2L;
         

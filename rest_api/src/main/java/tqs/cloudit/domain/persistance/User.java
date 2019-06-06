@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,11 +41,11 @@ public class User {
     
     @OneToMany(mappedBy="creator", fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<JobOffer> myOffers = new HashSet();
+    private Set<Job> myOffers = new HashSet<>();
     
     @OneToMany(mappedBy="worker")
     @JsonIgnore
-    private Set<JobOffer> acceptedOffers = new HashSet();
+    private Set<Job> acceptedOffers = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -61,7 +60,7 @@ public class User {
         this.name = user.getName();
         this.email = user.getEmail();
         this.type = user.getType();
-        this.interestedAreas = new HashSet<Area>();
+        this.interestedAreas = new HashSet<>();
         if(user.getInterestedAreas()!=null){
             for(String area : user.getInterestedAreas()){
                 this.interestedAreas.add(new Area(area));
@@ -71,15 +70,15 @@ public class User {
 
     public User() {}
     
-    public void addNewOffer(JobOffer jo){
+    public void addNewOffer(Job jo){
         this.myOffers.add(jo);
     }
     
-    public void removeOffer(JobOffer jo){
+    public void removeOffer(Job jo){
         this.myOffers.remove(jo);
     }
     
-    public void addAcceptedOffer(JobOffer jo){
+    public void addAcceptedOffer(Job jo){
         this.acceptedOffers.add(jo);
     }
 
@@ -144,19 +143,19 @@ public class User {
         }
     }
 
-    public Set<JobOffer> getMyOffers() {
+    public Set<Job> getMyOffers() {
         return myOffers;
     }
 
-    public void setMyOffers(Set<JobOffer> myOffers) {
+    public void setMyOffers(Set<Job> myOffers) {
         this.myOffers = myOffers;
     }
 
-    public Set<JobOffer> getAcceptedOffers() {
+    public Set<Job> getAcceptedOffers() {
         return this.acceptedOffers;
     }
 
-    public void setAcceptedOffers(Set<JobOffer> acceptedOffers) {
+    public void setAcceptedOffers(Set<Job> acceptedOffers) {
         this.acceptedOffers = acceptedOffers;
     }
     
