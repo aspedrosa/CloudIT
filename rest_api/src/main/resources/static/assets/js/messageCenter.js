@@ -31,7 +31,7 @@ function sendMsg(){
     var msg = $("#msgText").val();
     $("#msgText").val("");
     var msgDestin = $("#msgDestination").text();
-    if(msg!==""){
+    if(msg!=="" && msgDestin!==""){
         sendMessage(msg, msgDestin, true);
     }
     
@@ -48,14 +48,22 @@ async function loadMessages(contact){
 
 
 function activateContact(){
-    setTimeout(function(){
-        var url = new URL(window.location.href);
-        var addName = url.searchParams.get("addName");
-        var addUsername = url.searchParams.get("addUsername");
-        if(addName!==null && addUsername!==null){
-            loadMessages([addUsername, addName])
-        }
-    }, 500);
+  setTimeout(function(){
+    var url = new URL(window.location.href);
+    var addName = url.searchParams.get("addName");
+    var addUsername = url.searchParams.get("addUsername");
+    var addOfferId = url.searchParams.get("offerId");
+    var addOfferTitle = url.searchParams.get("offerTitle");
+    if(addName!==null && addUsername!==null){
+      if(addOfferId !== null && addOfferTitle !== null) {
+        var addOffer = {};
+        addOffer["id"] = addOfferId;
+        addOffer["title"] = addOfferTitle;
+        sendAutomaticMsgUserInterested(addOffer, addUsername);
+      }
+      loadMessages([addUsername, addName])
+    }
+  }, 500);
 }
 
 
@@ -66,10 +74,15 @@ function sendMsgWithOffer(offer) {
   sendMessage(msg, msgDestin, true);
 }
 
+function sendAutomaticMsgUserInterested(offer, msgDestin) {
+  var msg = ">>> automatic-message-interested | job-offer: _"+offer.id + "_" + offer.title + "_ | interested-user: _" + localStorage.getItem("username") + "_ <<<";
+  sendMessage(msg, msgDestin, true);
+}
+
 function formatMessage(id, msg,origin) {
+  var retval = msg;
   if(msg.startsWith(">>> automatic-message | ")) {
     var msgArr = msg.split("_");
-    var retval;
     if(localStorage.getItem("username") != origin) { 
       retval = "<h3>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
@@ -77,9 +90,16 @@ function formatMessage(id, msg,origin) {
               +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[2] + ")'>" + "Accept" + "</button>"
               +"<button class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[2] + ")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
     }
-    return retval;
   }
-  return msg;
+  if(msg.startsWith(">>> automatic-message-interested | ")) {
+    var msgArr = msg.split("_");
+    if(localStorage.getItem("username") != origin) { 
+      retval = "<h3>You showed interest in '" + msgArr[2] + "'</h3>";
+    } else {
+      retval = "<h3>" + msgArr[4] + " showed interest in '" + msgArr[2] + "'</h3>";
+    }
+  }
+  return retval;
 }
 
 function acceptOfferMsg(id, offerTitle) {

@@ -53,6 +53,7 @@ function viewModel() {
         var url = new URL(window.location.href);
         var addName = url.searchParams.get("addName");
         var addUsername = url.searchParams.get("addUsername");
+
         if(addName!==null && addUsername!==null){
             let control=true
             for(let u in self.contacts.peek()){
@@ -71,7 +72,7 @@ function viewModel() {
     }
     
     self.addMsg =  function(msg){
-        if(msgs[m].origin===self.origin){
+        if(msg.origin===self.origin){
             msg["class"]=0
         }else{
             msg["class"]=1

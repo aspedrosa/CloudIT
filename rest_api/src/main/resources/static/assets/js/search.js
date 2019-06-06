@@ -130,6 +130,7 @@ function showModal(job){
 function showOfferModal(job){
     //$("#m1o").modal();
     $("#offerModalTitle").text(job.title);
+    $("#offerModalId").text(job.id);
     $("#offerModalArea").text(job.area);
     $("#offerModalAmount").text(job.amount);
     $("#offerModalDescription").text(job.description);
@@ -171,3 +172,10 @@ $(document).ready(function(e){
     });
 });
 
+function showInterest(){
+    var name =$("#offerModalCreatorName").text();
+    var username = $("#offerModalCreatorUsername").text();
+    var offerId = $("#offerModalId").text();
+    var offerTitle = $("#offerModalTitle").text();
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username+"&offerTitle="+offerTitle+"&offerId="+offerId;
+}
