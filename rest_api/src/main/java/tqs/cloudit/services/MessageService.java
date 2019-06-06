@@ -56,6 +56,7 @@ public class MessageService {
         if(((String)input.get(2)).equals("accept")){
             JobOffer jo = jobRepository.getJobOffer((Long)input.get(3));
             jo.setWorker(userRepository.getInfo((String)input.get(4)));
+            userRepository.getInfo((String)input.get(4)).addAcceptedOffer(jo);
         }
         messageRepository.updateMessage((Long)input.get(0), (String)input.get(1));
     }

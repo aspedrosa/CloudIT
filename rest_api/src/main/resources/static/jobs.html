@@ -64,7 +64,7 @@
                     </div>
                     <div data-bind="foreach: { data: myOffersColumn2, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#createModal" data-bind="click: function(job){showModal(job)}">
+                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#createModal" data-bind="click: function(job){showModal(job, 'mine')}">
                             <div class="col-md-12">
                                 <button data-bind="click: function(job){deleteOffer(job)}" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px;"><span aria-hidden="true">&times;</span></button>
                                 <div class="row">
@@ -90,7 +90,7 @@
                     </div>
                     <div data-bind="foreach: { data: acceptedOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" id="post_box" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                        <div class="blog-box clearfix row" id="post_box" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job, 'accept')}">
                             <div class="col-md-12">
                                 <button type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px; visibility: hidden"><span aria-hidden="true">&times;</span></button>
                                 <div class="row">

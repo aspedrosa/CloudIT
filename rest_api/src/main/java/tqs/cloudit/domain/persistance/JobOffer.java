@@ -50,6 +50,8 @@ public class JobOffer {
      */
     private String date;
     
+    private boolean finished;
+    
     /**
      * Job creator
      */
@@ -94,6 +96,16 @@ public class JobOffer {
         owner.put("email", creator.getEmail());
         return owner;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+    
+    
     
     public long getId() {
         return id;

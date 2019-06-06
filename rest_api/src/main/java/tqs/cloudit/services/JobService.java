@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -127,5 +126,12 @@ public class JobService {
         Set<tqs.cloudit.domain.persistance.JobOffer> offers = userRepository.getInfo(name).getAcceptedOffers();
         
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Information fetched with success.", offers);
+    }
+
+    public ResponseEntity finishOffer(long id) {
+        tqs.cloudit.domain.persistance.JobOffer jo = jobRepository.getJobOffer(id);
+        jo.setFinished(true);
+        
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Offer finished with success.", jo);
     }
 }
