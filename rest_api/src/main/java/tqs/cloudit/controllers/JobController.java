@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tqs.cloudit.domain.rest.AdvancedSearch;
-import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.domain.rest.Job;
 import tqs.cloudit.services.JobService;
 
 /**
@@ -40,6 +40,11 @@ public class JobController {
     @GetMapping
     public ResponseEntity getAll() {
         return jobService.getOffers();
+    }
+    
+    @GetMapping("/proposal")
+    public ResponseEntity getAllProposals() {
+        return jobService.getProposals();
     }
     
     @PostMapping("/advancedSearch")
@@ -81,6 +86,46 @@ public class JobController {
         
     }
     
+    @PostMapping("/advancedSearchProposal")
+    public ResponseEntity advancedSearchProposal(@RequestBody AdvancedSearch advancedSearch) {
+        if (advancedSearch.getFromAmount() < 0.0)
+            advancedSearch.setFromAmount(0.0);
+        if (advancedSearch.getToAmount() < 0.0)
+            advancedSearch.setToAmount(Double.MAX_VALUE);
+        if (advancedSearch.getFromDate().equals(""))
+            advancedSearch.setFromDate("0000-00-00");
+        if (advancedSearch.getToDate().equals(""))
+            advancedSearch.setToDate("9999-99-99");
+        if (advancedSearch.isTitle() && advancedSearch.isArea())
+            return jobService.getJobProposalFromTextAmountAndDate(advancedSearch.getQuery(), 
+                                                                advancedSearch.getQuery(), 
+                                                                advancedSearch.getFromAmount(),
+                                                                advancedSearch.getToAmount(), 
+                                                                advancedSearch.getFromDate(),
+                                                                advancedSearch.getToDate());
+        if (advancedSearch.isTitle())
+            return jobService.getJobProposalFromTextAmountAndDateOnlyTitle(advancedSearch.getQuery(), 
+                                                                         advancedSearch.getQuery(), 
+                                                                         advancedSearch.getFromAmount(),
+                                                                         advancedSearch.getToAmount(), 
+                                                                         advancedSearch.getFromDate(),
+                                                                         advancedSearch.getToDate());
+        if (advancedSearch.isArea())
+            return jobService.getJobProposalFromTextAmountAndDateOnlyArea(advancedSearch.getQuery(), 
+                                                                        advancedSearch.getQuery(), 
+                                                                        advancedSearch.getFromAmount(),
+                                                                        advancedSearch.getToAmount(), 
+                                                                        advancedSearch.getFromDate(),
+                                                                        advancedSearch.getToDate());
+        return jobService.getJobProposalFromTextAmountAndDate("", 
+                                                            "", 
+                                                            advancedSearch.getFromAmount(),
+                                                            advancedSearch.getToAmount(), 
+                                                            advancedSearch.getFromDate(),
+                                                            advancedSearch.getToDate());
+        
+    }
+    
     /**
      * Registers a job offer in the platform
      * 
@@ -89,7 +134,7 @@ public class JobController {
      *  a successful massage if all went good
      */
     @PostMapping
-    public ResponseEntity register(@RequestBody JobOffer jobOffer, Principal principal) {
+    public ResponseEntity register(@RequestBody Job jobOffer, Principal principal) {
         return jobService.registerOffer(principal.getName(), jobOffer);
     }
     
@@ -114,7 +159,7 @@ public class JobController {
      *  a successful message if all went good
      */
     @PutMapping("/edit/{id}")
-    public ResponseEntity editById(@PathVariable long id, @RequestBody JobOffer jobOffer,Principal principal) {
+    public ResponseEntity editById(@PathVariable long id, @RequestBody Job jobOffer,Principal principal) {
         return jobService.editOffer(id, jobOffer);
     }
     
