@@ -127,6 +127,19 @@ function showModal(job){
     $("#modalCreatorEmail").text(job.creator.email);
 }
 
+function showOfferModal(job){
+    //$("#m1o").modal();
+    $("#offerModalTitle").text(job.title);
+    $("#offerModalId").text(job.id);
+    $("#offerModalArea").text(job.area);
+    $("#offerModalAmount").text(job.amount);
+    $("#offerModalDescription").text(job.description);
+    $("#offerModalDate").text(job.date);
+    $("#offerModalCreatorName").text(job.creator.name);
+    $("#offerModalCreatorUsername").text(job.creator.username);
+    $("#offerModalCreatorEmail").text(job.creator.email);
+}
+
 /**
  * Updates information on variables for the clicked user
  */
@@ -171,3 +184,11 @@ $(document).ready(function(e){
             $('.input-group #search_param').val(param);
     });
 });
+
+function showInterest(){
+    var name =$("#offerModalCreatorName").text();
+    var username = $("#offerModalCreatorUsername").text();
+    var offerId = $("#offerModalId").text();
+    var offerTitle = $("#offerModalTitle").text();
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username+"&offerTitle="+offerTitle+"&offerId="+offerId;
+}

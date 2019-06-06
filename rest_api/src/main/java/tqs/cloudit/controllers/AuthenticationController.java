@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.services.AuthenticationService;
-import tqs.cloudit.utils.ResponseBuilder;
 
 /**
  * Paths related to authentication of users for using the API
@@ -40,14 +39,6 @@ public class AuthenticationController {
     @GetMapping("/login")
     public ResponseEntity login(Principal principal) {
         return authServ.login(principal.getName());
-    }
-
-    /**
-     * Deauthenticates a user by removing session cookies
-     */
-    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
-    public ResponseEntity logout() {
-        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
