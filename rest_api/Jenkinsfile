@@ -24,7 +24,7 @@ pipeline {
                        '''
                 }   
                 dir('jmeter-test') {
-                    sh 'sleep 10' 
+                    sh 'sleep 30' 
                     sh 'rm -rf target/jmeter/reports/jobOffer/*'
                     sh "mvn -U jmeter:jmeter"
                     sh "rm -rf performance_tests_report"
