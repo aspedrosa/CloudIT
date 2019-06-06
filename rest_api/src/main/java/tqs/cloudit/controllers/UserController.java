@@ -6,12 +6,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import tqs.cloudit.domain.persistance.JobOffer;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.domain.rest.UserSearch;
 import tqs.cloudit.services.UserService;
@@ -126,5 +122,44 @@ public class UserController {
             "No users found for the given parameters"
         );
     }
-    
+
+    @DeleteMapping(path="/favourite/{id}", produces="application/json")
+    public ResponseEntity deleteFavourite(@PathVariable String idString, Principal principal) {
+        int id;
+        try {
+            id = Integer.parseInt(idString);
+        } catch (NumberFormatException e) {
+            return ResponseBuilder.buildWithMessage(HttpStatus.BAD_REQUEST, "id should be an int");
+        }
+
+        if (userService.deleteFavourite(principal.getName(), id)) {
+            return ResponseBuilder.buildWithMessage(HttpStatus.ACCEPTED, "Favourite deleted");
+        }
+        return ResponseBuilder.buildWithMessage(HttpStatus.BAD_REQUEST, "Unable to delete job offer to the favorites");
+    }
+
+    @PostMapping(path="/favourite/{id}", produces="application/json")
+    public ResponseEntity insertFavourite(@PathVariable String idString, Principal principal) {
+        int id;
+        try {
+            id = Integer.parseInt(idString);
+        } catch (NumberFormatException e) {
+            return ResponseBuilder.buildWithMessage(HttpStatus.BAD_REQUEST, "id should be an int");
+        }
+
+        if (userService.insertFavourite(principal.getName(), id)) {
+            return ResponseBuilder.buildWithMessage(HttpStatus.ACCEPTED, "Favourite added");
+        }
+        return ResponseBuilder.buildWithMessage(HttpStatus.BAD_REQUEST, "Unable to add job offer to the favorites");
+    }
+
+    @GetMapping(path="/favourite", produces = "application/json")
+    public ResponseEntity getFavourites(Principal principal) {
+        List<JobOffer> favourites = userService.getFavourites(principal.getName());
+
+        if (favourites.isEmpty()) {
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No favorites found");
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Favourites retrieved with success", favourites);
+    }
 }

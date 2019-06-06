@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tqs.cloudit.domain.persistance.Area;
+import tqs.cloudit.domain.persistance.JobOffer;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
 import tqs.cloudit.repositories.UserRepository;
@@ -116,5 +117,17 @@ public class UserService {
         }
 
         return matchedUsers;
+    }
+
+    public boolean insertFavourite(String username, int id) {
+
+    }
+
+    public boolean deleteFavourite(String username, int id) {
+
+    }
+
+    public List<JobOffer> getFavourites(String username) {
+
     }
 }
