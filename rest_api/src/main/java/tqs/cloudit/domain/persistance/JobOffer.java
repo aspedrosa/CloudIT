@@ -151,6 +151,16 @@ public class JobOffer {
         this.creator = creator;
     }
 
+    public User getWorker() {
+        return worker;
+    }
+
+    public void setWorker(User worker) {
+        this.worker = worker;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 3;

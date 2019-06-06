@@ -71,7 +71,7 @@ function viewModel() {
     }
     
     self.addMsg =  function(msg){
-        if(msgs[m].origin===self.origin){
+        if(msg.origin===self.origin){
             msg["class"]=0
         }else{
             msg["class"]=1
@@ -144,8 +144,8 @@ $(document).ready(function(){
             stompClient.send("/secured/allMessages", {}, JSON.stringify({"destination":destin}));
         }
 
-        updateAutomaticMessage=function (id, msg){
-            stompClient.send("/secured/updateMessage", {}, JSON.stringify([id,msg]));
+        updateAutomaticMessage=function (id, msg, event, offerID, worker){
+            stompClient.send("/secured/updateMessage", {}, JSON.stringify([id,msg, event, offerID, worker]));
         }
         
         getContacts=function (){

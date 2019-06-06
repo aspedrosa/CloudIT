@@ -209,7 +209,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn" onclick="contact($('#modalCreatorUsername').text(), $('#modalCreatorName').text())">Contact</button>
                                 </div>
                             </div>
 
@@ -222,7 +222,7 @@
                         <div class="blog-box clearfix row userSearchResult"
                              data-toggle="modal"
                              data-target="#userModal"
-                             data-bind="click: fillSearchUserModalTable(user.name, user.userType, user.email, user.jobOffers)"
+                             data-bind="click: function(){fillSearchUserModalTable(user)}"
                         >
                             <!-- Box -->
                             <div class="media-box col-md-4">
@@ -257,6 +257,7 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h3 class="modal-title" id="userModalTitle"></h3>
+                                    <h6 id="userModalUsername"></h6>
                                 </div>
                                 <div class="row modal-body">
                                     <div class="media-box col-md-4">
@@ -304,7 +305,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn">Contact</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn" onclick="contact($('#userModalUsername').text(), $('#userModalTitle').text())">Contact</button>
                                 </div>
                             </div>
                         </div>

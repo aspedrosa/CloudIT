@@ -31,7 +31,7 @@ function sendMsg(){
     var msg = $("#msgText").val();
     $("#msgText").val("");
     var msgDestin = $("#msgDestination").text();
-    if(msg!==""){
+    if(msg!=="" && msgDestin!==""){
         sendMessage(msg, msgDestin, true);
     }
     
@@ -74,21 +74,21 @@ function formatMessage(id, msg,origin) {
       retval = "<h3>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
       retval = "<h3>'" + msgArr[2] + "'</h3>"
-              +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[2] + ")'>" + "Accept" + "</button>"
-              +"<button class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[2] + ")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
+              +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + "," + msgArr[2] + ")'>" + "Accept" + "</button>"
+              +"<button class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[1] + "," + msgArr[2] + ")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
     }
     return retval;
   }
   return msg;
 }
 
-function acceptOfferMsg(id, offerTitle) {
+function acceptOfferMsg(id, offerId, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:royalblue'> Accepted</h3>";
-  updateAutomaticMessage(id, fMsg);
+  updateAutomaticMessage(id, fMsg, "accept", offerId, $("#msgDestination").text());
 }
 
-function denyOfferMsg(id, offerTitle) {
+function denyOfferMsg(id, offerId, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:red'> Denied</h3>";
-  updateAutomaticMessage(id, fMsg);
+  updateAutomaticMessage(id, fMsg, "deny", "", "");
 }
 

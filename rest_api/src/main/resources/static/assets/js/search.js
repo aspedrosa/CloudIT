@@ -130,11 +130,19 @@ function showModal(job){
 /**
  * Updates information on variables for the clicked user
  */
-function fillSearchUserModalTable(name, userType, email, jobs) {
+function fillSearchUserModalTable(user) {
+    console.log(user)
+    name=user.name
+    username=user.username
+    userType=user.userType
+    email=user.email
+    jobs=user.jobOffers
     $("#userModalTitle").text(name);
+    console.log(username)
+    $("#userModalUsername").text(username);
     $("#userModalEmail").text(email);
 
-    appViewModel.userModalUserType(userType.toLowerCase());
+    appViewModel.userModalUserType(userType);
     appViewModel.userModalJobs.removeAll();
     jobs.forEach(function (job, _) {
         appViewModel.userModalJobs.push(job);
@@ -147,6 +155,11 @@ function changeFilterMenu() {
     else
         $("#filters_menu").css("display", "none");
 }
+
+function contact(username, name){
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username;
+}
+
 
 $(document).ready(function(e){    
     
