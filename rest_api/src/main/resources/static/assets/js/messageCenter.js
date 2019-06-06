@@ -110,6 +110,6 @@ function acceptOfferMsg(id, offerId, offerTitle) {
 
 function denyOfferMsg(id, offerId, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:red'> Denied</h3>";
-  updateAutomaticMessage(id, fMsg, "deny", "", "");
+  updateAutomaticMessage(id, fMsg, "deny", offerId, $("#msgDestination").text());
 }
 

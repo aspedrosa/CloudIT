@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import tqs.cloudit.domain.persistance.Message;
 
 import tqs.cloudit.domain.rest.JobOffer;
 import tqs.cloudit.domain.rest.User;
@@ -79,6 +80,9 @@ public class StepsDefs {
 
     @Autowired
     private JobService jobService;
+    
+    @Autowired
+    private MessageService messageService;
 
     /* ============================== SIGNIN TEST ============================== */
 
@@ -1073,6 +1077,169 @@ public class StepsDefs {
         driver.findElement(By.id("modalClose")).click();
         new WebDriverWait(driver, 300L).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> !d.findElement(By.id("modalClose")).isDisplayed());
+    }
+    
+    /* ============================== MESSAGECENTER TEST ============================== */
+    
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    @When("I'm on the messaging center page")
+    public void enterMessagingCenter() {
+        new WebDriverWait(driver,300L)
+            .ignoring(StaleElementReferenceException.class)
+            .ignoring(NoSuchElementException.class)
+            .until((ExpectedCondition<Boolean>)
+                (WebDriver d) -> d.findElement(By.id("messages")).isDisplayed()
+            );
+
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+
+        driver.findElement(By.id("messages")).click();
+        
+        User user2 = new User(
+            currentUsername + "2",
+            "test" + "2",
+            "",
+            currentUsername + "2" + "@mail.com",
+            "Employer",
+            new ArrayList<>()
+        );
+        authenticationService.register(user2);
+        
+        Message msg = new Message();
+        msg.setDate(System.currentTimeMillis());
+        msg.setDestination(currentUsername + "2");
+        msg.setMessage("test msg");
+        msg.setOrigin(currentUsername);
+        messageService.writeMessageByUsername(msg, currentUsername);
+        
+        driver.navigate().refresh();
+        
+        new WebDriverWait(driver,300L)
+            .ignoring(StaleElementReferenceException.class)
+            .ignoring(NoSuchElementException.class)
+            .until((ExpectedCondition<Boolean>)
+                (WebDriver d) -> d.findElement(By.id(currentUsername + "2")).isDisplayed()
+            );
+    }
+    
+    @Then("I should see the conversations I had with other members sorted by latest message")
+    public void seeConversations() {
+        assertTrue(driver.findElement(By.id(currentUsername + "2")).isDisplayed());
+    }
+    
+    @And("be able to click on one of the conversations.")
+    public void canClickConversation() {
+        assertTrue(driver.findElement(By.id(currentUsername + "2")).isEnabled());
+    }
+    
+    @When("I click on one of the conversations")
+    public void clickConversation() {
+        
+        driver.findElement(By.id(currentUsername + "2")).click();
+        
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+    }
+    
+    @Then("I should see the messages I traded with the other member sorted by latest message")
+    public void seeTradedMessages() {
+        assertTrue(driver.getPageSource().contains("test msg"));
+    }
+    
+    @And("be able to send him\\/her a new message.")
+    public void canSendNewMessage() {
+        assertTrue(driver.findElement(By.id("msgText")).isDisplayed());
+        assertTrue(driver.findElement(By.id("msgText")).isEnabled());
+    }
+    
+    /* ============================== EMPLOYERPROPOSESJOBPOST TEST ============================== */
+    
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    @And("I have accessed the intended freelancer’s profile page,")
+    public void accessFreelancerProfile() {
+        /*
+        // insert freelancer on database
+        User user2 = new User(
+            currentUsername + "2",
+            "test" + "2",
+            "",
+            currentUsername + "2" + "@mail.com",
+            "Employer",
+            new ArrayList<>()
+        );
+        authenticationService.register(user2);
+        
+        // add job offer to freelancer
+        JobOffer jo = new JobOffer("title_test_2", "description_test_2", "java", 100, "2019-01-01");
+        jobService.registerOffer(currentUsername + "2", jo);
+        
+        // go to search tab
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed()
+            );
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+        driver.findElement(By.id("search")).click();
+        
+        // filter users only
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) ->  d.findElement(By.id("searchByUsers")).isDisplayed()
+            );
+        driver.findElement(By.id("searchByUsers")).click();
+        
+        // search for freelancer
+        driver.findElement(By.id("query")).sendKeys(currentUsername + "2");
+        driver.findElement(By.id("search_btn")).click();
+        
+        
+        // click freelancer
+        new WebDriverWait(driver,300L)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) ->  d.findElement(By.id(currentUsername + "2")).isDisplayed()
+            );
+        driver.findElement(By.id(currentUsername + "2")).click();
+        Long then2 = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then2 > 1000);
+        */
+    }
+    
+    @And("I click on his\\/her job offer,")
+    public void clickFreelancerJobOffer() {
+        
+    }
+    
+    @When("I click on the contact button")
+    public void clickShowInterest() {
+        
+    }
+    
+    @Then("I should be redirected to the message center’s conversation with the freelancer")
+    public void redirectToFreelancerConversation() {
+        
+    }
+    
+    @And("I should see an automatic private message mentioning the interest in hiring him\\/her.")
+    public void seeAutomaticInterestedMessage() {
+        
     }
 
     /* ============================== TEST ============================== */

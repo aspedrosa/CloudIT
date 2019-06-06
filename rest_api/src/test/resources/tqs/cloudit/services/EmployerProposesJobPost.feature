@@ -10,9 +10,4 @@ Feature: Employers can propose hiring through job posts
         When I click on the contact button
         Then I should be redirected to the message center’s conversation with the freelancer
         And I should see an automatic private message mentioning the interest in hiring him/her.
-    Scenario: Employer verifies answer from Freelancer
-        Given that I am logged in,
-        And I have accessed the message center’s conversation with the freelancer,
-        And he/she has responded to my request,
-        Then I should see the response.
 
