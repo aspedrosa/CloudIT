@@ -1,7 +1,5 @@
 package tqs.cloudit.services;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,25 +91,25 @@ public class JobService {
     public ResponseEntity getJobOffersFromTextAmountAndDateOnlyArea(String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
         }
-        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
     
       public ResponseEntity getJobProposalFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
         }
-        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
     
     public ResponseEntity getJobProposalFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
         }
-        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Job offer found with success.", jobs);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
     
     public ResponseEntity getJobProposalFromTextAmountAndDateOnlyArea(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
