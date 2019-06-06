@@ -118,6 +118,7 @@ ko.applyBindings(appViewModel);
 
 function showModal(job){
     $("#modalTitle").text(job.title);
+    $("#modalId").text(job.id);
     $("#modalArea").text(job.area);
     $("#modalAmount").text(job.amount);
     $("#modalDescription").text(job.description);
