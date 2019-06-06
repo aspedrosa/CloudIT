@@ -78,6 +78,7 @@ function viewModel() {
             msg["class"]=1
         }
         self.messages.push(msg);
+        $('#class-room-msgs').scrollTop($('#class-room-msgs')[0].scrollHeight);
     }
     
 };
@@ -107,6 +108,13 @@ $(document).ready(function(){
                 var body = JSON.parse(greeting.body)
                 console.log(body);
                 if("message" in body){
+                    
+                    n =  new Date(body.date);
+                    hr = n.getHours();
+                    mt = n.getMinutes()
+                    body.date = hr + ":" + mt;
+                    
+                    viewModel.addMsg(body)
                     $.notify("From: "+body.origin+"\nMessage: "+body.message.substring(0, 10)+"...", "info");
                 }else if("messages" in body){
                     var allMsgs=body.messages

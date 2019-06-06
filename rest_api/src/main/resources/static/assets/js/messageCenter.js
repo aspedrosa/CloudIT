@@ -106,12 +106,13 @@ function formatMessage(id, msg,origin) {
 function acceptOfferMsg(id, offerId, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:royalblue'> Accepted</h3>";
   updateAutomaticMessage(id, fMsg, "accept", offerId, $("#msgDestination").text());
-  viewModel.refreshMessages();
+  $("#"+id).html(fMsg);
+  
 }
 
 function denyOfferMsg(id, offerId, offerTitle) {
   var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:red'> Denied</h3>";
-  updateAutomaticMessage(id, fMsg, "deny", "", "");
-  viewModel.refreshMessages();
+  updateAutomaticMessage(id, fMsg, "deny", offerId, $("#msgDestination").text());
+  $("#"+id).html(fMsg);
 }
 
