@@ -185,10 +185,8 @@ public class Job {
             return false;
         }
         final Job other = (Job) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+
+        return this.id == other.id;
     }
 
     @Override

@@ -24,23 +24,25 @@ public class User {
     
     private String newPassword;
 
-    public User(String username, String password, String name, String email, String type, List<String> interestedAreas, String newPassword) {
+    /**
+     * Common assignments on both constructors
+     */
+    private void baseAssignments(String username, String password, String name, String email, String type, List<String> interestedAreas) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.type = type;
         this.interestedAreas = new HashSet<>(interestedAreas);
+    }
+
+    public User(String username, String password, String name, String email, String type, List<String> interestedAreas, String newPassword) {
+        baseAssignments(username, password, name, email, type, interestedAreas);
         this.newPassword = newPassword;
     }
     
     public User(String username, String password, String name, String email, String type, List<String> interestedAreas) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.type = type;
-        this.interestedAreas = new HashSet<>(interestedAreas);
+        baseAssignments(username, password, name, email, type, interestedAreas);
         this.newPassword = null;
     }
 
