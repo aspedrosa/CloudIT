@@ -177,11 +177,11 @@ public class JobControllerTest {
     
     @Test
     public void testSearchOffers2() throws Exception {
-        System.out.println("searchOffer1");
+        System.out.println("searchOffer2");
         AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
-        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
-                                                               Mockito.eq("AI"), 
-                                                               Mockito.eq(-1.0), 
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq(1.0), 
                                                                Mockito.eq(-1.0), 
                                                                Mockito.eq(""), 
                                                                Mockito.eq(""))).thenReturn(emptyResponse);
@@ -192,12 +192,12 @@ public class JobControllerTest {
     
     @Test
     public void testSearchOffers3() throws Exception {
-        System.out.println("searchOffer1");
-        AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
+        System.out.println("searchOffer3");
+        AdvancedSearch as = new AdvancedSearch("AI", true, false, -1.0, -1.0, "", "");
         Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
                                                                Mockito.eq("AI"), 
                                                                Mockito.eq(-1.0), 
-                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(1.0), 
                                                                Mockito.eq(""), 
                                                                Mockito.eq(""))).thenReturn(emptyResponse);
         mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
@@ -206,8 +206,23 @@ public class JobControllerTest {
     }
     
     @Test
+    public void testSearchOffers4() throws Exception {
+        System.out.println("searchOffer4");
+        AdvancedSearch as = new AdvancedSearch("AI", false, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Databases"), 
+                                                               Mockito.eq("Databases"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq("2019-09-01"), 
+                                                               Mockito.eq("2020-09-01"))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
     public void testSearchProposals1() throws Exception {
-        System.out.println("searchOffer1");
+        System.out.println("searchProposal1");
         AdvancedSearch as = new AdvancedSearch("AI", true, true, -1.0, -1.0, "", "");
         Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
                                                                Mockito.eq("AI"), 
@@ -222,11 +237,11 @@ public class JobControllerTest {
     
     @Test
     public void testSearchProposals2() throws Exception {
-        System.out.println("searchOffer1");
+        System.out.println("searchProposal2");
         AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
-        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
-                                                               Mockito.eq("AI"), 
-                                                               Mockito.eq(-1.0), 
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq(1.0), 
                                                                Mockito.eq(-1.0), 
                                                                Mockito.eq(""), 
                                                                Mockito.eq(""))).thenReturn(emptyResponse);
@@ -237,14 +252,29 @@ public class JobControllerTest {
     
     @Test
     public void testSearchProposals3() throws Exception {
-        System.out.println("searchOffer1");
-        AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
+        System.out.println("searchProposal3");
+        AdvancedSearch as = new AdvancedSearch("AI", true, false, -1.0, -1.0, "", "");
         Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
                                                                Mockito.eq("AI"), 
                                                                Mockito.eq(-1.0), 
-                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(1.0), 
                                                                Mockito.eq(""), 
                                                                Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchProposals4() throws Exception {
+        System.out.println("searchProposal4");
+        AdvancedSearch as = new AdvancedSearch("AI", false, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Databases"), 
+                                                               Mockito.eq("Databases"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq("2019-09-01"), 
+                                                               Mockito.eq("2020-09-01"))).thenReturn(emptyResponse);
         mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
