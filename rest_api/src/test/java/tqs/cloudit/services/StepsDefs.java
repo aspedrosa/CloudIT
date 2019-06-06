@@ -31,7 +31,7 @@ import tqs.cloudit.domain.rest.User;
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class StepsDefs {
 
-    private long MAX_WAIT_TIME = 300;
+    private long MAX_WAIT_TIME = 500;
 
     private static WebDriver driver;
 
@@ -812,7 +812,7 @@ public class StepsDefs {
      */
     @And("choose the option of job offers for employers")
     public void chooseJobOffers() {
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
             .until(
@@ -831,7 +831,7 @@ public class StepsDefs {
      */
     @Then("I should see a list job offers related to that keyword.")
     public void viewJobOffers() {
-        new WebDriverWait(driver, 300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(StaleElementReferenceException.class)
             .until(
                 d -> {
@@ -848,7 +848,7 @@ public class StepsDefs {
      */
     @Then("I should see a list of job offers filtered according to the chosen rule.")
     public void viewJobOffers2() {
-        new WebDriverWait(driver, 300L).until(
+        new WebDriverWait(driver, MAX_WAIT_TIME).until(
             d -> {
                 List<WebElement> offers = d.findElements(By.className("blog-box"));
                 if (offers.isEmpty())
@@ -863,14 +863,16 @@ public class StepsDefs {
      */
     @And("the results of the offer search are presented")
     public void viewJobOffers3() {
-        new WebDriverWait(driver, 300L).until(
-            d -> {
-                List<WebElement> offers = d.findElements(By.className("blog-box"));
-                if (offers.isEmpty())
-                    return false;
-                return offers.get(0).isDisplayed();
-            }
-        );
+        new WebDriverWait(driver, MAX_WAIT_TIME)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                d -> {
+                    List<WebElement> offers = d.findElements(By.className("blog-box"));
+                    if (offers.isEmpty())
+                        return false;
+                    return offers.get(0).isDisplayed();
+                }
+            );
     }
     
     /*
@@ -878,7 +880,7 @@ public class StepsDefs {
      */
     @And("I should be able to contact the freelancer in order to hire him\\/her.")
     public void contactAuthorOffer() {
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .until(
                 (WebDriver d) -> driver.findElement(By.id("interest_btn")).isDisplayed()
@@ -924,7 +926,7 @@ public class StepsDefs {
      */
     @And("I click the search button")
     public void clickSearchButton() {
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .until(
                 (WebDriver d) -> {
                     driver.findElement(By.id("search_btn")).click();
@@ -1183,7 +1185,7 @@ public class StepsDefs {
     
     @When("I'm on the messaging center page")
     public void enterMessagingCenter() throws Exception {
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(StaleElementReferenceException.class)
             .ignoring(NoSuchElementException.class)
             .until((ExpectedCondition<Boolean>)
@@ -1191,7 +1193,7 @@ public class StepsDefs {
             );
 
         Long then = System.currentTimeMillis();
-        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> System.currentTimeMillis()-then > 1000);
 
         driver.findElement(By.id("messages")).click();
@@ -1215,7 +1217,7 @@ public class StepsDefs {
         
         driver.navigate().refresh();
         
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(StaleElementReferenceException.class)
             .ignoring(NoSuchElementException.class)
             .until((ExpectedCondition<Boolean>)
@@ -1239,7 +1241,7 @@ public class StepsDefs {
         driver.findElement(By.id(currentUsername + "2")).click();
         
         Long then = System.currentTimeMillis();
-        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> System.currentTimeMillis()-then > 1000);
     }
     
@@ -1279,19 +1281,19 @@ public class StepsDefs {
         jobService.registerOffer(currentUsername + "2", jo);
         
         // go to search tab
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
             .until(
                 (WebDriver d) -> d.findElement(By.id("search")).isDisplayed()
             );
         Long then = System.currentTimeMillis();
-        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> System.currentTimeMillis()-then > 1000);
         driver.findElement(By.id("search")).click();
         
         // filter users only
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
             .until(
@@ -1305,7 +1307,7 @@ public class StepsDefs {
         
         
         // click freelancer
-        new WebDriverWait(driver,300L)
+        new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
             .until(
@@ -1313,7 +1315,7 @@ public class StepsDefs {
             );
         driver.findElement(By.id(currentUsername + "2")).click();
         Long then2 = System.currentTimeMillis();
-        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> System.currentTimeMillis()-then2 > 1000);
         */
     }

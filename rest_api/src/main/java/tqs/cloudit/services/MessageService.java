@@ -34,9 +34,10 @@ public class MessageService {
     
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    private static final String BASE_PATH = "/secured/queue/";
     
-    
-    public void writeMessageByUsername(Message message, String user) throws Exception {
+    public void writeMessageByUsername(Message message, String user) {
         String destinationUser =  message.getDestination();
         message.setOrigin(user);
         message.setDate(System.currentTimeMillis());
@@ -44,23 +45,22 @@ public class MessageService {
         messageRepository.save(message);
         
         message.setDestination(null);
-        simpMessagingTemplate.convertAndSend("/secured/queue/"+destinationUser, message);
+        simpMessagingTemplate.convertAndSend(BASE_PATH+destinationUser, message);
     }
-    
-    public void getAll(Message message, String user) throws Exception {
+
+    public void getAll(Message message, String user) {
         JSONObject output = new JSONObject();
         output.put("messages", messageRepository.getMessages(user, message.getDestination()));
-        simpMessagingTemplate.convertAndSend("/secured/queue/"+user, output);
+        simpMessagingTemplate.convertAndSend(BASE_PATH+user, output);
     }
     
-    public void contacts(String user) throws Exception {
+    public void contacts(String user) {
         JSONObject output = new JSONObject();
         output.put("contacts", messageRepository.getContacts(user));
-        simpMessagingTemplate.convertAndSend("/secured/queue/"+user, output);
+        simpMessagingTemplate.convertAndSend(BASE_PATH+user, output);
     }
     
-    public void update(JSONArray input) throws Exception {
-        System.out.println(input.toJSONString());
+    public void update(JSONArray input) {
         if(((String)input.get(2)).equals("accept")){
             Long aux = new Long((int)input.get(3));
             Job jo = jobRepository.getJobOffer(aux);
