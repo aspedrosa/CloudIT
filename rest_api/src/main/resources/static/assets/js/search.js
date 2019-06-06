@@ -116,18 +116,6 @@ appViewModel.refresh();
 
 ko.applyBindings(appViewModel);
 
-function showModal(job){
-    $("#modalTitle").text(job.title);
-    $("#modalId").text(job.id);
-    $("#modalArea").text(job.area);
-    $("#modalAmount").text(job.amount);
-    $("#modalDescription").text(job.description);
-    $("#modalDate").text(job.date);
-    $("#modalCreatorName").text(job.creator.name);
-    $("#modalCreatorUsername").text(job.creator.username);
-    $("#modalCreatorEmail").text(job.creator.email);
-}
-
 function showOfferModal(job){
     //$("#m1o").modal();
     $("#offerModalTitle").text(job.title);

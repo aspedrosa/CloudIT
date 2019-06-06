@@ -36,7 +36,7 @@ public class StepsDefs {
     static {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--whitelisted-ips");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disabled-extensions");
 
@@ -775,7 +775,7 @@ public class StepsDefs {
         new WebDriverWait(driver,300L)
             .ignoring(NoSuchElementException.class)
             .until(
-                (WebDriver d) -> driver.findElement(By.id("m1")).isDisplayed()
+                (WebDriver d) -> driver.findElement(By.id("m1o")).isDisplayed()
             );
     }
 
@@ -787,7 +787,7 @@ public class StepsDefs {
         new WebDriverWait(driver,300L)
             .ignoring(NoSuchElementException.class)
             .until(
-                (WebDriver d) -> driver.findElement(By.id("contact_btn")).isDisplayed()
+                (WebDriver d) -> driver.findElement(By.id("interest_btn")).isDisplayed()
             );
     }
     
