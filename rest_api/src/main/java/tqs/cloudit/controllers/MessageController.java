@@ -21,17 +21,17 @@ public class MessageController {
     
     @MessageMapping("/allMessages")
     public void getAll(Message message, Principal user) throws Exception {
-        messageService.getAllMessagesFromConversation(user.getName(), message.getDestination());
+        messageService.getAll(message, user.getName());
     }
     
     @MessageMapping("/contacts")
     public void contacts(Principal user) throws Exception {
-        messageService.getContactsFromUser(user.getName());
+        messageService.contacts(user.getName());
     }
     
-    @MessageMapping("/update")
+    @MessageMapping("/updateMessage")
     public void update(JSONArray input, Principal user) throws Exception {
-        messageService.updateMessage(input);
+        messageService.update(input);
     }
 
 }

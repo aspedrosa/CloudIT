@@ -7,7 +7,7 @@ import tqs.cloudit.domain.persistance.Message;
 
 public interface MessageRepository extends CrudRepository<Message, Long> {
     
-    @Query(value= "(select distinct * from message where origin=?1 and destination=?2) union all (select * from message where origin=?2 and destination=?1) order by date", nativeQuery=true)
+    @Query(value= "(select distinct * from message where origin=?1 and destination=?2) union distinct (select distinct * from message where origin=?2 and destination=?1) order by date", nativeQuery=true)
     public List<Message> getMessages(String origin, String destination);
     
     @Query(value= "(select distinct destination, name from message join user on destination=username where origin=?1) union distinct (select distinct origin, name from message join user on origin=username where destination=?1)", nativeQuery=true)
@@ -15,5 +15,8 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 
     @Query(value= "update message set message=?2 where id=?1", nativeQuery=true)
     public void updateMessage(Long get, String get0);
+    
+    @Query(value= "select * from message where id=?1", nativeQuery=true)
+    public Message getMessage(Long get);
     
 }

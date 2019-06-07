@@ -119,7 +119,6 @@ appViewModel.searchUsers();
 
 ko.applyBindings(appViewModel);
 
-
 function showOfferModal(job){
     //$("#m1o").modal();
     $("#offerModalTitle").text(job.title);
