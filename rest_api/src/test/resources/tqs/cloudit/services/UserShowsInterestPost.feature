@@ -9,13 +9,12 @@ Feature: Users can show interest on posts through job posts
         And I click on his/her job offer,
         When I click on the contact button
         Then I should be redirected to the message center’s conversation with the Employer
-        And I should see an automatic private message mentioning the interest in his/her post.
+        And I should see an automatic private message mentioning the interest.
 
     Scenario: Employer receives message about Freelancer's interest 
         Given that I am logged in,
         When I'm on the messaging center page,
         And a Freelancer has shown interest in one of my posts,
         And I click on the conversation with the Freelancer,
-        Then I should see an automatic private message mentioning the interest in my post
-        And be able to start a conversation with him/her.
+        Then I should see an automatic private message mentioning the interest.
 

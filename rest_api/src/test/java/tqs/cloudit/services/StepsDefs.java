@@ -1349,28 +1349,76 @@ public class StepsDefs {
         assertTrue(driver.findElement(By.id(currentUsername + "2")).isDisplayed());
     }
     
-    @And("I should see an automatic private message mentioning the interest in his/her post.")
+    @And("I should see an automatic private message mentioning the interest.")
     public void seeAutomaticInterestedMessage() {
         assertTrue(driver.findElement(By.id("title_test_2")).isDisplayed());
         driver.quit();
     }
     
-    /*
-        @Given("that I am logged in,") -> EmployerPostJob Steps
-    */
+    @And("a Freelancer has shown interest in one of my posts,")
+    public void freelancerShowedInterest() {
+        
+    }
     
-    /*
-        @When("I'm on the messaging center page") -> MessageCenter Steps
-    */
-    
-    // ......
-    
+    @And("I click on the conversation with the Freelancer,")
+    public void clickConversationWithFreelancer() {
+        
+    }
 
     /* ============================== USERPROPOSESMESSAGECENTER TEST ============================== */
 
     /*
         @Given("that I am logged in,") -> EmployerPostJob Steps
     */
+    
+    @And("I have accessed the message center’s conversation with the employer")
+    public void accessConversationWithEmployer() {
+        
+    }
+    
+    @When("I click on the plus button")
+    public void clickPlusButton() {
+        
+    }
+    
+    @And("I select one of our job proposals")
+    public void selectJob() {
+        
+    }
+    
+    @Then("I should see an automatic private message mentioning the pending hiring proposal.")
+    public void seeAutomaticMessagePendingHiring() {
+        
+    }
+    
+    /*
+        @When("I'm on the messaging center page") -> MessageCenter Steps
+    */
+    
+    @And("a Freelancer has sent a hiring proposal to me")
+    public void freelancerSentProposal() {
+        
+    }
+    
+    @Then("I should see his/her hiring proposal")
+    public void seeHiringPorposal() {
+        
+    }
+    
+    @And("be able to accept or deny it.")
+    public void answerHiringProposal() {
+        
+    }
+    
+    @And("he/she has responded to my request")
+    public void employerRespondedToProposal() {
+        
+    }
+    
+    @Then("I should see the response.")
+    public void seeResponse() {
+        
+    }
     
     // .......
 }
