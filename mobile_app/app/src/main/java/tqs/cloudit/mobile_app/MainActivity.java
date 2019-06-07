@@ -34,45 +34,60 @@ public class MainActivity extends AppCompatActivity {
         CookieHandler.setDefault(new CookieManager());
     }
 
+    /**
+     * When the users tries to login
+     */
     public void onSubmit(View v) {
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://192.168.160.63:8080/login", null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Intent intent = new Intent(getApplicationContext(), JobsActivity.class);
-                            startActivity(intent);
-                        }
-                    },
+        final String username = ((EditText) findViewById(R.id.username)).getText().toString().trim();
+        final String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        if (username.length() == 0 && password.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Insert an username and password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (username.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Insert an username", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (password.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Insert a password", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            if (volleyError.networkResponse.statusCode == 401)
-                                Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(getApplicationContext(), "Error trying to authenticate. Please try again later.", Toast.LENGTH_SHORT).show();
-                        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://192.168.160.63:8082/login", null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Intent intent = new Intent(getApplicationContext(), JobsActivity.class);
+                        startActivity(intent);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        if (volleyError.networkResponse != null && volleyError.networkResponse.statusCode == 401)
+                            Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "Error trying to authenticate. Please try again later.", Toast.LENGTH_SHORT).show();
+                    }
 
 
-                    }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    ((CookieManager) CookieHandler.getDefault()).getCookieStore().removeAll();
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                ((CookieManager) CookieHandler.getDefault()).getCookieStore().removeAll();
 
-                    Map<String, String> headers = new HashMap<>();
+                Map<String, String> headers = new HashMap<>();
 
-                    String username = ((EditText) findViewById(R.id.username)).getText().toString().trim();
-                    String password = ((EditText) findViewById(R.id.password)).getText().toString();
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
-                    String credentials = username + ":" + password;
-                    String auth = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", auth);
 
-                    headers.put("Authorization", auth);
+                return headers;
+            }
+        };
 
-                    return headers;
-                }
-            };
-
-        Volley.newRequestQueue(getApplicationContext()).add(request);
+    Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 }

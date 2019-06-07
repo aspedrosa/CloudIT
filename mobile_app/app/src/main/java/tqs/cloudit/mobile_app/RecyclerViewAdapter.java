@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +23,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Set;
+
+/**
+ * Where the list of job offers is displayed
+ */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
 
     private JSONArray jobs;
     private Context context;
+    private Set<Long> favourites;
 
-    public RecyclerViewAdapter(Context context, JSONArray jobs) {
+    public RecyclerViewAdapter(Context context, JSONArray jobs, Set<Long> favourites) {
         this.jobs = jobs;
         this.context = context;
+        this.favourites = favourites;
     }
 
     @NonNull
@@ -45,12 +51,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+
         try {
             final JSONObject job = jobs.getJSONObject(i);
+            final long jobId = job.getInt("id");
 
             viewHolder.name.setText(job.getString("title"));
             viewHolder.creator.setText(job.getJSONObject("creator").getString("name"));
-            if (false) {
+            if (favourites.contains(jobId)) {
                 viewHolder.star.setImageResource(R.drawable.selectedstar);
                 viewHolder.star.setTag(R.drawable.selectedstar);
             }
@@ -59,61 +67,52 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 viewHolder.star.setTag(R.drawable.emptystar);
             }
 
+            //define the onclick for the favourite star
             viewHolder.star.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(final View v) {
                     final int method;
                     if ((Integer) viewHolder.star.getTag() == R.drawable.emptystar) {//if (false) {
-                        //method = Request.Method.DELETE;
-                        viewHolder.star.setImageResource(R.drawable.selectedstar);
-                        viewHolder.star.setTag(R.drawable.selectedstar);
+                        method = Request.Method.POST;
                     }
                     else {
-                        //method = Request.Method.POST;
-                        viewHolder.star.setImageResource(R.drawable.emptystar);
-                        viewHolder.star.setTag(R.drawable.emptystar);
+                        method = Request.Method.DELETE;
                     }
 
-                    return;
-
-
-                    /*
-                    JsonObjectRequest request = null;
-                    try {
-                        request = new JsonObjectRequest(method, "http://192.168.160.63:8080/favourite/" + job.getInt("id"), null,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        if (method == Request.Method.POST) {
-                                            ((ImageView) v).setImageResource(R.drawable.selectedstar);
-                                            Toast.makeText(context, "Job offer added to the favourites", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            ((ImageView) v).setImageResource(R.drawable.emptystar);
-                                            Toast.makeText(context, "Job offer removed from the favourites", Toast.LENGTH_SHORT).show();
-                                        }
+                    JsonObjectRequest request = new JsonObjectRequest(method, "http://192.168.160.63:8082/favourite/" + jobId, null,
+                            new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                                    if (method == Request.Method.POST) {
+                                        viewHolder.star.setImageResource(R.drawable.selectedstar);
+                                        viewHolder.star.setTag(R.drawable.selectedstar);
+                                        Toast.makeText(context, "Job offer added to the favourites", Toast.LENGTH_SHORT).show();
+                                        favourites.add(jobId);
+                                    } else {
+                                        viewHolder.star.setImageResource(R.drawable.emptystar);
+                                        viewHolder.star.setTag(R.drawable.emptystar);
+                                        Toast.makeText(context, "Job offer removed from the favourites", Toast.LENGTH_SHORT).show();
+                                        favourites.remove(jobId);
                                     }
-                                },
+                            }
+                        },
 
-                                new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError volleyError) {
-                                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-                                    }
+                            new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                            }
 
 
-                                });
-                    }
-                    catch (JSONException e) {
-                        Toast.makeText(context, "Some error occurred while adding a job to your favourites. Please try again later.", Toast.LENGTH_SHORT).show();
-                    }
+                        });
 
                     Volley.newRequestQueue(context).add(request);
-                    */
                 }
             });
 
 
+            //define the onclick for the `more information` button
             viewHolder.info.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -123,10 +122,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             });
         } catch (JSONException e) {
-
+            Toast.makeText(context, "Some error occurred while adding this job to the favourites", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     @Override

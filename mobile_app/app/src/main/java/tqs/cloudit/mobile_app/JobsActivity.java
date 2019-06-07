@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,14 +23,55 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class JobsActivity extends AppCompatActivity {
+
+    // to store the jobs the ids of the jobs
+    //  that the user has on the favourites
+    private Set<Long> favourites = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobs);
+
+        //Get the favourite jobs of the user
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://192.168.160.63:8082/favourite", null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jobs = response.getJSONArray("data");
+
+                            for (int i = 0; i < jobs.length(); i++) {
+                                JSONObject job = jobs.getJSONObject(i);
+                                favourites.add(job.getLong("id"));
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Some error occurred while retrieving personal data. Favourite jobs may not be shown as favourite.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getApplicationContext(), "Some error occurred while retrieving personal data. Favourite jobs may not be shown as favourite.", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 
+    /**
+     * Method to avoid some code duplication.
+     * Returns the json object needed to send to the endpoint /joboffer/advancedSearch
+     *  with the a given searchWord
+     */
     private JSONObject generateAdvancedSearch(String searchText) {
         JSONObject advancedSearch = new JSONObject();
 
@@ -50,6 +92,11 @@ public class JobsActivity extends AppCompatActivity {
         return advancedSearch;
     }
 
+    /**
+     * When the users wants to receive a notification (Toast) when
+     *  a new job offer is created that matches the search word that he
+     *  inserted
+     */
     public void createAlarm(View v) {
         final String searchText = ((EditText) findViewById(R.id.searchText)).getText().toString().trim();
 
@@ -60,12 +107,21 @@ public class JobsActivity extends AppCompatActivity {
 
         final JSONObject advancedSearch = generateAdvancedSearch(searchText);
 
-
         final Context context = this;
 
+        //Launch a new thread that will be doing pulling on the background
         new Thread(new Runnable() {
 
+            //stop condition for the this thread
             private boolean wantedJobCreated = false;
+
+            /**
+             * Used to know how much offer existed on the moment the users
+             *  created the alarm
+             * Starts at -2
+             * If an error occurs at getting the number of offers at the beginning
+             *  is set to -1 and the thread fails
+             */
             private int countOfJobOffersOnStart = -2;
 
             private void displayToast(final String message, final int duration) {
@@ -84,13 +140,12 @@ public class JobsActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8080/joboffer/advancedSearch", advancedSearch,
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8082/joboffer/advancedSearch", advancedSearch,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
                                     JSONArray jobs = response.getJSONArray("data");
-
                                     countOfJobOffersOnStart = jobs.length();
                                 } catch (JSONException e) {
                                     countOfJobOffersOnStart = -1;
@@ -101,12 +156,20 @@ public class JobsActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-                                countOfJobOffersOnStart = -1;
+                                if (volleyError.networkResponse != null && volleyError.networkResponse.statusCode == 404) {
+                                    countOfJobOffersOnStart = 0;
+                                }
+                                else {
+                                    countOfJobOffersOnStart = -1;
+                                }
                             }
                         });
 
                 Volley.newRequestQueue(getApplicationContext()).add(request);
 
+                //If the variable `countOfJobOffersOnStart` is at -2
+                // it means that a result from the API call was not
+                // received yet
                 while (countOfJobOffersOnStart == -2) {
                     try {
                         Thread.sleep(1000);
@@ -124,7 +187,7 @@ public class JobsActivity extends AppCompatActivity {
                 }
 
                 while (!wantedJobCreated) {
-                    request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8080/joboffer/advancedSearch", advancedSearch,
+                    request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8082/joboffer/advancedSearch", advancedSearch,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
@@ -153,54 +216,56 @@ public class JobsActivity extends AppCompatActivity {
 
                     Volley.newRequestQueue(getApplicationContext()).add(request);
 
+                    //Check with an interval of 60 seconds
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(60000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-
-                /*
-                final String NOTIFICATION_CHANNEL_ID = "4565";
-                final String NOTIFICATION_CHANNEL_NAME = "clouditnot";
-
-                CharSequence channelName = NOTIFICATION_CHANNEL_NAME;
-                int importance = NotificationManager.IMPORTANCE_LOW;
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
-
-
-                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.createNotificationChannel(notificationChannel);
-
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.cloud_it_logo)
-                        .setContentTitle("ya")
-                        .setContentText("a")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                notificationManager.notify(101, notificationBuilder.build());
-                */
 
                 displayToast("A job offer was created with the search word \"" + searchText + "\"", Toast.LENGTH_LONG);
             }
         }).start();
     }
 
+    /**
+     * Updates the recycler view with a new list of jobs
+     *
+     * Method used to reduce code duplication.
+     * @param jobs new list of jobs to display
+     */
     private void updateJobs(JSONArray jobs) {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getApplicationContext(), jobs);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getApplicationContext(), jobs, favourites);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
+    /**
+     * OnClick of the search button.
+     * Searches for search offers where the title or area match
+     *  the received word
+     */
     public void search(View v) {
-        final JSONObject advancedSearch = generateAdvancedSearch(((EditText) findViewById(R.id.searchText)).getText().toString());
+        String searchWord = ((EditText) findViewById(R.id.searchText)).getText().toString().trim();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8080/joboffer/advancedSearch", advancedSearch,
+        final JSONObject advancedSearch = generateAdvancedSearch(searchWord);
+
+        if (searchWord.length() == 0) {
+            try {
+                advancedSearch.put("area", false);
+                advancedSearch.put("title", false);
+            } catch (JSONException e) {
+                /**
+                 * Never happens
+                 */
+            }
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://192.168.160.63:8082/joboffer/advancedSearch", advancedSearch,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -218,11 +283,11 @@ public class JobsActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         updateJobs(new JSONArray());
-                        if (volleyError.networkResponse.statusCode == 404) {
+                        if (volleyError.networkResponse != null && volleyError.networkResponse.statusCode == 404) {
                             Toast.makeText(getApplicationContext(), "No job offers found", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Same error occurred while retrieving job offers. Try again later.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Same error occurred while retrieving jobs. Try again later.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
