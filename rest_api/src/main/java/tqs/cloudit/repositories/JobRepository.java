@@ -7,7 +7,7 @@ import tqs.cloudit.domain.persistance.Job;
 
 public interface JobRepository extends CrudRepository<Job, Long> {
     
-    @Query(value= "select * from job where id=?1 and type='Offer' and not finished", nativeQuery=true)
+    @Query(value= "select * from job where id=?1 and not finished", nativeQuery=true)
     public Job getJobOffer(Long id);
     
     @Query(value= "select * from job where type='Offer' and not finished", nativeQuery=true)
