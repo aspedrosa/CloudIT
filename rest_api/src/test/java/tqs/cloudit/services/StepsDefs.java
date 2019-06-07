@@ -1184,7 +1184,7 @@ public class StepsDefs {
     */
     
     @When("I'm on the messaging center page")
-    public void enterMessagingCenter() throws Exception {
+    public void enterMessagingCenter() {
         new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(StaleElementReferenceException.class)
             .ignoring(NoSuchElementException.class)
@@ -1197,12 +1197,16 @@ public class StepsDefs {
             (WebDriver d) -> System.currentTimeMillis()-then > 1000);
 
         driver.findElement(By.id("messages")).click();
-        
+
+        String loggedInUsername = currentUsername;
+
+        changeCurrentUsername();
+
         User user2 = new User(
-            currentUsername + "2",
-            "test" + "2",
+            currentUsername,
+            "test",
             "",
-            currentUsername + "2" + "@mail.com",
+            currentUsername + "@mail.com",
             "Employer",
             new ArrayList<>()
         );
@@ -1210,35 +1214,35 @@ public class StepsDefs {
         
         Message msg = new Message();
         msg.setDate(System.currentTimeMillis());
-        msg.setDestination(currentUsername + "2");
+        msg.setDestination(currentUsername);
         msg.setMessage("test msg");
-        msg.setOrigin(currentUsername);
-        messageService.writeMessageByUsername(msg, currentUsername);
+        msg.setOrigin(loggedInUsername);
+        messageService.writeMessageByUsername(msg, loggedInUsername);
         
-        driver.navigate().refresh();
-        
+        driver.get("http://localhost:8080/messagesPage");
+
         new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(StaleElementReferenceException.class)
             .ignoring(NoSuchElementException.class)
             .until((ExpectedCondition<Boolean>)
-                (WebDriver d) -> d.findElement(By.id(currentUsername + "2")).isDisplayed()
+                (WebDriver d) -> d.findElement(By.id(currentUsername)).isDisplayed()
             );
     }
     
     @Then("I should see the conversations I had with other members sorted by latest message")
     public void seeConversations() {
-        assertTrue(driver.findElement(By.id(currentUsername + "2")).isDisplayed());
+        assertTrue(driver.findElement(By.id(currentUsername)).isDisplayed());
     }
     
     @And("be able to click on one of the conversations.")
     public void canClickConversation() {
-        assertTrue(driver.findElement(By.id(currentUsername + "2")).isEnabled());
+        assertTrue(driver.findElement(By.id(currentUsername)).isEnabled());
     }
     
     @When("I click on one of the conversations")
     public void clickConversation() {
         
-        driver.findElement(By.id(currentUsername + "2")).click();
+        driver.findElement(By.id(currentUsername)).click();
         
         Long then = System.currentTimeMillis();
         new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
