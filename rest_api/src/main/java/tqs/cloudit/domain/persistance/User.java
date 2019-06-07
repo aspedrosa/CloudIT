@@ -79,6 +79,10 @@ public class User {
     public void addAcceptedOffer(Job jo){
         this.acceptedOffers.add(jo);
     }
+    
+    public void removeAcceptedOffer(Job jo){
+        this.acceptedOffers.remove(jo);
+    }
 
     public long getId() {
         return id;

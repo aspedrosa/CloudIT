@@ -66,6 +66,8 @@ public class MessageService {
             User user  = userRepository.getInfo(worker);
             jo.setWorker(user);
             user.addAcceptedOffer(jo);
+            jobRepository.save(jo);
+            userRepository.save(user);
         }
         Message m = messageRepository.getMessage(new Long((int)input.get(0)));
         m.setMessage((String)input.get(1));
