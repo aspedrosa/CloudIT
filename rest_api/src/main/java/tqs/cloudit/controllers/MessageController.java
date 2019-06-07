@@ -31,7 +31,7 @@ public class MessageController {
     
     @MessageMapping("/updateMessage")
     public void update(JSONArray input, Principal user) throws Exception {
-        messageService.update(input);
+        messageService.update(input, user.getName());
     }
 
 }

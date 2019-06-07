@@ -1,8 +1,7 @@
 var base_api_url = "http://" + window.location.host;
 function getOffers() {
     var self=this;
-    self.myOffersColumn1=ko.observableArray([])
-    self.myOffersColumn2=ko.observableArray([])
+    self.myOffers=ko.observableArray([])
     self.acceptedOffers=ko.observableArray([])
     
     self.refresh = function(){
@@ -15,18 +14,9 @@ function getOffers() {
                     alert(JSON.stringify(data));
                 }else{
                     console.log(data)
-                    self.myOffersColumn1.removeAll()
-                    self.myOffersColumn2.removeAll()
+                    self.myOffers.removeAll()
                     for(let index in data.data){
-                        if(localStorage.getItem("type")==="Freelancer"){
-                            self.myOffersColumn1.push(data.data[index]);
-                        }else{
-                            if(index%2===0){
-                                self.myOffersColumn1.push(data.data[index]);
-                            }else{
-                                self.myOffersColumn2.push(data.data[index]);
-                            }
-                        }
+                        self.myOffers.push(data.data[index]);
                     }
                 }
             },
@@ -266,8 +256,7 @@ $(document).ready(function(e){
     });
     
     if(localStorage.getItem("type")==="Employer"){
-        $("#acceptedOffers").css("display", "none");
-        $("#myOffers2").css("display", "block");
+        $("#acceptedOffersOrProposals").text("Accepted Proposals")
     }else{
         $("#createJobButton").text("Create a new Job Proposal");
         $("#offerOrProposal").text("My Proposals")
