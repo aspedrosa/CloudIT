@@ -77,12 +77,10 @@ public class JobController {
                                                                         advancedSearch.getToAmount(), 
                                                                         advancedSearch.getFromDate(),
                                                                         advancedSearch.getToDate());
-        return jobService.getJobOffersFromTextAmountAndDate("", 
-                                                            "", 
-                                                            advancedSearch.getFromAmount(),
-                                                            advancedSearch.getToAmount(), 
-                                                            advancedSearch.getFromDate(),
-                                                            advancedSearch.getToDate());
+        return jobService.getJobOffersFromAmountAndDate(advancedSearch.getFromAmount(),
+                                                        advancedSearch.getToAmount(),
+                                                        advancedSearch.getFromDate(),
+                                                        advancedSearch.getToDate());
         
     }
     
@@ -117,12 +115,10 @@ public class JobController {
                                                                         advancedSearch.getToAmount(), 
                                                                         advancedSearch.getFromDate(),
                                                                         advancedSearch.getToDate());
-        return jobService.getJobProposalFromTextAmountAndDate("", 
-                                                            "", 
-                                                            advancedSearch.getFromAmount(),
-                                                            advancedSearch.getToAmount(), 
-                                                            advancedSearch.getFromDate(),
-                                                            advancedSearch.getToDate());
+        return jobService.getJobProposalFromAmountAndDate(advancedSearch.getFromAmount(),
+                                                          advancedSearch.getToAmount(),
+                                                          advancedSearch.getFromDate(),
+                                                          advancedSearch.getToDate());
         
     }
     
