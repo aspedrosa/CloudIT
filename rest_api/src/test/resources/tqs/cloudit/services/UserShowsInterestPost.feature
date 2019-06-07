@@ -13,7 +13,7 @@ Feature: Users can show interest on posts through job posts
 
     Scenario: Employer receives message about Freelancer's interest 
         Given that I am logged in,
-        When I'm on the messaging center page,
+        When I'm on the messaging center page
         And a Freelancer has shown interest in one of my posts,
         And I click on the conversation with the Freelancer,
         Then I should see an automatic private message mentioning the interest.

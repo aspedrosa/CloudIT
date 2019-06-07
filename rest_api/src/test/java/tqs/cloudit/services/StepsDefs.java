@@ -731,6 +731,9 @@ public class StepsDefs {
      */
     @Then("I should see a list of job proposals filtered according to the chosen rule.")
     public void viewJobProposals2() {
+        long previous = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-previous > 5000);
         new WebDriverWait(driver, MAX_WAIT_TIME).until(
             d -> {
                 List<WebElement> offers = d.findElements(By.className("blog-box"));
@@ -1127,10 +1130,11 @@ public class StepsDefs {
                 (WebDriver d) -> System.currentTimeMillis()-previous > MAX_WAIT_TIME);
         driver.findElement(By.id("submitOfferButton")).click();
         
+        long then4 = System.currentTimeMillis();
         new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
-            (WebDriver d) -> System.currentTimeMillis()-then > MAX_WAIT_TIME);
+            (WebDriver d) -> System.currentTimeMillis()-then4 > MAX_WAIT_TIME*4);
         
-        new WebDriverWait(driver, MAX_WAIT_TIME)
+        new WebDriverWait(driver, MAX_WAIT_TIME*4)
                 .ignoring(ElementClickInterceptedException.class)
                 .until(d -> {
                     d.findElement(By.linkText("t2")).click();
@@ -1225,7 +1229,7 @@ public class StepsDefs {
     
     @And("be able to click on one of the conversations.")
     public void canClickConversation() {
-        assertTrue(driver.findElement(By.id(currentUsername + "2")).isEnabled());
+        assertTrue(driver.findElement(By.id(currentUsername)).isEnabled());
         
     }
     
@@ -1354,13 +1358,87 @@ public class StepsDefs {
     @And("a Freelancer has shown interest in one of my posts,")
     public void freelancerShowedInterest() {
         // freelancer shows interest and logs out
-        this.accessEmployerProfile();
-        this.clickEmployerJobOffer();
-        this.clickShowInterest();
+        
+        // insert employer on database
+        String newUsername = currentUsername + "2";
+        User user2 = new User(
+            newUsername,
+            "test" + "2",
+            newUsername,
+            newUsername + "@mail.com",
+            "Employer",
+            new ArrayList<>()
+        );
+        authenticationService.register(user2);
+        
+        // add job offer to employer
+        Job jo = new Job("title_test_2", "description_test_2", "java", 100, "2019-01-01", "Offer");
+        jobService.registerOffer(newUsername, jo);
+        // add job offer to freelancer
+        Job jo2 = new Job("title_test_3", "description_test_3", "java", 100, "2019-01-01", "Proposal");
+        jobService.registerOffer(currentUsername, jo2);
+        
+        // go to search tab
+        new WebDriverWait(driver, MAX_WAIT_TIME)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) -> d.findElement(By.id("search")).isDisplayed()
+            );
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+        driver.findElement(By.id("search")).click();
+        
+        // filter users only
+        new WebDriverWait(driver, MAX_WAIT_TIME)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) ->  d.findElement(By.id("searchByUsers")).isDisplayed()
+            );
+        driver.findElement(By.id("searchByUsers")).click();
+        
+        // search for employer
+        driver.findElement(By.id("searchUserName")).sendKeys(newUsername);
+        driver.findElement(By.id("search_btn")).click();
+        
+        // click employer
+        new WebDriverWait(driver, MAX_WAIT_TIME)
+            .ignoring(NoSuchElementException.class)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                (WebDriver d) ->  d.findElement(By.id(newUsername)).isDisplayed()
+            );
+        driver.findElement(By.id(newUsername)).click();
+        Long then2 = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then2 > 1000);
+        
+        
+        
+        
+        
+        driver.findElement(By.id("title_test_2")).click();
+        Long then3 = System.currentTimeMillis();
+        new WebDriverWait(driver,MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then3 > 1000);
+        
+        
+        
+        
+        driver.findElement(By.id("interest_btn")).click();
+        Long then4 = System.currentTimeMillis();
+        new WebDriverWait(driver,MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then4 > 1000);
+        
+        
+        
+        
         driver.findElement(By.id("signout")).click();
         
         // employer logs in and goes to message center
-        String newUsername = currentUsername + "2";
+        String newUsername1 = currentUsername + "2";
         new WebDriverWait(driver, MAX_WAIT_TIME)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
@@ -1369,7 +1447,7 @@ public class StepsDefs {
             );
         WebElement username = driver.findElement(By.id("username"));
         WebElement pwd = driver.findElement(By.id("pwd"));
-        username.sendKeys(newUsername);
+        username.sendKeys(newUsername1);
         pwd.clear();
         pwd.sendKeys("test2");
         driver.findElement(By.id("submit_button")).click();
@@ -1380,9 +1458,9 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("messages")).isDisplayed()
             );
-        Long then = System.currentTimeMillis();
+        Long then5 = System.currentTimeMillis();
         new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
-            (WebDriver d) -> System.currentTimeMillis()-then > 1000);
+            (WebDriver d) -> System.currentTimeMillis()-then5 > 5000);
         driver.findElement(By.id("messages")).click();
         
         // checks freelancer's interest
@@ -1392,12 +1470,17 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("messageCenterLobby")).isDisplayed()
             );
-        assertTrue(driver.findElement(By.id("cucumber_tests"+(usernameCount-1))).isDisplayed());
+        
+        Long then6 = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then6 > 6000);
+        
+        assertTrue(driver.findElement(By.id("cucumber_tests"+(usernameCount))).isDisplayed());
     }
     
     @And("I click on the conversation with the Freelancer,")
     public void clickConversationWithFreelancer() {
-        driver.findElement(By.id("cucumber_tests"+(usernameCount-1))).click();
+        driver.findElement(By.id("cucumber_tests"+(usernameCount))).click();
     }
 
     /* ============================== USERPROPOSESMESSAGECENTER TEST ============================== */
@@ -1651,6 +1734,10 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("messageCenterLobby")).isDisplayed()
             );
+        
+        Long then7 = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then7 > 4000);
         assertTrue(driver.findElement(By.id("cucumber_tests"+(usernameCount))).isDisplayed());
     }
     
@@ -1812,6 +1899,12 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("messageCenterLobby")).isDisplayed()
             );
+        
+        Long then7 = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then7 > 6000);
+        
+        
         assertTrue(driver.findElement(By.id("cucumber_tests"+(usernameCount))).isDisplayed());
         
         driver.findElement(By.id("cucumber_tests"+(usernameCount))).click();
@@ -1869,6 +1962,10 @@ public class StepsDefs {
             .until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("messageCenterLobby")).isDisplayed()
             );
+        
+        Long then7 = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then7 > 1000);
         
         assertTrue(driver.findElement(By.id("cucumber_tests"+(usernameCount)+"2")).isDisplayed());
         
