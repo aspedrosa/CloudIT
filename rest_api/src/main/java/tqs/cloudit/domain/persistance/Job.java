@@ -169,6 +169,14 @@ public class Job {
         this.creator = creator;
     }
 
+    public User getWorker() {
+        return worker;
+    }
+
+    public void setWorker(User worker) {
+        this.worker = worker;
+    }
+    
     public Set<User> getFavouritedUsers() {
         return favouritedUsers;
     }

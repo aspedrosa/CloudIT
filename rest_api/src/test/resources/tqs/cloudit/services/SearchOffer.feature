@@ -24,4 +24,4 @@ Feature: User can search offers in platform
         And the results of the offer search are presented
         And I click on one job
         Then I should see all information related to that job
-        And I should be able to contact the freelancer in order to hire him/her.
+        And I should be able to contact the proposal's author.

@@ -78,6 +78,12 @@ function showModal(job){
     $("#modalCreatorEmail").val(job.creator.email);
 }
 
+function contact(){
+    var name =$("#modalCreatorName").val();
+    var username = $("#modalCreatorUsername").val();
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username;
+}
+
 function createOffer(){
     
     var title = document.getElementById("offerTitle").value;

@@ -118,25 +118,35 @@ appViewModel.refresh();
 
 ko.applyBindings(appViewModel);
 
-function showModal(job){
-    $("#modalTitle").text(job.title);
-    $("#modalArea").text(job.area);
-    $("#modalAmount").text(job.amount);
-    $("#modalDescription").text(job.description);
-    $("#modalDate").text(job.date);
-    $("#modalCreatorName").text(job.creator.name);
-    $("#modalCreatorUsername").text(job.creator.username);
-    $("#modalCreatorEmail").text(job.creator.email);
+function showOfferModal(job){
+    //$("#m1o").modal();
+    $("#offerModalTitle").text(job.title);
+    $("#offerModalId").text(job.id);
+    $("#offerModalArea").text(job.area);
+    $("#offerModalAmount").text(job.amount);
+    $("#offerModalDescription").text(job.description);
+    $("#offerModalDate").text(job.date);
+    $("#offerModalCreatorName").text(job.creator.name);
+    $("#offerModalCreatorUsername").text(job.creator.username);
+    $("#offerModalCreatorEmail").text(job.creator.email);
 }
 
 /**
  * Updates information on variables for the clicked user
  */
-function fillSearchUserModalTable(name, userType, email, jobs) {
+function fillSearchUserModalTable(user) {
+    console.log(user)
+    name=user.name
+    username=user.username
+    userType=user.userType
+    email=user.email
+    jobs=user.jobOffers
     $("#userModalTitle").text(name);
+    console.log(username)
+    $("#userModalUsername").text(username);
     $("#userModalEmail").text(email);
 
-    appViewModel.userModalUserType(userType.toLowerCase());
+    appViewModel.userModalUserType(userType);
     appViewModel.userModalJobs.removeAll();
     jobs.forEach(function (job, _) {
         appViewModel.userModalJobs.push(job);
@@ -149,6 +159,11 @@ function changeFilterMenu() {
     else
         $("#filters_menu").css("display", "none");
 }
+
+function contact(username, name){
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username;
+}
+
 
 $(document).ready(function(e){    
     
@@ -165,3 +180,11 @@ $(document).ready(function(e){
         job_search_path = "/joboffer/advancedSearch";
     }
 });
+
+function showInterest(){
+    var name =$("#offerModalCreatorName").text();
+    var username = $("#offerModalCreatorUsername").text();
+    var offerId = $("#offerModalId").text();
+    var offerTitle = $("#offerModalTitle").text();
+    window.location.href= base_api_url+"/messagesPage?"+"addName="+name+"&addUsername="+username+"&offerTitle="+offerTitle+"&offerId="+offerId;
+}
