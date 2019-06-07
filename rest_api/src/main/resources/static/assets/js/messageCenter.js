@@ -70,20 +70,20 @@ function activateContact(){
 
 function sendMsgWithOffer(offer) {
   //console.log(offer);
-  var msg = ">>> automatic-message | job-offer: _"+offer.id + "_" + offer.title + "_ <<<";
+  var msg = ">>> automatic-message | job-offer: ¶"+offer.id + "¶" + offer.title + "¶ <<<";
   var msgDestin = $("#msgDestination").text();
   sendMessage(msg, msgDestin, true);
 }
 
 function sendAutomaticMsgUserInterested(offer, msgDestin) {
-  var msg = ">>> automatic-message-interested | job-offer: _"+offer.id + "_" + offer.title + "_ | interested-user: _" + localStorage.getItem("username") + "_ <<<";
+  var msg = ">>> automatic-message-interested | job-offer: ¶"+offer.id + "¶" + offer.title + "¶ | interested-user: ¶" + localStorage.getItem("username") + "¶ <<<";
   sendMessage(msg, msgDestin, true);
 }
 
 function formatMessage(id, msg,origin) {
   var retval = msg;
   if(msg.startsWith(">>> automatic-message | ")) {
-    var msgArr = msg.split("_");
+    var msgArr = msg.split("¶");
     if(localStorage.getItem("username") === origin) { 
       retval = "<h3>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
@@ -93,11 +93,11 @@ function formatMessage(id, msg,origin) {
     }
   }
   if(msg.startsWith(">>> automatic-message-interested | ")) {
-    var msgArr = msg.split("_");
+    var msgArr = msg.split("¶");
     if(localStorage.getItem("username") === origin) { 
-      retval = "<h3>You showed interest in '" + msgArr[2] + "'</h3>";
+      retval = "<h4 id='" + msgArr[2] + "'>You showed interest in '" + msgArr[2] + "'</h4>";
     } else {
-      retval = "<h3>" + msgArr[4] + " showed interest in '" + msgArr[2] + "'</h3>";
+      retval = "<h4 id='" + msgArr[2] + "'>" + msgArr[4] + " showed interest in '" + msgArr[2] + "'</h4>";
     }
   }
   return retval;

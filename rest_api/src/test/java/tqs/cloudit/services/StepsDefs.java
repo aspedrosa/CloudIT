@@ -44,7 +44,7 @@ public class StepsDefs {
     static {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--whitelisted-ips");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disabled-extensions");
 
@@ -1234,6 +1234,7 @@ public class StepsDefs {
     @And("be able to click on one of the conversations.")
     public void canClickConversation() {
         assertTrue(driver.findElement(By.id(currentUsername + "2")).isEnabled());
+        driver.quit();
     }
     
     @When("I click on one of the conversations")
@@ -1255,31 +1256,33 @@ public class StepsDefs {
     public void canSendNewMessage() {
         assertTrue(driver.findElement(By.id("msgText")).isDisplayed());
         assertTrue(driver.findElement(By.id("msgText")).isEnabled());
+        driver.quit();
     }
     
-    /* ============================== EMPLOYERPROPOSESJOBPOST TEST ============================== */
+    /* ============================== USERSHOWSINTERESTPOST TEST ============================== */
     
     /*
         @Given("that I am logged in,") -> EmployerPostJob Steps
     */
     
-    @And("I have accessed the intended freelancer’s profile page,")
-    public void accessFreelancerProfile() {
-        /*
+    @And("I have accessed the intended Employer’s profile page,")
+    public void accessEmployerProfile() {
+        
         // insert freelancer on database
+        String newUsername = currentUsername + "2";
         User user2 = new User(
-            currentUsername + "2",
+            newUsername,
             "test" + "2",
-            "",
-            currentUsername + "2" + "@mail.com",
+            newUsername,
+            newUsername + "@mail.com",
             "Employer",
             new ArrayList<>()
         );
         authenticationService.register(user2);
         
         // add job offer to freelancer
-        JobOffer jo = new JobOffer("title_test_2", "description_test_2", "java", 100, "2019-01-01");
-        jobService.registerOffer(currentUsername + "2", jo);
+        Job jo = new Job("title_test_2", "description_test_2", "java", 100, "2019-01-01", "proposal");
+        jobService.registerOffer(newUsername, jo);
         
         // go to search tab
         new WebDriverWait(driver,300L)
@@ -1303,46 +1306,68 @@ public class StepsDefs {
         driver.findElement(By.id("searchByUsers")).click();
         
         // search for freelancer
-        driver.findElement(By.id("query")).sendKeys(currentUsername + "2");
+        driver.findElement(By.id("searchUserName")).sendKeys(newUsername);
         driver.findElement(By.id("search_btn")).click();
-        
         
         // click freelancer
         new WebDriverWait(driver,300L)
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class)
             .until(
-                (WebDriver d) ->  d.findElement(By.id(currentUsername + "2")).isDisplayed()
+                (WebDriver d) ->  d.findElement(By.id(newUsername)).isDisplayed()
             );
-        driver.findElement(By.id(currentUsername + "2")).click();
+        driver.findElement(By.id(newUsername)).click();
         Long then2 = System.currentTimeMillis();
         new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
             (WebDriver d) -> System.currentTimeMillis()-then2 > 1000);
-        */
     }
     
     @And("I click on his\\/her job offer,")
     public void clickFreelancerJobOffer() {
+        driver.findElement(By.id("title_test_2")).click();
+        Long then3 = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then3 > 1000);
         
     }
     
     @When("I click on the contact button")
     public void clickShowInterest() {
+        driver.findElement(By.id("interest_btn")).click();
+        Long then4 = System.currentTimeMillis();
+        new WebDriverWait(driver,300L).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then4 > 1000);
         
     }
     
-    @Then("I should be redirected to the message center’s conversation with the freelancer")
-    public void redirectToFreelancerConversation() {
-        
+    @Then("I should be redirected to the message center’s conversation with the Employer")
+    public void redirectToEmployerConversation() {
+        assertTrue(driver.findElement(By.id("messageCenterLobby")).isDisplayed());
+        assertTrue(driver.findElement(By.id(currentUsername + "2")).isDisplayed());
     }
     
-    @And("I should see an automatic private message mentioning the interest in hiring him\\/her.")
+    @And("I should see an automatic private message mentioning the interest in his/her post.")
     public void seeAutomaticInterestedMessage() {
-        
+        assertTrue(driver.findElement(By.id("title_test_2")).isDisplayed());
+        driver.quit();
     }
+    
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    /*
+        @When("I'm on the messaging center page") -> MessageCenter Steps
+    */
+    
+    // ......
+    
 
-    /* ============================== TEST ============================== */
+    /* ============================== USERPROPOSESMESSAGECENTER TEST ============================== */
 
-    // add new steps here...
-
+    /*
+        @Given("that I am logged in,") -> EmployerPostJob Steps
+    */
+    
+    // .......
 }
