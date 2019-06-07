@@ -43,3 +43,6 @@ local.properties
 
 #logs
 *.log
+
+#android studio
+.gradle/

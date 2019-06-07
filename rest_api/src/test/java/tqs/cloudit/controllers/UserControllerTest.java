@@ -331,6 +331,72 @@ public class UserControllerTest {
     private byte[] toJson(Object object) throws Exception {
         return this.mapper
             .writeValueAsString(object).getBytes();
-    } 
-    
+    }
+
+
+    @Test
+    public void testDeleteFavouriteOnNotFoundJob() throws Exception {
+        Mockito.when(service.deleteFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(false);
+
+        mvc.perform(
+            delete("/favourite/" + 1)
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"Unable to delete job offer to the favorites\"}"));
+    }
+
+    @Test
+    public void testDeleteFavouriteWrongIdFormat() throws Exception {
+        Mockito.when(service.deleteFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(false);
+
+        mvc.perform(
+            delete("/favourite/" + "badLong")
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"id should be a long\"}"));
+    }
+
+    @Test
+    public void testDeleteFavouriteDone() throws Exception {
+        Mockito.when(service.deleteFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(true);
+
+        mvc.perform(
+            delete("/favourite/" + 1)
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isAccepted())
+            .andExpect(content().json("{\"message\":\"Favourite deleted\"}"));
+    }
+
+    @Test
+    public void testAddFavouriteOnNotFoundJob() throws Exception {
+        Mockito.when(service.addFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(false);
+
+        mvc.perform(
+            post("/favourite/" + 1)
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"Unable to add job offer to the favorites\"}"));
+    }
+
+    @Test
+    public void testAddFavouriteWrongIdFormat() throws Exception {
+        Mockito.when(service.addFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(false);
+
+        mvc.perform(
+            post("/favourite/" + "badLong")
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json("{\"message\":\"id should be a long\"}"));
+    }
+
+    @Test
+    public void testAddFavouriteDone() throws Exception {
+        Mockito.when(service.addFavourite(Mockito.any(), Mockito.anyLong())).thenReturn(true);
+
+        mvc.perform(
+            post("/favourite/" + 1)
+                .contentType(MediaType.APPLICATION_JSON).with(user("joao").password("123")))
+            .andExpect(status().isAccepted())
+            .andExpect(content().json("{\"message\":\"Favourite added\"}"));
+    }
 }

@@ -18,6 +18,7 @@
     <!-- Core CSS -->
     <link href="assets/css/footer.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/welcome.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -26,19 +27,56 @@
 
     <div role="main" class="container" style="min-height: 70vh;margin-top: 30px;">
         <h1 id="welcome_title"></h1>
-        <div class="" id="favouritsDiv">
-            <h3>Favourite Posts</h3>
-            <div>
-
+        <div data-bind="if: favourites().length > 0" class="row" style="margin-top: 20px;">
+            <h3 class="col-md-12">Favourite Jobs</h3>
+            <div data-bind="foreach: {data: favourites, as:'job'}" class="col-md-12 row">
+                <div class="card col-md-3" style="margin-right: 5px">
+                    <div class="card-body">
+                        <h4 class="card-title" data-bind="text: job.title"></h4>
+                        <div>
+                            <div class="row">
+                                <strong class="col-md-12">Description</strong>
+                            </div>
+                            <div class="row">
+                                <span class="col-md-12" data-bind="text: job.description"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6">Area</strong>
+                                <span data-bind="text: job.area"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Amount</strong>
+                                <span data-bind="text: job.amount"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Date</strong>
+                                <span data-bind="text: job.date"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Type</strong>
+                                <span data-bind="text: job.type"></span>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <strong class="col-md-12">Creator Info</strong>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Name</strong>
+                                <span data-bind="text: job.creator.name"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Username</strong>
+                                <span data-bind="text: job.creator.username"></span>
+                            </div>
+                            <div class="row">
+                                <strong class="col-md-6 bold-text">Email</strong>
+                                <span data-bind="text: job.creator.email"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="" id="favouritsDiv">
-            <h3>History</h3>
-            <div>
-                
-            </div>
-        </div>
-    </div>
+    </div><!-- /.container -->
 
 
     <!-- Footer -->

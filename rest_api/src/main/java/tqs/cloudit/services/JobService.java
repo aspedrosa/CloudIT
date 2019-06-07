@@ -75,7 +75,7 @@ public class JobService {
     public ResponseEntity getJobOffersFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobOffersFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
@@ -83,7 +83,7 @@ public class JobService {
     public ResponseEntity getJobOffersFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
@@ -91,15 +91,26 @@ public class JobService {
     public ResponseEntity getJobOffersFromTextAmountAndDateOnlyArea(String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobOffersFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
-    
-      public ResponseEntity getJobProposalFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
+
+    /**
+     * Gets all job offers that match the received arguments
+     */
+    public ResponseEntity getJobOffersFromAmountAndDate(double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobOffersFromAmountAndDate(fromAmount, toAmount, fromDate, toDate);
+        if(jobs.isEmpty()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
+    }
+
+    public ResponseEntity getJobProposalFromTextAmountAndDate(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromTextAmountAndDate(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
@@ -107,7 +118,7 @@ public class JobService {
     public ResponseEntity getJobProposalFromTextAmountAndDateOnlyTitle(String title, String area, double fromAmount, double toAmount, String fromDate, String toDate) {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromTextAmountAndDateOnlyTitle(title, area, fromAmount, toAmount, fromDate, toDate);
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
@@ -116,15 +127,27 @@ public class JobService {
         List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromTextAmountAndDateOnlyArea(area, fromAmount, toAmount, fromDate, toDate);
 
         if(jobs.isEmpty()){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
     }
-    
+
+    /**
+     * Gets all job proposals that match the received arguments
+     */
+    public ResponseEntity getJobProposalFromAmountAndDate(double fromAmount, double toAmount, String fromDate, String toDate) {
+        List<tqs.cloudit.domain.persistance.Job> jobs = jobRepository.getJobProposalFromAmountAndDate(fromAmount, toAmount, fromDate, toDate);
+
+        if(jobs.isEmpty()){
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_PARAMETERS);
+        }
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jobs);
+    }
+
     public ResponseEntity getSpecificOffer(long id) {
         tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer(id);
         if(jo==null){
-            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, Constants.NO_JOB_FOR_ID);
+            return ResponseBuilder.buildWithMessage(HttpStatus.NOT_FOUND, "No job found with that id.");
         }
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.JOB_FOUND_SUCCESS, jo);
     }

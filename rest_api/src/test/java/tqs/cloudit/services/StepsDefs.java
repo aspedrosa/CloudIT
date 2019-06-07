@@ -1067,6 +1067,7 @@ public class StepsDefs {
         
         new WebDriverWait(driver, MAX_WAIT_TIME)
                 .ignoring(ElementNotVisibleException.class)
+                .ignoring(ElementNotInteractableException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
                     return true;
@@ -1140,6 +1141,7 @@ public class StepsDefs {
         new WebDriverWait(driver, MAX_WAIT_TIME)
                 .ignoring(ElementNotVisibleException.class)
                 .ignoring(ElementClickInterceptedException.class)
+                .ignoring(ElementNotInteractableException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
                     return true;

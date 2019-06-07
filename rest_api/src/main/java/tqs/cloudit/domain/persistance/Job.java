@@ -2,14 +2,13 @@ package tqs.cloudit.domain.persistance;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+
 import org.json.simple.JSONObject;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -70,7 +69,11 @@ public class Job {
     @JoinColumn(name = "worker_id", nullable=true)
     @JsonIgnore
     private User worker;
-    
+
+    @ManyToMany(mappedBy="favouriteJobs")
+    @JsonIgnore
+    private Set<User> favouritedUsers = new HashSet<>();
+
     public Job(tqs.cloudit.domain.rest.Job jobOffer) {
         this.title = jobOffer.getTitle();
         this.description = jobOffer.getDescription();
@@ -174,7 +177,13 @@ public class Job {
         this.worker = worker;
     }
     
-    
+    public Set<User> getFavouritedUsers() {
+        return favouritedUsers;
+    }
+
+    public void setFavouritedUsers(Set<User> favouritedUsers) {
+        this.favouritedUsers = favouritedUsers;
+    }
 
     @Override
     public int hashCode() {
