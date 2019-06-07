@@ -273,7 +273,7 @@
                                                     <td data-bind="text: job.title"></td>
                                                     <td data-bind="text: job.date"></td>
                                                     <td data-bind="text: job.amount"></td>
-                                                    <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job)" style="color:#0077b5;">Check Out</td>
+                                                    <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job), attr: {id: job.title}" style="color:#0077b5;">Check Out</td>
                                                 </tr>
                                             </tbody>
                                         </table>

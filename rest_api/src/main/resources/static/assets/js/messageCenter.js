@@ -90,8 +90,8 @@ function formatMessage(id, msg,origin) {
       retval = "<h3 id='msg_" + msgArr[2] + "'>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
       retval = "<h3>'" + msgArr[2] + "'</h3>"
-              +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'>" + "Accept" + "</button>"
-              +"<button class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
+              +"<button id='accept_" + msgArr[2] + "' class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'>" + "Accept" + "</button>"
+              +"<button id='deny_" + msgArr[2] + "' class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
     }
   }
   if(msg.startsWith(">>> automatic-message-interested | ")) {
@@ -119,7 +119,7 @@ function hideOptions(){
 }
 
 function acceptOfferMsg(id, offerId, offerTitle) {
-  var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:royalblue'> Accepted</h3>";
+  var fMsg = "<h3>" + offerTitle + "</h3><h3 id='"+offerTitle+"_accepted' style='color:royalblue'> Accepted</h3>";
   updateAutomaticMessage(id, fMsg, "accept", offerId, $("#msgDestination").text());
   $("#"+id).html(fMsg);
   

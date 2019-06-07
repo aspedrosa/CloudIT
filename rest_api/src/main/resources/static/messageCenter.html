@@ -70,9 +70,9 @@
                                 <input id="msgText" type="text" class="form-control">
                             </div>
                             <div class="btn-group row col-lg-2 col-md-2 col-sm-2 dropup">
-                                <button onclick="showOfferOptions()" class="btn btn-secondary dropbtn" style="width:25px;"><b>+</b></button>
+                                <button onclick="showOfferOptions()" id="plus_btn" class="btn btn-secondary dropbtn" style="width:25px;"><b>+</b></button>
                                 <div id="showOfferOptions" onmouseleave="hideOptions()" class="dropup-content" data-bind="foreach: { data: myOffers, as: 'o'}">
-                                    <p data-bind="text: o.title, click: function() {sendMsgWithOffer(o)}"></p>
+                                    <p data-bind="text: o.title, click: function() {sendMsgWithOffer(o)}, attr: {id: o.title}"></p>
                                 </div>
                                 <button class="btn btn-primary" data-original-title="send" title="send" onclick="sendMsg()">Send</button>
                             </div>
