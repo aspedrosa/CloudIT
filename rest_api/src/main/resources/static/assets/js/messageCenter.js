@@ -87,7 +87,7 @@ function formatMessage(id, msg,origin) {
   if(msg.startsWith(">>> automatic-message | ")) {
     var msgArr = msg.split("¶");
     if(localStorage.getItem("username") === origin) { 
-      retval = "<h3>You sent offer '" + msgArr[2] + "'</h3>";
+      retval = "<h3 id='msg_" + msgArr[2] + "'>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
       retval = "<h3>'" + msgArr[2] + "'</h3>"
               +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'>" + "Accept" + "</button>"
