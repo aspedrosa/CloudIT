@@ -160,11 +160,6 @@ ul.chat-list {
     border-color: #2980b9;
 }
 
-.dropup {
-    position: relative;
-    display: inline-block;
-}
-
 .dropup-content {
     display: none;
     position: absolute;

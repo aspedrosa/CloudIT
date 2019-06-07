@@ -69,12 +69,16 @@
                             <div class="chat-txt col-lg-10 col-md-9 col-sm-7">
                                 <input id="msgText" type="text" class="form-control">
                             </div>
-                            <div class="btn-group row col-lg-2 col-md-2 col-sm-2 dropup">
-                                <button onclick="showOfferOptions()" class="btn btn-secondary dropbtn" style="width:25px;"><b>+</b></button>
-                                <div id="showOfferOptions" onmouseleave="hideOptions()" class="dropup-content" data-bind="foreach: { data: myOffers, as: 'o'}">
-                                    <p data-bind="text: o.title, click: function() {sendMsgWithOffer(o)}"></p>
+                            <div class="btn-group col-lg-2 col-md-2 col-sm-2 dropup row">
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <button onclick="showOfferOptions()" class="btn btn-secondary dropbtn">+</button>
+                                    <div id="showOfferOptions" onmouseleave="hideOptions()" class="dropup-content" data-bind="foreach: { data: myOffers, as: 'o'}">
+                                        <p data-bind="text: o.title, click: function() {sendMsgWithOffer(o)}"></p>
+                                    </div>
                                 </div>
-                                <button class="btn btn-primary" data-original-title="send" title="send" onclick="sendMsg()">Send</button>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <button class="btn btn-primary" data-original-title="send" title="send" onclick="sendMsg()">Send</button>
+                                </div>
                             </div>
                         </div>
                     </div>

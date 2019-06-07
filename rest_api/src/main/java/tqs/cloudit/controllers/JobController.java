@@ -199,7 +199,7 @@ public class JobController {
     
     
     @GetMapping("/finish/{id}")
-    public ResponseEntity finishOffer(@PathVariable long id,Principal principal) {
-        return jobService.finishOffer(id);
+    public ResponseEntity finishOffer(@PathVariable long id,Principal user) {
+        return jobService.finishOffer(id, user.getName());
     }
 }

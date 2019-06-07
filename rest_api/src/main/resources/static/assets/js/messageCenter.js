@@ -62,6 +62,7 @@ function activateContact(){
         addOffer["id"] = addOfferId;
         addOffer["title"] = addOfferTitle;
         sendAutomaticMsgUserInterested(addOffer, addUsername);
+        
       }
       loadMessages([addUsername, addName])
       $("#chatRoom").css("visibility", "visible")

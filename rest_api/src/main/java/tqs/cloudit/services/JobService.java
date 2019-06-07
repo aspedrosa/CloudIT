@@ -152,10 +152,18 @@ public class JobService {
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, Constants.INFO_FETCHED_SUCCESS, offers);
     }
 
-    public ResponseEntity finishOffer(long id) {
-        tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer(id);
+    public ResponseEntity finishOffer(long id, String worker) {
+        tqs.cloudit.domain.persistance.Job jo = jobRepository.getAcceptedOffer(id);
+        tqs.cloudit.domain.persistance.User user = userRepository.getInfo(worker);
+        user.removeAcceptedOffer(jo);
+        user.removeOffer(jo);
+        jo.removeWorker();
+        System.out.println(user.getAcceptedOffers());
         jo.setFinished(true);
+        jobRepository.save(jo);
+        userRepository.save(user);
         
-        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "Offer finished with success.", jo);
+        
+        return ResponseBuilder.buildWithMessage(HttpStatus.OK, "Offer finished with success.");
     }
 }
