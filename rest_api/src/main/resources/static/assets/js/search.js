@@ -1,14 +1,16 @@
 var base_api_url = "http://" + window.location.host;
+var job_search_path = "/joboffer/advancedSearchProposal";
+var all_jobs = localStorage.getItem("type")==="Employer" ? "/joboffer" : "/joboffer/proposal";
 
 function AppViewModel() {
     var self=this;
     self.jobOffers=ko.observableArray([]);
     self.users=ko.observableArray([]);
-    self.searchBy = ko.observable("users");
+    self.searchBy = ko.observable("jobs");
 
     self.refresh = function(){
         $.ajax({
-            url: base_api_url+"/joboffer",
+            url: base_api_url+all_jobs,
             type: "GET",
             crossDomain:true,
             success: function(data, status, xhr) {
@@ -39,7 +41,7 @@ function AppViewModel() {
         var fromDate = $("#fromDate").val();
         var toDate = $("#toDate").val();
         $.ajax({
-            url: base_api_url+"/joboffer/advancedSearch",
+            url: base_api_url+job_search_path,
             type: "POST",
             data: JSON.stringify({"query": query, "title":isTitle, "area":isArea, 
                    "fromAmount":fromAmount, "toAmount":toAmount, 
@@ -61,7 +63,7 @@ function AppViewModel() {
                 }
             },
             error: function(data, status, xhr) {
-                alert(JSON.stringify(data));
+                alert("No job found!");
                 console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
             }
         });
@@ -183,6 +185,11 @@ $(document).ready(function(e){
             $('.search-panel span#search_concept').text(concept);
             $('.input-group #search_param').val(param);
     });
+    
+    if(localStorage.getItem("type")==="Employer") {        
+        $("#offers_label").text("Offers");
+        job_search_path = "/joboffer/advancedSearch";
+    }
 });
 
 function showInterest(){

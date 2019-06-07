@@ -4,7 +4,7 @@ package tqs.cloudit.domain.rest;
  *
  * @author joaoalegria
  */
-public class JobOffer {
+public class Job {
     
     private String title;
     
@@ -15,16 +15,19 @@ public class JobOffer {
     private Integer amount;
 
     private String date;
+    
+    private String type;
 
-    public JobOffer(String title, String description, String area, Integer amount, String date) {
+    public Job(String title, String description, String area, Integer amount, String date, String type) {
         this.title = title;
         this.description = description;
         this.area = area;
         this.amount = amount;
         this.date = date;
+        this.type = type;
     }
 
-    public JobOffer() {
+    public Job() {
     }
 
     
@@ -68,6 +71,14 @@ public class JobOffer {
         this.date = date;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public boolean allDefined() {
         Object[] tmp = new Object[]{this.title, this.description, this.date, this.amount, this.area};
         for(Object aux : tmp){
@@ -80,7 +91,7 @@ public class JobOffer {
 
     @Override
     public String toString() {
-        return "JobOffer{" + "title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + '}';
+        return "Job{" + "title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", type=" + type + '}';
     }
     
 }

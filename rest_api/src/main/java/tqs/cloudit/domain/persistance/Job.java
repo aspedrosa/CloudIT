@@ -16,8 +16,8 @@ import org.json.simple.JSONObject;
  * @author joaoalegria
  */
 @Entity
-@Table(name="joboffer")
-public class JobOffer {
+@Table(name="job")
+public class Job {
     /**
      * Internal Id
      */
@@ -53,6 +53,11 @@ public class JobOffer {
     private boolean finished;
     
     /**
+     * Job type
+     */
+    private String type;
+    
+    /**
      * Job creator
      */
     @ManyToOne
@@ -68,24 +73,26 @@ public class JobOffer {
     @JsonIgnore
     private User worker;
     
-    public JobOffer(tqs.cloudit.domain.rest.JobOffer jobOffer) {
+    public Job(tqs.cloudit.domain.rest.Job jobOffer) {
         this.title = jobOffer.getTitle();
         this.description = jobOffer.getDescription();
         this.area = jobOffer.getArea();
         this.amount = jobOffer.getAmount();
-        this.date = jobOffer.getDate();   
+        this.date = jobOffer.getDate();
+        this.type = jobOffer.getType();
     }
     
-    public JobOffer(String title, String description, String area, int amount, String date, User creator) {
+    public Job(String title, String description, String area, int amount, String date, String type, User creator) {
         this.title = title;
         this.description = description;
         this.area = area;
         this.amount = amount;
         this.date = date;
+        this.type = type;
         this.creator = creator;
     }
 
-    public JobOffer() {
+    public Job() {
     }
     
     @JsonGetter("creator")
@@ -154,6 +161,14 @@ public class JobOffer {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
     
     public User getCreator() {
         return creator;
@@ -191,18 +206,14 @@ public class JobOffer {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final JobOffer other = (JobOffer) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        final Job other = (Job) obj;
+
+        return this.id == other.id;
     }
 
     @Override
     public String toString() {
-        return "JobOffer{" + "id=" + id + ", title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", creator=" + creator + ", worker=" + worker + '}';
+        return "Job{" + "id=" + id + ", title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", type=" + type + ", creator=" + creator + ", worker=" + worker + '}';
     }
-    
-    
     
 }

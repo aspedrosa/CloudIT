@@ -3,7 +3,7 @@ package tqs.cloudit.domain.responses;
 import java.util.ArrayList;
 import java.util.List;
 import tqs.cloudit.domain.persistance.Area;
-import tqs.cloudit.domain.persistance.JobOffer;
+import tqs.cloudit.domain.persistance.Job;
 
 public class User {
     private String name;
@@ -11,7 +11,7 @@ public class User {
     private String email;
     private String userType;
     private List<String> interestedAreas;
-    private List<JobOffer> jobOffers;
+    private List<Job> jobOffers;
 
     public User(tqs.cloudit.domain.persistance.User user) {
         name = user.getName();
@@ -51,7 +51,7 @@ public class User {
         return interestedAreas;
     }
 
-    public List<JobOffer> getJobOffers() {
+    public List<Job> getJobOffers() {
         return jobOffers;
     }
 

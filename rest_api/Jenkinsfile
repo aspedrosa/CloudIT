@@ -10,10 +10,40 @@ pipeline {
         stage('Test') {
             steps {
                 dir('rest_api') {
-                    sh "mvn -U test"
+                    sh "mvn -U clean test"
                 }
             }
         }
+        stage('Performance Test') {
+            steps {
+                dir('rest_api') {
+                    sh '''
+                        mvn package -Dmaven.test.skip=true -DskipTests
+                        docker build -t performance_test .
+                        docker run --name=performance_test -d  -p 12345:8080 performance_test
+                       '''
+                }   
+                dir('jmeter-test') {
+                    sh 'sleep 30' 
+                    sh 'rm -rf target/jmeter/reports/jobOffer/*'
+                    sh "mvn -U jmeter:jmeter"
+                    sh "rm -rf performance_tests_report"
+                    sh "git clone https://github.com/adebna/performance_tests_report"
+                }   
+                dir('jmeter-test/performance_tests_report') {
+                    sh "cp -r ../target/jmeter/reports/jobOffer/* ."
+                    sh "git add *"
+                    sh 'git commit -m "$(date)"'
+                    sh 'git push'
+                }   
+                dir('rest_api') {
+                    sh ''' 
+                        docker stop performance_test
+                        docker rm performance_test
+                       ''' 
+                }   
+            }   
+        }   
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv('sonar') {

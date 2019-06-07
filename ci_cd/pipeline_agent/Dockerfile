@@ -10,4 +10,6 @@ RUN apt-get install apt-transport-https ca-certificates curl gnupg2 software-pro
     curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
     apt-get update && \
-    apt-get install docker-ce=5:18.09.6~3-0~debian-stretch -y
+    apt-get install docker-ce=5:18.09.6~3-0~debian-stretch git -y
+
+RUN echo -e "machine github.com\n\tlogin andrebrandao@ua.pt\n\tpassword tqspipelineagentpasswd" > /root/.netrc 

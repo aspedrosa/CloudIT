@@ -22,8 +22,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import tqs.cloudit.domain.rest.JobOffer;
+import tqs.cloudit.domain.rest.AdvancedSearch;
+import tqs.cloudit.domain.rest.Job;
 import tqs.cloudit.services.JobService;
+import tqs.cloudit.utils.Constants;
 
 /**
  *
@@ -73,7 +75,7 @@ public class JobControllerTest {
     public void testRegister() throws Exception {
         System.out.println("register");
         Mockito.when(service.registerOffer(Mockito.eq("joao"),Mockito.any())).thenReturn(emptyResponse);
-        mvc.perform(post("/joboffer").content(toJson(new JobOffer())).with(user("joao").password("1235"))
+        mvc.perform(post("/joboffer").content(toJson(new Job())).with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             //.andExpect(cookie().exists("JSESSIONID"))
@@ -149,12 +151,132 @@ public class JobControllerTest {
     public void testEditById() throws Exception {
         System.out.println("editByIdSuccessful");
         Long id = 1L;
-        JobOffer jo = new JobOffer("title test","descr test","area test",100,"1111-11-11");
+        Job jo = new Job("title test","descr test","area test",100,"1111-11-11", "Offer");
         Mockito.when(service.editOffer(Mockito.eq(id),Mockito.any())).thenReturn(emptyResponse);
         mvc.perform(put("/joboffer/edit/" + id).content(toJson(jo)).with(user("joao").password("1235"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             //.andExpect(cookie().exists("JSESSIONID"))
             .andExpect(jsonPath("$.message", is("Information passes with success.")));
+    }
+        
+    @Test
+    public void testSearchOffers1() throws Exception {
+        System.out.println("searchOffer1");
+        AdvancedSearch as = new AdvancedSearch("AI", true, true, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
+                                                               Mockito.eq("AI"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchOffers2() throws Exception {
+        System.out.println("searchOffer2");
+        AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq(1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchOffers3() throws Exception {
+        System.out.println("searchOffer3");
+        AdvancedSearch as = new AdvancedSearch("AI", true, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
+                                                               Mockito.eq("AI"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchOffers4() throws Exception {
+        System.out.println("searchOffer4");
+        AdvancedSearch as = new AdvancedSearch("AI", false, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Databases"), 
+                                                               Mockito.eq("Databases"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq("2019-09-01"), 
+                                                               Mockito.eq("2020-09-01"))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearch").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchProposals1() throws Exception {
+        System.out.println("searchProposal1");
+        AdvancedSearch as = new AdvancedSearch("AI", true, true, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
+                                                               Mockito.eq("AI"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchProposals2() throws Exception {
+        System.out.println("searchProposal2");
+        AdvancedSearch as = new AdvancedSearch("AI", false, true, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq("Cybersecutiry"), 
+                                                               Mockito.eq(1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchProposals3() throws Exception {
+        System.out.println("searchProposal3");
+        AdvancedSearch as = new AdvancedSearch("AI", true, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("AI"), 
+                                                               Mockito.eq("AI"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(1.0), 
+                                                               Mockito.eq(""), 
+                                                               Mockito.eq(""))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testSearchProposals4() throws Exception {
+        System.out.println("searchProposal4");
+        AdvancedSearch as = new AdvancedSearch("AI", false, false, -1.0, -1.0, "", "");
+        Mockito.when(service.getJobOffersFromTextAmountAndDate(Mockito.eq("Databases"), 
+                                                               Mockito.eq("Databases"), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq(-1.0), 
+                                                               Mockito.eq("2019-09-01"), 
+                                                               Mockito.eq("2020-09-01"))).thenReturn(emptyResponse);
+        mvc.perform(post("/joboffer/advancedSearchProposal").content(toJson(as)).with(user("joao").password("1235"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
     }
 }

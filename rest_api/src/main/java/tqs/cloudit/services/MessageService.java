@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import tqs.cloudit.domain.persistance.JobOffer;
 import tqs.cloudit.domain.persistance.Message;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.MessageRepository;
@@ -54,7 +53,7 @@ public class MessageService {
     */
     public void updateMessage(JSONArray input) {
         if(((String)input.get(2)).equals("accept")){
-            JobOffer jo = jobRepository.getJobOffer((Long)input.get(3));
+            tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer((Long)input.get(3));
             jo.setWorker(userRepository.getInfo((String)input.get(4)));
             userRepository.getInfo((String)input.get(4)).addAcceptedOffer(jo);
         }
