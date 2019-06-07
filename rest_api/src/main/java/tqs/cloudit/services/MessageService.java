@@ -61,7 +61,7 @@ public class MessageService {
     
     public void update(JSONArray input) {
         if(((String)input.get(2)).equals("accept")){
-            tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer((Long)input.get(3));
+            tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer(new Long((int)input.get(3)));
             jo.setWorker(userRepository.getInfo((String)input.get(4)));
             userRepository.getInfo((String)input.get(4)).addAcceptedOffer(jo);
         }

@@ -114,7 +114,7 @@ $(document).ready(function(){
                     mt = n.getMinutes()
                     body.date = hr + ":" + mt;
 
-                    checkIfUserInContacts()
+                    checkIfUserInContacts(body.origin)
                     
                     viewModel.addMsg(body)
                     $.notify("From: "+body.origin+"\nMessage: "+body.message.substring(0, 10)+"...", "info");
@@ -196,5 +196,38 @@ function logout() {
         error: function(data, status, xhr) {
             alert(JSON.stringify(data));
         } 
+    });
+}
+
+function checkIfUserInContacts(origin){
+    data={"username":origin}
+    $.ajax({
+        url: base_api_url+"/profile/search",
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json",
+        crossDomain:true,
+        success: function(data, status, xhr) {
+            if(status!=="success"){
+                alert(JSON.stringify(data));
+            }else{
+                
+                let control=true
+                for(let u in viewModel.contacts.peek()){
+                    if(viewModel.contacts.peek()[u][0]===data.data.username){
+                        control=false
+                    }
+                }
+                if(control){
+                    viewModel.addContact([data.data.username, data.data.name]);
+                }
+                
+            }
+        },
+        error: function(data, status, xhr) {
+            alert(JSON.stringify(data));
+            console.log("error: "+JSON.stringify(data)+":"+status+":"+xhr);
+        }
     });
 }
