@@ -107,6 +107,16 @@ $(document).ready(function(){
                 var body = JSON.parse(greeting.body)
                 console.log(body);
                 if("message" in body){
+                    
+                    n =  new Date(body.date);
+                    hr = n.getHours();
+                    mt = n.getMinutes()
+                    body.date = hr + ":" + mt;
+                    
+                    checkIfUserInContacts
+                    
+                    viewModel.addMsg(body)
+                    
                     $.notify("From: "+body.origin+"\nMessage: "+body.message.substring(0, 10)+"...", "info");
                 }else if("messages" in body){
                     var allMsgs=body.messages

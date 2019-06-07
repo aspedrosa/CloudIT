@@ -40,6 +40,7 @@ function sendMsg(){
 }
 
 async function loadMessages(contact){
+    $("#chatRoom").css("visibility", "visible")
     getAllMessages(contact[0]);
     $("#msgDestinName").text(contact[1]);
     $("#msgDestination").text(contact[0]);
@@ -63,6 +64,7 @@ function activateContact(){
         sendAutomaticMsgUserInterested(addOffer, addUsername);
       }
       loadMessages([addUsername, addName])
+      $("#chatRoom").css("visibility", "visible")
     }
   }, 500);
 }
@@ -101,6 +103,19 @@ function formatMessage(id, msg,origin) {
     }
   }
   return retval;
+}
+
+function showOfferOptions(){
+    if($("#showOfferOptions").css("display")==="block"){
+        $("#showOfferOptions").css("display", "none");
+    }else{
+        $("#showOfferOptions").css("display", "block");
+    }
+    
+}
+
+function hideOptions(){
+    $("#showOfferOptions").css("display", "none");
 }
 
 function acceptOfferMsg(id, offerId, offerTitle) {

@@ -97,7 +97,13 @@ function createOffer(){
     var area = document.getElementById("offerArea").value;
     var amount = document.getElementById("offerAmount").value;
     var date = document.getElementById("offerDate").value;
-    var type = "Offer";
+    var type;
+    
+    if(localStorage.getItem("type")==="Employer"){
+        type = "Offer"
+    }else{
+        type = "Proposal"
+    }
     
     let data={};
     if(title!==""){
@@ -115,7 +121,7 @@ function createOffer(){
     if(date!==""){
         data["date"]=date;
     }
-    data["type"] = "Offer";
+    data["type"] = type;
     
     $.ajax({
         url: base_api_url+"/joboffer",
@@ -262,5 +268,9 @@ $(document).ready(function(e){
     if(localStorage.getItem("type")==="Employer"){
         $("#acceptedOffers").css("display", "none");
         $("#myOffers2").css("display", "block");
+    }else{
+        $("#createJobButton").text("Create a new Job Proposal");
+        $("#offerOrProposal").text("My Proposals")
     }
+    
 });

@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.domain.rest.UserSearch;
 import tqs.cloudit.services.UserService;
@@ -77,6 +77,12 @@ public class UserController {
      */
     @PostMapping(path="/profile/search", produces="application/json", consumes="application/json")
     public ResponseEntity searchProfile(@RequestBody UserSearch userSearch) {
+        Object username = userSearch.getUsername();
+        if(username != null){
+            return userService.searchUserByUsername((String)username);
+        }
+        
+        
         String name = userSearch.getName();
         String userType = userSearch.getUserType();
         Set<String> areas = userSearch.getAreas();
