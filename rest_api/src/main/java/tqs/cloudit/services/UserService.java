@@ -1,10 +1,10 @@
 package tqs.cloudit.services;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -116,5 +116,10 @@ public class UserService {
         }
 
         return matchedUsers;
+    }
+
+    public ResponseEntity searchUserByUsername(String username) {
+        tqs.cloudit.domain.persistance.User user = userRepository.getInfo(username);
+        return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "User found with success", user);
     }
 }

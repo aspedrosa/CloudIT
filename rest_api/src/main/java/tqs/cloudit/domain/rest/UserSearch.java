@@ -4,6 +4,7 @@ import java.util.Set;
 
 public class UserSearch {
 
+    String username;
     String name;
     String userType;
     Set<String> areas;
@@ -31,4 +32,13 @@ public class UserSearch {
     public void setAreas(Set<String> areas) {
         this.areas = areas;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
 }
