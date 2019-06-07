@@ -1,6 +1,9 @@
 package tqs.cloudit.mobile_app;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -114,6 +117,7 @@ public class JobsActivity extends AppCompatActivity {
 
                 if (countOfJobOffersOnStart == -1) {
                     displayToast("Some error occurred while creating an alarm. Try again later.", Toast.LENGTH_SHORT);
+                    return;
                 }
                 else {
                     displayToast("Alarm created. You will be notified if a job offer is created with the search word \"" + searchText + "\"", Toast.LENGTH_SHORT);
@@ -155,6 +159,29 @@ public class JobsActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
+                /*
+                final String NOTIFICATION_CHANNEL_ID = "4565";
+                final String NOTIFICATION_CHANNEL_NAME = "clouditnot";
+
+                CharSequence channelName = NOTIFICATION_CHANNEL_NAME;
+                int importance = NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
+
+
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(notificationChannel);
+
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.cloud_it_logo)
+                        .setContentTitle("ya")
+                        .setContentText("a")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                notificationManager.notify(101, notificationBuilder.build());
+                */
 
                 displayToast("A job offer was created with the search word \"" + searchText + "\"", Toast.LENGTH_LONG);
             }

@@ -6,7 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 import tqs.cloudit.domain.persistance.Job;
 
 public interface JobRepository extends CrudRepository<Job, Long> {
-    
+
+    @Query(value = "SELECT * FROM job WHERE id = ?1", nativeQuery = true)
+    public Job getJobById(Long id);
+
     @Query(value= "select * from job where id=?1 and type='Offer'", nativeQuery=true)
     public Job getJobOffer(Long id);
     

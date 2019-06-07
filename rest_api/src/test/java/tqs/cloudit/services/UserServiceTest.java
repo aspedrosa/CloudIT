@@ -1,12 +1,9 @@
 package tqs.cloudit.services;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.json.simple.JSONObject;
-import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,13 +11,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import tqs.cloudit.domain.persistance.Job;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
+import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.UserRepository;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -28,7 +30,7 @@ import tqs.cloudit.repositories.UserRepository;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
-    
+
     @TestConfiguration
     static class UserServiceTestContextConfiguration {
   
@@ -65,6 +67,9 @@ public class UserServiceTest {
     
     @Mock
     private AreaRepository areaRepository;
+
+    @Mock
+    private JobRepository jobRepository;
 
     /**
      * Test of getUserInfoFromUsername method, of class UserService, with an existing user.
@@ -253,4 +258,89 @@ public class UserServiceTest {
         user1.setInterestedAreas(null);
         user2.setInterestedAreas(null);
     }
+
+    @Test
+    public void updateFavouriteFalseOnJobNotFound() {
+        Mockito.when(jobRepository.getJobById(1L)).thenReturn(null);
+
+        assertFalse(service.addFavourite("aspedrosa", 1L));
+    }
+
+    /**
+     * Test if persists when favourite is not on job's favourite and user's favourite
+     */
+    @Test
+    public void testAddFavouritePersist() {
+        Job job = new Job();
+        job.setId(1L);
+        Mockito.when(jobRepository.getJobById(1L)).thenReturn(job);
+
+        tqs.cloudit.domain.persistance.User user = new tqs.cloudit.domain.persistance.User();
+        user.setUsername("aspedrosa");
+        Mockito.when(userRepository.getInfo("aspedrosa")).thenReturn(user);
+
+        assertTrue(service.addFavourite("aspedrosa", 1L));
+
+        Mockito.verify(jobRepository, Mockito.times(1)).save(job);
+        Mockito.verify(userRepository, Mockito.times(1)).save(user);
+    }
+
+    /**
+     * Test if persists when favourite is on job's favourite but not on user's favourite
+     */
+    @Test
+    public void testAddFavouritePersistOnOneAlreadyHavingFavourites() {
+        Job job = new Job();
+        job.setId(1L);
+        Mockito.when(jobRepository.getJobById(1L)).thenReturn(job);
+
+        tqs.cloudit.domain.persistance.User user = new tqs.cloudit.domain.persistance.User();
+        user.setUsername("aspedrosa");
+        user.getFavouriteJobs().add(job);
+        Mockito.when(userRepository.getInfo("aspedrosa")).thenReturn(user);
+
+        assertTrue(service.addFavourite("aspedrosa", 1L));
+
+        Mockito.verify(jobRepository, Mockito.times(1)).save(job);
+        Mockito.verify(userRepository, Mockito.times(1)).save(user);
+    }
+
+    /**
+     * Test if doesn't persists when favourite is on job's favourite and on user's favourite
+     */
+    @Test
+    public void testAddFavouriteNotPersistOnAlreadyFavourite() {
+        Job job = new Job();
+        job.setId(1L);
+        Mockito.when(jobRepository.getJobById(1L)).thenReturn(job);
+
+        tqs.cloudit.domain.persistance.User user = new tqs.cloudit.domain.persistance.User();
+        user.setUsername("aspedrosa");
+        user.getFavouriteJobs().add(job);
+        job.getFavouritedUsers().add(user);
+        Mockito.when(userRepository.getInfo("aspedrosa")).thenReturn(user);
+
+
+        assertTrue(service.addFavourite("aspedrosa", 1L));
+
+        Mockito.verify(jobRepository, Mockito.times(0)).save(job);
+        Mockito.verify(userRepository, Mockito.times(0)).save(user);
+    }
+
+    @Test
+    public void removeFavouriteNotPersistOnAlreadyEmptyFavourites() {
+        Job job = new Job();
+        job.setId(1L);
+        Mockito.when(jobRepository.getJobById(1L)).thenReturn(job);
+
+        tqs.cloudit.domain.persistance.User user = new tqs.cloudit.domain.persistance.User();
+        user.setUsername("aspedrosa");
+        Mockito.when(userRepository.getInfo("aspedrosa")).thenReturn(user);
+
+        assertTrue(service.deleteFavourite("aspedrosa", 1L));
+
+        Mockito.verify(jobRepository, Mockito.times(0)).save(job);
+        Mockito.verify(userRepository, Mockito.times(0)).save(user);
+    }
+
 }

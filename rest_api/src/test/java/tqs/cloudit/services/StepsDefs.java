@@ -865,14 +865,16 @@ public class StepsDefs {
      */
     @And("the results of the offer search are presented")
     public void viewJobOffers3() {
-        new WebDriverWait(driver, 300L).until(
-            d -> {
-                List<WebElement> offers = d.findElements(By.className("blog-box"));
-                if (offers.isEmpty())
-                    return false;
-                return offers.get(0).isDisplayed();
-            }
-        );
+        new WebDriverWait(driver, 300L)
+            .ignoring(StaleElementReferenceException.class)
+            .until(
+                d -> {
+                    List<WebElement> offers = d.findElements(By.className("blog-box"));
+                    if (offers.isEmpty())
+                        return false;
+                    return offers.get(0).isDisplayed();
+                }
+            );
     }
     
     /*
@@ -1067,6 +1069,7 @@ public class StepsDefs {
         
         new WebDriverWait(driver, MAX_WAIT_TIME)
                 .ignoring(ElementNotVisibleException.class)
+                .ignoring(ElementNotInteractableException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
                     return true;
@@ -1137,6 +1140,7 @@ public class StepsDefs {
         new WebDriverWait(driver, MAX_WAIT_TIME)
                 .ignoring(ElementNotVisibleException.class)
                 .ignoring(ElementClickInterceptedException.class)
+                .ignoring(ElementNotInteractableException.class)
                 .until(d -> {
                     d.findElement(By.id("edit_save_btn")).click();
                     return true;
