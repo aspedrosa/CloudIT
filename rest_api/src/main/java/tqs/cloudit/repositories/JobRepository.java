@@ -37,7 +37,7 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     @Query(value="select * from job where area like concat('%',?1,'%') and amount >= ?2 and amount <= ?3 and date >= ?4 and date <= ?5 and type='Offer'", nativeQuery = true)
     public List<Job> getJobOffersFromTextAmountAndDateOnlyArea(String area, double fromAmount, double toAmount, String fromDate, String toDate);
 
-    @Query(value="SELECT * FROM job WHERE amount >= ?2 AND amount <= ?3 AND date >= ?4 AND date <= ?5 AND type='Offer'", nativeQuery = true)
+    @Query(value="SELECT * FROM job WHERE amount >= ?1 AND amount <= ?2 AND date >= ?3 AND date <= ?4 AND type='Offer'", nativeQuery = true)
     List<Job> getJobOffersFromAmountAndDate(double fromAmount, double toAmount, String fromDate, String toDate);
 
     @Query(value="select * from job where (title like concat('%',?1,'%') or description like concat('%',?1,'%') or area like concat('%',?2,'%')) and amount >= ?3 and amount <= ?4 and date >= ?5 and date <= ?6 and type='Proposal'", nativeQuery = true)
@@ -49,6 +49,6 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     @Query(value="select * from job where area like concat('%',?1,'%') and amount >= ?2 and amount <= ?3 and date >= ?4 and date <= ?5 and type='Proposal'", nativeQuery = true)
     public List<Job> getJobProposalFromTextAmountAndDateOnlyArea(String area, double fromAmount, double toAmount, String fromDate, String toDate);
 
-    @Query(value="SELECT * FROM job WHERE amount >= ?2 AND amount <= ?3 AND date >= ?4 AND date <= ?5 AND type='Proposal'", nativeQuery = true)
+    @Query(value="SELECT * FROM job WHERE amount >= ?1 AND amount <= ?2 AND date >= ?3 AND date <= ?4 AND type='Proposal'", nativeQuery = true)
     List<Job> getJobProposalFromAmountAndDate(double fromAmount, double toAmount, String fromDate, String toDate);
 }
