@@ -38,7 +38,7 @@ public class StepsDefs {
     static {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--whitelisted-ips");
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disabled-extensions");
 
