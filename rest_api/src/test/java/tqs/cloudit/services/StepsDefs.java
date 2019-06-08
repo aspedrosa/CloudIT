@@ -38,7 +38,7 @@ public class StepsDefs {
     static {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--whitelisted-ips");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disabled-extensions");
 
@@ -1157,6 +1157,11 @@ public class StepsDefs {
      */
     @And("I edit and submit the form,")
     public void editAndSubmitForm() {
+        
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 4000);
+        
         new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
                 (WebDriver d) -> d.findElement(By.id("modalTitle")).isDisplayed());
         WebElement title = driver.findElement(By.id("modalTitle"));
@@ -1169,6 +1174,10 @@ public class StepsDefs {
      */
     @Then("I should see a message informing me about the success/failure of the operation")
     public void operationInfoMessage() {
+        Long then = System.currentTimeMillis();
+        new WebDriverWait(driver, MAX_WAIT_TIME).until((ExpectedCondition<Boolean>)
+            (WebDriver d) -> System.currentTimeMillis()-then > 4000);
+        
         assertTrue(driver.findElement(By.id("edit_save_btn")).getText().equals("Edit"));
         // to be continued...
     }

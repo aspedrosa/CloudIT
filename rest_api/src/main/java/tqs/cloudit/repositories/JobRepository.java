@@ -10,7 +10,7 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     @Query(value = "SELECT * FROM job WHERE id = ?1 AND NOT finished AND worker IS NULL", nativeQuery = true)
     public Job getJobById(Long id);
 
-    @Query(value= "select * from job where id=?1 and not finished and worker is null and type='Offer'", nativeQuery=true)
+    @Query(value= "select * from job where id=?1 and not finished and worker is null", nativeQuery=true)
     public Job getJobOffer(Long id);
     
     @Query(value= "select * from job where type='Offer' and not finished and worker is null", nativeQuery=true)
