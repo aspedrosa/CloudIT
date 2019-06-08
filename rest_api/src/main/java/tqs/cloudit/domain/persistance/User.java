@@ -2,6 +2,7 @@ package tqs.cloudit.domain.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -51,6 +52,13 @@ public class User {
         joinColumns = @JoinColumn(name = "userId"), 
         inverseJoinColumns = @JoinColumn(name = "areaId"))
     private Set<Area> interestedAreas;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+        name = "UserFavouriteJobs",
+        joinColumns = @JoinColumn(name = "userId"),
+        inverseJoinColumns = @JoinColumn(name = "jobId"))
+    private Set<Job> favouriteJobs = new HashSet<>();
 
     public User(tqs.cloudit.domain.rest.User user) {
         this.username = user.getUsername();
@@ -160,5 +168,27 @@ public class User {
     public void setAcceptedOffers(Set<Job> acceptedOffers) {
         this.acceptedOffers = acceptedOffers;
     }
-    
+
+    public Set<Job> getFavouriteJobs() {
+        return favouriteJobs;
+    }
+
+    public void setFavouriteJobs(Set<Job> favouriteJobs) {
+        this.favouriteJobs = favouriteJobs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
 }

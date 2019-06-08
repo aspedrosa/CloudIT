@@ -1,18 +1,17 @@
 package tqs.cloudit.services;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tqs.cloudit.domain.persistance.Area;
+import tqs.cloudit.domain.persistance.Job;
 import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.repositories.AreaRepository;
+import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.UserRepository;
 import tqs.cloudit.utils.ResponseBuilder;
 
@@ -121,5 +120,78 @@ public class UserService {
     public ResponseEntity searchUserByUsername(String username) {
         tqs.cloudit.domain.persistance.User user = userRepository.getInfo(username);
         return ResponseBuilder.buildWithMessageAndData(HttpStatus.OK, "User found with success", user);
+    }
+
+    @Autowired
+    JobRepository jobRepository;
+
+    /**
+     * Used to reduce code duplication.
+     * Merges insertFavourite and removeFavourite in one method
+     *
+     * @param isAdd true if the user wants to add a job to his favourites
+     *                 false to remove
+     * @return true if the operation was completed with success, false if there's no
+     *  job with the given id
+     */
+    private boolean updateFavourites(String username, long id, boolean isAdd) {
+        Job job = jobRepository.getJobById(id);
+        if (job == null) {
+            return false;
+        }
+
+        tqs.cloudit.domain.persistance.User user = userRepository.getInfo(username);
+
+        boolean wasUserOperationDone, wasJobOperationDone;
+        if (isAdd) {
+            wasUserOperationDone = job.getFavouritedUsers().add(user);
+            wasJobOperationDone = user.getFavouriteJobs().add(job);
+        }
+        else {
+            wasUserOperationDone = job.getFavouritedUsers().remove(user);
+            wasJobOperationDone = user.getFavouriteJobs().remove(job);
+        }
+
+        if (wasUserOperationDone || wasJobOperationDone) {
+            jobRepository.save(job);
+            userRepository.save(user);
+        }
+
+        return true;
+    }
+
+    /**
+     * Adds a job to user's favourites
+     *
+     * @param username of the user to remove a job from his favourites
+     * @param id of the job to add to the favourites
+     * @return true if job was removed from the favourites,
+     *  false if there's no job with the given id
+     */
+    public boolean addFavourite(String username, long id) {
+        return updateFavourites(username, id, true);
+    }
+
+    /**
+     * Removes a job from user's favourites
+     *
+     * @param username of the user to remove a job from his favourites
+     * @param id of the job
+     * @return true if job was removed from the favourites,
+     *  false if there's no job with the given id
+     */
+    public boolean deleteFavourite(String username, long id) {
+        return updateFavourites(username, id, false);
+    }
+
+    /**
+     * Gets all favourite jobs
+     *
+     * @param username of which user to retrieve favourite jobs
+     * @return favourites jobs of user
+     */
+    public List<Job> getFavourites(String username) {
+        tqs.cloudit.domain.persistance.User user = userRepository.getInfo(username);
+        return new ArrayList<>(user.getFavouriteJobs());
     }
 }
