@@ -1,15 +1,12 @@
 package tqs.cloudit.services;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-=======
 import java.util.*;
 
->>>>>>> master
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
