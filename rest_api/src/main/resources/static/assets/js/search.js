@@ -1,6 +1,6 @@
 var base_api_url = "http://" + window.location.host;
 var job_search_path = "/joboffer/advancedSearchProposal";
-var all_jobs = localStorage.getItem("type")==="Employer" ? "/joboffer" : "/joboffer/proposal";
+var all_jobs = localStorage.getItem("type")==="Employer" ? "/joboffer/proposal" : "/joboffer";
 
 function AppViewModel() {
     var self=this;
@@ -115,6 +115,7 @@ function AppViewModel() {
 
 var appViewModel = new AppViewModel();
 appViewModel.refresh();
+appViewModel.searchUsers();
 
 ko.applyBindings(appViewModel);
 
@@ -176,7 +177,7 @@ $(document).ready(function(e){
     });
     
     if(localStorage.getItem("type")==="Employer") {        
-        $("#offers_label").text("Offers");
+        $("#offers_label").text("Proposals");
         job_search_path = "/joboffer/advancedSearch";
     }
 });

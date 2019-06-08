@@ -40,6 +40,7 @@ function sendMsg(){
 }
 
 async function loadMessages(contact){
+    $("#chatRoom").css("visibility", "visible")
     getAllMessages(contact[0]);
     $("#msgDestinName").text(contact[1]);
     $("#msgDestination").text(contact[0]);
@@ -61,8 +62,10 @@ function activateContact(){
         addOffer["id"] = addOfferId;
         addOffer["title"] = addOfferTitle;
         sendAutomaticMsgUserInterested(addOffer, addUsername);
+        
       }
       loadMessages([addUsername, addName])
+      $("#chatRoom").css("visibility", "visible")
     }
   }, 500);
 }
@@ -70,41 +73,54 @@ function activateContact(){
 
 function sendMsgWithOffer(offer) {
   //console.log(offer);
-  var msg = ">>> automatic-message | job-offer: _"+offer.id + "_" + offer.title + "_ <<<";
+  var msg = ">>> automatic-message | job-offer: //"+offer.id + "//" + offer.title + "// <<<";
   var msgDestin = $("#msgDestination").text();
   sendMessage(msg, msgDestin, true);
 }
 
 function sendAutomaticMsgUserInterested(offer, msgDestin) {
-  var msg = ">>> automatic-message-interested | job-offer: _"+offer.id + "_" + offer.title + "_ | interested-user: _" + localStorage.getItem("username") + "_ <<<";
+  var msg = ">>> automatic-message-interested | job-offer: //"+offer.id + "//" + offer.title + "// | interested-user: //" + localStorage.getItem("username") + "// <<<";
   sendMessage(msg, msgDestin, true);
 }
 
 function formatMessage(id, msg,origin) {
   var retval = msg;
   if(msg.startsWith(">>> automatic-message | ")) {
-    var msgArr = msg.split("_");
+    var msgArr = msg.split("//");
     if(localStorage.getItem("username") === origin) { 
-      retval = "<h3>You sent offer '" + msgArr[2] + "'</h3>";
+      retval = "<h3 id='msg_" + msgArr[2] + "'>You sent offer '" + msgArr[2] + "'</h3>";
     } else {
       retval = "<h3>'" + msgArr[2] + "'</h3>"
-              +"<button class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'>" + "Accept" + "</button>"
-              +"<button class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
+              +"<button id='accept_" + msgArr[2] + "' class='btn btn-primary' onclick='acceptOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'>" + "Accept" + "</button>"
+              +"<button id='deny_" + msgArr[2] + "' class='btn btn-danger'  onclick='denyOfferMsg(" + id + "," + msgArr[1] + ",\"" + msgArr[2] + "\")'  style='margin-left: 10px;'>" + "Deny" + "</button>";
     }
   }
   if(msg.startsWith(">>> automatic-message-interested | ")) {
-    var msgArr = msg.split("_");
+    var msgArr = msg.split("//");
     if(localStorage.getItem("username") === origin) { 
-      retval = "<h3>You showed interest in '" + msgArr[2] + "'</h3>";
+      retval = "<h4 id='" + msgArr[2] + "'>You showed interest in '" + msgArr[2] + "'</h4>";
     } else {
-      retval = "<h3>" + msgArr[4] + " showed interest in '" + msgArr[2] + "'</h3>";
+      retval = "<h4 id='" + msgArr[2] + "'>" + msgArr[4] + " showed interest in '" + msgArr[2] + "'</h4>";
     }
   }
   return retval;
 }
 
+function showOfferOptions(){
+    if($("#showOfferOptions").css("display")==="block"){
+        $("#showOfferOptions").css("display", "none");
+    }else{
+        $("#showOfferOptions").css("display", "block");
+    }
+    
+}
+
+function hideOptions(){
+    $("#showOfferOptions").css("display", "none");
+}
+
 function acceptOfferMsg(id, offerId, offerTitle) {
-  var fMsg = "<h3>" + offerTitle + "</h3><h3 style='color:royalblue'> Accepted</h3>";
+  var fMsg = "<h3>" + offerTitle + "</h3><h3 id='"+offerTitle+"_accepted' style='color:royalblue'> Accepted</h3>";
   updateAutomaticMessage(id, fMsg, "accept", offerId, $("#msgDestination").text());
   $("#"+id).html(fMsg);
   

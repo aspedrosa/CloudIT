@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import tqs.cloudit.domain.persistance.Job;
 import tqs.cloudit.domain.persistance.Message;
+import tqs.cloudit.domain.persistance.User;
 import tqs.cloudit.repositories.JobRepository;
 import tqs.cloudit.repositories.MessageRepository;
 import tqs.cloudit.repositories.UserRepository;
@@ -60,15 +60,16 @@ public class MessageService {
         simpMessagingTemplate.convertAndSend(BASE_PATH+user, output);
     }
     
-    public void update(JSONArray input) {
+    public void update(JSONArray input, String worker) {
         if(((String)input.get(2)).equals("accept")){
-            Long aux = new Long((int)input.get(3));
-            Job jo = jobRepository.getJobOffer(aux);
-            jo.setWorker(userRepository.getInfo((String)input.get(4)));
+            tqs.cloudit.domain.persistance.Job jo = jobRepository.getJobOffer(new Long((int)input.get(3)));
+            User user  = userRepository.getInfo(worker);
+            jo.setWorker(user);
+            user.addAcceptedOffer(jo);
             jobRepository.save(jo);
+            userRepository.save(user);
         }
-        Long aux = new Long((int)input.get(0));
-        Message m = messageRepository.getMessage(aux);
+        Message m = messageRepository.getMessage(new Long((int)input.get(0)));
         m.setMessage((String)input.get(1));
         messageRepository.save(m);
     }

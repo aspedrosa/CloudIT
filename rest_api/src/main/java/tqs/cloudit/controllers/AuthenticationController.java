@@ -13,6 +13,7 @@ import tqs.cloudit.domain.rest.User;
 import tqs.cloudit.services.AuthenticationService;
 import tqs.cloudit.utils.Constants;
 
+
 /**
  * Paths related to authentication of users for using the API
  *

@@ -34,9 +34,9 @@
             <div class="row">
                 <div class="content col-md-6 col-sm-6" id="myOffers1">
                     <div class="row" style="margin:5px">
-                        <h2>My Offers</h2>
+                        <h2 id="offerOrProposal">My Offers</h2>
                     </div>
-                    <div data-bind="foreach: { data: myOffersColumn1, as: 'job' }">
+                    <div data-bind="foreach: { data: myOffers, as: 'job' }">
                         <!-- Post -->
                         <div class="blog-box clearfix row" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
                             <div class="col-md-12">
@@ -54,43 +54,16 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                
-                
-                <div class="content col-md-6 col-sm-6" id="myOffers2" style="display:none">
-                    <div class="row" style="margin:5px; visibility: hidden">
-                        <h2>My Offers</h2>
-                    </div>
-                    <div data-bind="foreach: { data: myOffersColumn2, as: 'job' }">
-                        <!-- Post -->
-                        <div class="blog-box clearfix row" data-toggle="modal" data-target="#createModal" data-bind="click: function(job){showModal(job)}">
-                            <div class="col-md-12">
-                                <button data-bind="click: function(job){deleteOffer(job)}" type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px;"><span aria-hidden="true">&times;</span></button>
-                                <div class="row">
-                                    <!-- Box -->
-                                    <div class="media-box col-md-4">
-                                        <a><img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail"></a>
-                                    </div>
-                                    <div class="blog-desc col-md-8" >
-                                        <h3><a data-bind="text: job.title,  attr: { id: job.id }" style="color: black"></a></h3>
-                                        <p data-bind="text: job.description"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+                </div>    
                 
                 
                 <div class="content col-md-6 col-sm-6" id="acceptedOffers">
                     <div class="row" style="margin:5px">
-                        <h2>Accepted Offers</h2>
+                        <h2 id="acceptedOffersOrProposals">Accepted Offers</h2>
                     </div>
                     <div data-bind="foreach: { data: acceptedOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box clearfix row" id="post_box" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job)}">
+                        <div class="blog-box clearfix row" id="post_box" data-toggle="modal" data-target="#offerModal" data-bind="click: function(job){showModal(job, 'accept')}">
                             <div class="col-md-12">
                                 <button type="button" class="close" aria-label="Close" style="margin-right:15px; font-size: 28px; visibility: hidden"><span aria-hidden="true">&times;</span></button>
                                 <div class="row">

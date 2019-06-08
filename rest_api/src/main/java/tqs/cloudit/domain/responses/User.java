@@ -1,11 +1,10 @@
 package tqs.cloudit.domain.responses;
 
 
-import tqs.cloudit.domain.persistance.Job;
-
 import java.util.ArrayList;
 import java.util.List;
 import tqs.cloudit.domain.persistance.Area;
+import tqs.cloudit.domain.persistance.Job;
 
 public class User {
     private String name;

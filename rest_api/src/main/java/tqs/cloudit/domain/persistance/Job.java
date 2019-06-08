@@ -49,6 +49,8 @@ public class Job {
      */
     private String date;
     
+    private boolean finished;
+    
     /**
      * Job type
      */
@@ -58,7 +60,7 @@ public class Job {
      * Job creator
      */
     @ManyToOne
-    @JoinColumn(name = "creator_id", nullable=false)
+    @JoinColumn(name = "creator", nullable=false)
     @JsonIgnore
     private User creator;
     
@@ -66,7 +68,7 @@ public class Job {
      * Job worker
      */
     @ManyToOne
-    @JoinColumn(name = "worker_id", nullable=true)
+    @JoinColumn(name = "worker", nullable=true)
     @JsonIgnore
     private User worker;
 
@@ -104,6 +106,16 @@ public class Job {
         owner.put("email", creator.getEmail());
         return owner;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+    
+    
     
     public long getId() {
         return id;
@@ -211,6 +223,10 @@ public class Job {
     @Override
     public String toString() {
         return "Job{" + "id=" + id + ", title=" + title + ", description=" + description + ", area=" + area + ", amount=" + amount + ", date=" + date + ", type=" + type + ", creator=" + creator + ", worker=" + worker + '}';
+    }
+
+    public void removeWorker() {
+        this.worker=null;
     }
     
 }

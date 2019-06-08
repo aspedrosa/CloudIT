@@ -32,7 +32,7 @@
                     <div class="card-body">
                         <div class="row">
                             <input type="radio" id="searchByJobs" name="searchBy" value="jobs" data-bind="checked: searchBy"  />
-                            <label id="offers_label" for="searchByJobs">Proposals</label>
+                            <label id="offers_label" for="searchByJobs">Offers</label>
                         </div>
                         <div class="row">
                             <input type="radio" id="searchByUsers" name="searchBy" value="users" data-bind="checked: searchBy"  />
@@ -148,11 +148,11 @@
     <!-- Body -->
     <div class="container" style="min-height: 50vh;margin-top: 10px">
         <div class="row">
-            <div class="content" id="offersDiv">
+            <div class="content container-fluid" id="offersDiv">
                 <div data-bind="if: searchBy() == 'jobs'">
                     <div class="row" id="allOffers" data-bind="foreach: { data: jobOffers, as: 'job' }">
                         <!-- Post -->
-                        <div class="blog-box col-md-6" data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job)">
+                        <div class="blog-box col-xs-12 col-sm-6 col-md-6 col-lg-6" data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job)">
                             <div class="row">
                                 <!-- Box -->
                                 <div class="media-box col-md-4">
@@ -165,6 +165,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div data-bind="if: searchBy() == 'users'">
                     <div id="allUsers" data-bind="foreach: { data: users, as: 'user' }">
@@ -180,6 +181,10 @@
                             </div>
                             <div class="blog-desc col-md-8" >
                                 <h3 data-bind="text: user.name"></h3>
+                                <div class="row">
+                                    <span class="col-md-3">Username: </span>
+                                    <span class="col-md-9" data-bind="text: user.username"></span>
+                                </div>
                                 <div class="row">
                                     <span class="col-md-3">Email: </span>
                                     <span class="col-md-9" data-bind="text: user.email"></span>
@@ -199,40 +204,38 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 
                 
-                
-                    <!-- Modal -->
-                    <div id="userModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title" id="userModalTitle"></h3>
-                                    <h6 id="userModalUsername"></h6>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <!-- Modal -->
+                <div id="userModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="userModalTitle"></h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                
+                            </div>
+                            <div class="row modal-body">
+                                <div class="media-box col-md-4">
+                                    <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
                                 </div>
-                                <div class="row modal-body">
-                                    <div class="media-box col-md-4">
-                                        <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                <div class="col-md-8" id="modalContent" style="font-size: 18px; margin-top: 10px">
+                                    <div class="row">
+                                        <span class="col-md-3">Username: </span>
+                                        <span class="col-md-9" id="userModalUsername"></span>
                                     </div>
-                                    <div class="col-md-8" id="modalContent" style="font-size: 18px; margin-top: 10px">
-                                        <div class="row">
-                                            <span class="col-md-2">Email: </span>
-                                            <span class="col-md-10" id="userModalEmail"></span>
-                                        </div>
-                                        <div class="row">
-                                            <span class="col-md-2">User type: </span>
-                                            <span class="col-md-10" data-bind="text: userModalUserType"></span>
-                                        </div>
-                                        <div data-bind="if: userModalJobs().length == 0">
-                                            <div data-bind="if: userModalUserType() == 'Freelancer'">
-                                                <span>No job proposals for this user.</span>
-                                            </div>
-                                            <div data-bind="if: userModalUserType() == 'Employer'">
-                                                <span>No job offers for this user.</span>
-                                            </div>
+                                    <div class="row">
+                                        <span class="col-md-3">Email: </span>
+                                        <span class="col-md-9" id="userModalEmail"></span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="col-md-3">User type: </span>
+                                        <span class="col-md-9" data-bind="text: userModalUserType"></span>
+                                    </div>
+                                    <div data-bind="if: userModalJobs().length == 0">
+                                        <div data-bind="if: userModalUserType() == 'Freelancer'">
+                                            <span>No job proposals for this user.</span>
                                         </div>
                                         <div data-bind="if: userModalJobs().length > 0">
                                             <table  style="width: 100%">
@@ -249,85 +252,104 @@
                                                         <td data-bind="text: job.title"></td>
                                                         <td data-bind="text: job.date"></td>
                                                         <td data-bind="text: job.amount"></td>
-                                                        <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job)" style="color:#0077b5;">Check Out</td>
+                                                        <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job), attr: {id: job.title}" style="color:#0077b5;">Check Out</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+                                    <div data-bind="if: userModalJobs().length > 0">
+                                        <table  style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Date</th>
+                                                    <th>Amount</th>
+                                                    <th>Link</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-bind="foreach: {data: userModalJobs, as: 'job'}">
+                                                <tr>
+                                                    <td data-bind="text: job.title"></td>
+                                                    <td data-bind="text: job.date"></td>
+                                                    <td data-bind="text: job.amount"></td>
+                                                    <td data-toggle="modal" data-target="#m1o" data-bind="click: showOfferModal(job), attr: {id: job.title}" style="color:#0077b5;">Check Out</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn" onclick="contact($('#userModalUsername').text(), $('#userModalTitle').text())">Contact</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="contact_btn" onclick="contact($('#userModalUsername').text(), $('#userModalTitle').text())">Contact</button>
                             </div>
                         </div>
                     </div>
-                    <!-- Offer Modal -->
-                    <div id="m1o" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title" id="offerModalTitle"></h3>
-                                    <button type="button" class="close" data-dismiss="modal" id="modalClose">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                </div>
+                <!-- Offer Modal -->
+                <div id="m1o" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="offerModalTitle"></h3>
+                                <button type="button" class="close" data-dismiss="modal" id="modalClose">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="assets/img/blog.jpg" alt="" class="img-responsive img-thumbnail">
+                                        </div>
+                                        <div class="col-md-8" style="font-size: 16px; margin-top: 10px">
+                                            <p style="display: none;" id="offerModalId"></p>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Description:</p></div>
+                                                <div class="col-md-9"><p id="offerModalDescription"></p></div>
                                             </div>
-                                            <div class="col-md-8" style="font-size: 16px; margin-top: 10px">
-                                                <p style="display: none;" id="offerModalId"></p>
-                                                <div class="row">
-                                                    <div class="col-md-3"><p>Description:</p></div>
-                                                    <div class="col-md-9"><p id="offerModalDescription"></p></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3"><p>Area:</p></div>
-                                                    <div class="col-md-9"><p id="offerModalArea" ></p></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3"><p>Deliver Date:</p></div>
-                                                    <div class="col-md-9"><p id="offerModalDate" ></p></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3"><p>Amount:</p></div>
-                                                    <div class="col-md-9"><p id="offerModalAmount" ></p></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12"><p>Creator:</p></div>
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-md-1"></div>
-                                                            <div class="col-md-3"><p>Name:</p></div>
-                                                            <div class="col-md-8"><p id="offerModalCreatorName" ></p></div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-1"></div>
-                                                            <div class="col-md-3"><p>Username:</p></div>
-                                                            <div class="col-md-8"><p id="offerModalCreatorUsername" ></p></div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-1"></div>
-                                                            <div class="col-md-3"><p>Email:</p></div>
-                                                            <div class="col-md-8"><p id="offerModalCreatorEmail" ></p></div>
-                                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Area:</p></div>
+                                                <div class="col-md-9"><p id="offerModalArea" ></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Deliver Date:</p></div>
+                                                <div class="col-md-9"><p id="offerModalDate" ></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><p>Amount:</p></div>
+                                                <div class="col-md-9"><p id="offerModalAmount" ></p></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"><p>Creator:</p></div>
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Name:</p></div>
+                                                        <div class="col-md-8"><p id="offerModalCreatorName" ></p></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Username:</p></div>
+                                                        <div class="col-md-8"><p id="offerModalCreatorUsername" ></p></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-3"><p>Email:</p></div>
+                                                        <div class="col-md-8"><p id="offerModalCreatorEmail" ></p></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="interest_btn" onclick="showInterest()">Show Interest</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="interest_btn" onclick="showInterest()">Show Interest</button>
                             </div>
                         </div>
                     </div>
-                
-                
-                
-                
+                </div>
+
+                          
             </div>
         </div>
     </div>

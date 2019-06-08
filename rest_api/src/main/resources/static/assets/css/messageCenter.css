@@ -160,11 +160,6 @@ ul.chat-list {
     border-color: #2980b9;
 }
 
-.dropup {
-    position: relative;
-    display: inline-block;
-}
-
 .dropup-content {
     display: none;
     position: absolute;
@@ -172,7 +167,7 @@ ul.chat-list {
     min-width: 160px;
     bottom: 38px;
     right: 146px;
-    z-index: 1;
+    z-index: 10;
     margin-right: 0;
 }
 
@@ -185,10 +180,6 @@ ul.chat-list {
 
 .dropup-content p:hover {
     background-color: #ccc;
-}
-
-.dropup:hover .dropup-content {
-    display: block;
 }
 
 .dropup:hover .dropbtn {

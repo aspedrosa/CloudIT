@@ -192,4 +192,10 @@ public class JobController {
     public ResponseEntity getMyOffersAccepted(Principal principal) {
         return jobService.getUserOffersAccepted(principal.getName());
     }
+    
+    
+    @GetMapping("/finish/{id}")
+    public ResponseEntity finishOffer(@PathVariable long id,Principal user) {
+        return jobService.finishOffer(id, user.getName());
+    }
 }

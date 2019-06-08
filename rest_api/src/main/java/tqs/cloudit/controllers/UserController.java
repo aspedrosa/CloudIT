@@ -73,6 +73,12 @@ public class UserController {
      */
     @PostMapping(path="/profile/search", produces="application/json", consumes="application/json")
     public ResponseEntity searchProfile(@RequestBody UserSearch userSearch) {
+        Object username = userSearch.getUsername();
+        if(username != null){
+            return userService.searchUserByUsername((String)username);
+        }
+        
+        
         String name = userSearch.getName();
         String userType = userSearch.getUserType();
         Set<String> areas = userSearch.getAreas();
